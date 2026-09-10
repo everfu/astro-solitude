@@ -1,0 +1,395 @@
+---
+import { render } from 'astro:content';
+import Base from './Base.astro';
+import {
+  cfg,
+  config,
+  t,
+  url,
+  absolute,
+  dateLabel,
+  termPath,
+} from '../lib/site';
+import { getPosts, taxonomy, contentPath, type Post } from '../lib/content';
+import type { Route } from '../lib/routes';
+import { pageData } from '../lib/data';
+import { components } from '../components/mdx';
+import Aside from '../components/Aside.astro';
+import HomeTop from '../components/HomeTop.astro';
+import CategoryBar from '../components/CategoryBar.astro';
+import PostCard from '../components/PostCard.astro';
+import Pagination from '../components/Pagination.astro';
+import PostMeta from '../components/PostMeta.astro';
+import Copyright from '../components/Copyright.astro';
+import Comments from '../components/Comments.astro';
+import About from '../components/pages/About.astro';
+import Links from '../components/pages/Links.astro';
+import Equipment from '../components/pages/Equipment.astro';
+import Brevity from '../components/pages/Brevity.astro';
+import Archive from '../components/pages/Archive.astro';
+interface Props {
+  route: Route;
+}
+const { route } = Astro.props;
+const posts = await getPosts();
+const fullEntry = route.entry;
+if (fullEntry && !fullEntry.filePath?.endsWith('.mdx') && !fullEntry.rendered)
+  throw new Error(`Content rendering failed: ${fullEntry.filePath}`);
+const result = fullEntry ? await render(fullEntry) : null;
+const Content = result?.Content;
+const headings = result?.headings ?? [];
+const p: Record<string, any> = route.entry?.data ?? {};
+const type = route.kind === 'home' ? 'solitude' : (route.type ?? route.kind);
+const post = route.kind === 'post' ? (route.entry as Post) : undefined;
+const hideAside =
+  p.aside === false ||
+  ['about', 'music', 'tags', 'categories', 'links', 'kit'].includes(type) ||
+  route.kind === 'taxonomy';
+const index = post ? posts.findIndex((item) => item.id === post.id) : -1;
+const previous = posts[index + 1],
+  next = posts[index - 1];
+const related = post
+  ? posts
+      .filter((item) => item.id !== post.id)
+      .map((item) => ({
+        item,
+        score:
+          item.data.tags.filter((x) => post.data.tags.includes(x)).length * 2 +
+          item.data.categories.filter((x) => post.data.categories.includes(x))
+            .length,
+      }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, cfg.related_post.limit)
+      .map((x) => x.item)
+  : [];
+const commentsEnabled =
+  p.comment !== false &&
+  ![
+    'about',
+    'music',
+    'tags',
+    'categories',
+    'brevity',
+    'recentcomment',
+    'archives',
+  ].includes(type) &&
+  !['taxonomy', 'term'].includes(route.kind);
+---
+
+{route.kind === 'redirect' ? (
+  <html lang={config.locale}>
+    <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="refresh" content={`0;url=${url(route.target)}`} />
+      <link rel="canonical" href={absolute(route.target!)} />
+      <title>{route.title}</title>
+    </head>
+    <body>
+      <a href={url(route.target)}>{route.title}</a>
+    </body>
+  </html>
+) : (
+  <Base
+    title={route.title}
+    description={String(p.description ?? config.description)}
+    type={type}
+    post={post}
+    page={p}
+  >
+    {route.kind === 'home' ? (
+      <div class="home-main-flow">
+        {cfg.hometop.enable && route.current === 1 && (
+          <div id="home_top">
+            <HomeTop posts={posts} />
+          </div>
+        )}
+        <div class="home-category-bar category-in-bar">
+          <CategoryBar posts={posts} home />
+        </div>
+        <main class="layout layout--home" id="content-inner">
+          <div class="home-layout-row">
+            <div id="home">
+              <div class="recent-posts" id="recent-posts">
+                {route.posts?.map((post, i) => (
+                  <PostCard post={post} index={i} newest={posts[0]?.id} />
+                ))}
+                {!route.posts?.length && (
+                  <p class="empty-state">{t('archiveEmpty')}</p>
+                )}
+                <Pagination current={route.current!} total={route.total!} />
+              </div>
+            </div>
+            <Aside posts={posts} home />
+          </div>
+        </main>
+      </div>
+    ) : post ? (
+      <main class="layout" id="content-inner">
+        <div id="post">
+          {post.data.not_cover && <PostMeta post={post} />}
+          <article class="post-content article-container">
+            {Content && <Content components={components} />}
+          </article>
+          <Copyright post={post} />
+          <div class="post-tools-right">
+            <div class="tag_share">
+              <div class="post-meta__tag-list">
+                {post.data.tags.map((tag) => (
+                  <a class="post-meta__tags" href={url(termPath('tags', tag))}>
+                    <span class="tags-punctuation">
+                      <i class="solitude fas fa-hashtag" />
+                      {tag}
+                      <span class="tagsPageCount">
+                        {posts.filter((p) => p.data.tags.includes(tag)).length}
+                      </span>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+          {(previous || next) && (
+            <nav
+              class="needEndHide pagination-post"
+              id="pagination"
+              aria-label={t('postNavigation')}
+            >
+              {previous && (
+                <div class={`prev-post ${next ? 'pull-left' : 'pull-full'}`}>
+                  <a href={url(contentPath(previous))}>
+                    <div class="pagination-info">
+                      <div class="label">{t('previousPost')}</div>
+                      <div class="prev_info">{previous.data.title}</div>
+                    </div>
+                  </a>
+                </div>
+              )}
+              {next && (
+                <div
+                  class={`next-post ${previous ? 'pull-right' : 'pull-full'}`}
+                >
+                  <a href={url(contentPath(next))}>
+                    <div class="pagination-info">
+                      <div class="label">{t('nextPost')}</div>
+                      <div class="next_info">{next.data.title}</div>
+                    </div>
+                  </a>
+                </div>
+              )}
+            </nav>
+          )}
+          {cfg.related_post.enable && related.length > 0 && (
+            <section class="relatedPosts" aria-labelledby="related-posts-title">
+              <div class="headline">
+                <i class="solitude fas fa-star" />
+                <span id="related-posts-title">{t('relatedPostsLead')}</span>
+                <button
+                  class="relatedPosts-random"
+                  type="button"
+                  data-solitude-action="randomPost"
+                >
+                  {t('browseRandomly')}
+                </button>
+              </div>
+              <div class="relatedPosts-list">
+                {related.map((item) => (
+                  <article class="relatedPosts-item">
+                    <a class="relatedPosts-link" href={url(contentPath(item))}>
+                      <img
+                        class="cover"
+                        src={url(item.data.cover ?? cfg.post.default.cover[0])}
+                        alt=""
+                        loading="lazy"
+                      />
+                      <div class="content is-center">
+                        <div class="title">{item.data.title}</div>
+                        <time class="date">
+                          {dateLabel(
+                            cfg.related_post.date_type === 'updated'
+                              ? (item.data.lastmod ?? item.data.date)
+                              : item.data.date,
+                          )}
+                        </time>
+                      </div>
+                    </a>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
+          <Comments enabled={commentsEnabled} />
+        </div>
+        <Aside
+          posts={posts}
+          post
+          enabled={!hideAside}
+          headings={p.toc === false ? [] : headings}
+        />
+      </main>
+    ) : type === 'archives' ? (
+      <main class="layout layout--archive" id="content-inner">
+        <div class="home-category-bar category-in-bar">
+          <CategoryBar posts={posts} />
+        </div>
+        <div class="archive-layout-row">
+          <div id="page">
+            <Archive posts={posts} />
+          </div>
+          <Aside posts={posts} enabled={!hideAside} />
+        </div>
+      </main>
+    ) : (
+      <main
+        class:list={['layout', { 'hide-aside': hideAside }]}
+        id="content-inner"
+      >
+        <div id={route.kind === 'term' ? 'tag' : 'page'}>
+          {route.kind === 'taxonomy' ? (
+            <>
+              <h1 class="page-title">{route.title}</h1>
+              <div class="category-lists">
+                <div class="tag-cloud-list is-center">
+                  {taxonomy(posts, route.taxonomy!).map((group) => (
+                    <a href={url(group.path)} title={group.name}>
+                      <span class="tags-punctuation">
+                        <i class="solitude fas fa-hashtag" />
+                        {group.name}
+                        <span class="tagsPageCount">{group.posts.length}</span>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : route.kind === 'term' ? (
+            <>
+              <div class="article-sort-title">{route.title}</div>
+              <div class="article-sort">
+                {route.posts?.map((item) => (
+                  <div class="article-sort-item">
+                    <a
+                      class="article-sort-item-img"
+                      href={url(contentPath(item))}
+                    >
+                      <img
+                        src={url(item.data.cover ?? cfg.post.default.cover[0])}
+                        alt={item.data.title}
+                        loading="lazy"
+                      />
+                    </a>
+                    <div class="article-sort-item-info">
+                      <div class="article-sort-item-time">
+                        <time>{dateLabel(item.data.date)}</time>
+                      </div>
+                      <a
+                        class="article-sort-item-title"
+                        href={url(contentPath(item))}
+                      >
+                        {item.data.title}
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : type === 'about' ? (
+            <About data={pageData(p.data, 'about')} />
+          ) : type === 'links' ? (
+            <Links
+              data={pageData(p.data, 'links')}
+              title={route.title}
+              description={String(p.description ?? '')}
+              comment={p.comment}
+            >
+              {Content && <Content components={components} />}
+            </Links>
+          ) : type === 'kit' ? (
+            <Equipment data={pageData(p.data, 'kit')} comment={p.comment} />
+          ) : type === 'brevity' ? (
+            <Brevity data={pageData(p.data, 'brevity')} />
+          ) : type === 'music' && cfg.music.enable ? (
+            <>
+              <div id="Music-bg" />
+              <div id="Music-page">
+                <meting-js
+                  id={cfg.music.id}
+                  server={cfg.music.server}
+                  type={cfg.music.type}
+                  mutex={String(cfg.music.mutex)}
+                  volume={String(cfg.music.volume)}
+                  preload="none"
+                  data-lrctype="0"
+                  order={cfg.music.order}
+                />
+              </div>
+              <div class="Music-loading">
+                <div>{t('playerLoading')}</div>
+              </div>
+            </>
+          ) : type === 'recentcomment' ? (
+            <>
+              <h1 class="page-title">{route.title}</h1>
+              {cfg.recent_comments.enable && cfg.comment.use ? (
+                <div
+                  class="console_recentcomments recent-comments-list"
+                  data-comment-provider={cfg.comment.use}
+                >
+                  {t('commentsLoading')}
+                </div>
+              ) : (
+                <p>{t('commentsEmpty')}</p>
+              )}
+            </>
+          ) : (
+            <>
+              <header class="page-title-wrap">
+                <h1 class="page-title">{route.title}</h1>
+                {p.description && <p>{String(p.description)}</p>}
+              </header>
+              <article class="post-content article-container">
+                {Content && <Content components={components} />}
+              </article>
+              {type === 'music' && !cfg.music.enable && (
+                <p>{t('musicSetup')}</p>
+              )}
+              {type === 'message' && cfg.envelope.enable && (
+                <>
+                  <div class="switch_message">
+                    {[
+                      [t('showBarrage'), 'false'],
+                      [t('hideBarrage'), 'true'],
+                    ].map(([name, value]) => (
+                      <button
+                        type="button"
+                        data-solitude-action="setTargetClass"
+                        data-solitude-target="#barrage"
+                        data-solitude-class="hide"
+                        data-solitude-enabled={value}
+                      >
+                        <span>{name}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <div
+                    id="barrage"
+                    data-line={cfg.envelope.line}
+                    data-speed={cfg.envelope.speed}
+                    data-hover={String(cfg.envelope.hover)}
+                    data-loop={String(cfg.envelope.loop)}
+                  />
+                </>
+              )}
+            </>
+          )}
+          <Comments enabled={commentsEnabled} />
+        </div>
+        <Aside
+          posts={posts}
+          enabled={!hideAside}
+          headings={p.toc === false ? [] : headings}
+        />
+      </main>
+    )}
+  </Base>
+)}

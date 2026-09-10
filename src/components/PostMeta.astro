@@ -1,0 +1,103 @@
+---
+import { cfg, t, url, dateLabel, isoDate, termPath } from '../lib/site';
+import { contentPath, wordCount, type Post } from '../lib/content';
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const p = post.data;
+const count = wordCount(post.body ?? '');
+---
+
+<div id="post-info">
+  <div id="post-firstinfo">
+    <div class="meta-firstline">
+      <a class="post-meta-original">
+        {p.reprint ? t('reprint') : t('original')}
+      </a>
+      {p.categories[0] && (
+        <span class="post-meta-categories">
+          <a href={url(termPath('categories', p.categories[0]))}>
+            {p.categories[0]}
+          </a>
+        </span>
+      )}
+      <div class="tag_share">
+        <div class="post-meta__tag-list">
+          {p.tags.map((tag) => (
+            <a class="post-meta__tags" href={url(termPath('tags', tag))}>
+              <span class="tags-name tags-punctuation">
+                <i class="solitude fas fa-hashtag" />
+                {tag}
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+  <h1 class="post-title">{p.title}</h1>
+  <div id="post-meta">
+    <div class="meta-secondline">
+      {cfg.post.meta.wordcount && (
+        <span class="post-meta-wordcount">
+          <i class="post-meta-icon solitude fas fa-file-word" />
+          <span class="word-count">{count}</span>
+        </span>
+      )}
+      {cfg.post.meta.date && (
+        <span class="post-meta-date">
+          <i class="post-meta-icon solitude fas fa-calendar-days" />
+          <time datetime={isoDate(p.date)}>{dateLabel(p.date)}</time>
+        </span>
+      )}
+      {cfg.post.meta.updated && (
+        <span class="post-meta-date">
+          <i class="post-meta-icon solitude fas fa-arrows-rotate" />
+          <time datetime={isoDate(p.lastmod ?? p.date)}>
+            {dateLabel(p.lastmod ?? p.date)}
+          </time>
+        </span>
+      )}
+      {cfg.post.meta.readtime && (
+        <span class="post-meta-readtime">
+          <i class="post-meta-icon solitude fas fa-clock" />
+          {Math.max(1, Math.ceil(count / 300))} min
+        </span>
+      )}
+      {cfg.post.meta.locate && (
+        <span class="post-meta-position">
+          <i class="solitude fas fa-location-dot" />
+          {String(p.locate ?? cfg.post.default.locate)}
+        </span>
+      )}
+      {cfg.post.meta.pv &&
+        cfg.comment.pv &&
+        cfg.valine.visitor &&
+        cfg.comment.use.includes('valine') && (
+          <span
+            class="leancloud_visitors"
+            id={url(contentPath(post))}
+            data-flag-title={p.title}
+          >
+            <span class="leancloud-visitors-count">0</span>
+          </span>
+        )}
+      {cfg.post.meta.comment &&
+        p.comment &&
+        cfg.comment.count &&
+        cfg.comment.use && (
+          <a href="#post-comment">
+            <i class="solitude fas fa-comment" />
+            <span
+              class="comment-count valine-comment-count"
+              data-xid={url(contentPath(post))}
+            >
+              0
+            </span>
+          </a>
+        )}
+    </div>
+  </div>
+</div>
+<div class="post-radius-bottom" />

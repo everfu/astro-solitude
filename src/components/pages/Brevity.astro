@@ -1,0 +1,105 @@
+---
+import brevity from '../../data/brevity.json';
+import { cfg, config, url } from '../../lib/site';
+interface Props {
+  data?: typeof brevity;
+}
+const { data = brevity } = Astro.props;
+const c = cfg.brevity;
+---
+
+{c.enable && (
+  <div id="bber">
+    <section class="timeline page-1">
+      <ul class="list waterfall">
+        {data.items.slice(0, c.strip).map((item: any) => (
+          <li class="item">
+            {c.style === 2 && (
+              <div class="meta">
+                <img
+                  class="avatar"
+                  src={url(cfg.aside.my_card.author.img)}
+                  alt=""
+                />
+                <div class="info">
+                  <span class="bber_nick">{config.author.name}</span>
+                  <time class="datetime bber_date" datetime={item.date}>
+                    {item.date}
+                  </time>
+                </div>
+              </div>
+            )}
+            <div class="bber-content">
+              <p class="datacont">{item.content}</p>
+              {item.image && (
+                <div class="bber-content-img">
+                  {(Array.isArray(item.image) ? item.image : [item.image]).map(
+                    (img: any) => (
+                      <img
+                        src={url(typeof img === 'string' ? img : img.url)}
+                        alt={img.alt ?? ''}
+                      />
+                    ),
+                  )}
+                </div>
+              )}
+            </div>
+            {c.music && item.aplayer && (
+              <div class="bber-music">
+                <meting-js
+                  server={item.aplayer.server}
+                  type="song"
+                  id={item.aplayer.id}
+                  mutex="true"
+                  preload="none"
+                  theme="var(--efu-main)"
+                  data-lrctype="0"
+                />
+              </div>
+            )}
+            {item.video && (
+              <div class="bber-video">
+                {item.video.player && (
+                  <video src={url(item.video.player)} controls />
+                )}
+                {item.video.bilibili && <iframe
+                  src={`https://player.bilibili.com/player.html?autoplay=0&bvid=${encodeURIComponent(item.video.bilibili)}`}
+                  title="Bilibili video"
+                  allowfullscreen
+                ></iframe>}
+              </div>
+            )}
+            {c.style === 1 && (
+              <>
+                <hr />
+                <div class="bber-bottom">
+                  <div class="bber-info">
+                    <div class="bber-info-time">
+                      <i class="solitude fas fa-calendar-day" />
+                      <time class="datetime" datetime={item.date}>
+                        {item.date}
+                      </time>
+                    </div>
+                    {item.location && (
+                      <div class="bber-info-location">
+                        <i class="solitude fas fa-location-dot" />
+                        {item.location}
+                      </div>
+                    )}
+                    {item.link && (
+                      <a class="bber-content-link" href={url(item.link)}>
+                        <i class="solitude fas fa-link" />
+                        链接
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div id="bber-tips">展示最近 {c.strip} 条动态</div>
+    </section>
+  </div>
+)}

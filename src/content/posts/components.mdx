@@ -1,0 +1,365 @@
+---
+title: MDX 组件完整示例
+date: 2026-08-23T10:00:00+08:00
+slug: components
+cover: /img/demo/cover-shortcodes-v2.webp
+categories: [内容组件]
+tags: [MDX, Solitude]
+---
+
+本页演示从 Hugo 迁移的全部 41 个内容组件。普通文章继续使用 Markdown；需要组件的文章使用 `.mdx`。
+
+## Audio
+
+```mdx
+<Audio src="/media/shortcodes/t-rex-roar.mp3" name="演示音频" />
+```
+
+<Audio src="/media/shortcodes/t-rex-roar.mp3" name="演示音频" />
+
+## Bubble
+
+```mdx
+<Bubble notation="补充解释">悬停提示</Bubble>
+```
+
+<Bubble notation="补充解释">悬停提示</Bubble>
+
+## Button
+
+```mdx
+<Button url="/archives/" text="查看文章" icon="fas fa-book" />
+```
+
+<Button url="/archives/" text="查看文章" icon="fas fa-book" />
+
+## BVideo
+
+```mdx
+<BVideo bvid="BV1GJ411x7h7" />
+```
+
+<BVideo bvid="BV1GJ411x7h7" />
+
+## Card
+
+```mdx
+<Card title="内容卡片" desc="用于展示一个项目。" cover="/img/demo/cover-getting-started-v2.webp" url="/about/" tag="主题" star={5} />
+```
+
+<Card title="内容卡片" desc="用于展示一个项目。" cover="/img/demo/cover-getting-started-v2.webp" url="/about/" tag="主题" star={5} />
+
+## ChartJS
+
+```mdx
+<ChartJS config={{type:"bar",data:{labels:["文章","笔记","项目"],datasets:[{label:"内容",data:[12,8,4]}]}}} description="本地演示数据" />
+```
+
+<ChartJS config={{type:"bar",data:{labels:["文章","笔记","项目"],datasets:[{label:"内容",data:[12,8,4]}]}}} description="本地演示数据" />
+
+## Checkbox
+
+```mdx
+<Checkbox checked={true}>已完成任务</Checkbox>
+```
+
+<Checkbox checked={true}>已完成任务</Checkbox>
+
+## Flink
+
+```mdx
+<Flink groups={[{class_name:"官方资源",link_list:[{name:"Astro",link:"https://astro.build/",avatar:"/img/logo.png",descr:"静态网站框架"}]}]} />
+```
+
+<Flink groups={[{class_name:"官方资源",link_list:[{name:"Astro",link:"https://astro.build/",avatar:"/img/logo.png",descr:"静态网站框架"}]}]} />
+
+## Fold
+
+```mdx
+<Fold title="展开内容">折叠面板中的内容。</Fold>
+```
+
+<Fold title="展开内容">折叠面板中的内容。</Fold>
+
+## Gallery
+
+```mdx
+<Gallery columns={2}>
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="创作" />
+<GalleryItem src="/img/demo/cover-pagination-v2.webp" alt="记录" />
+</Gallery>
+```
+
+<Gallery columns={2}>
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="创作" />
+<GalleryItem src="/img/demo/cover-pagination-v2.webp" alt="记录" />
+</Gallery>
+
+## GalleryGroup
+
+```mdx
+<GalleryGroup title="相册入口" img="/img/demo/cover-shortcodes-v2.webp" url="/about/">走进内容世界。</GalleryGroup>
+```
+
+<GalleryGroup title="相册入口" img="/img/demo/cover-shortcodes-v2.webp" url="/about/">走进内容世界。</GalleryGroup>
+
+## GalleryItem
+
+```mdx
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="画廊图片" />
+```
+
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="画廊图片" />
+
+## Gitea
+
+```mdx
+<Gitea host="https://codeberg.org" repo="forgejo/forgejo" />
+```
+
+<Gitea host="https://codeberg.org" repo="forgejo/forgejo" />
+
+## Gitee
+
+```mdx
+<Gitee repo="mirrors/vue" />
+```
+
+<Gitee repo="mirrors/vue" />
+
+## GitHub
+
+```mdx
+<GitHub repo="withastro/astro" />
+```
+
+<GitHub repo="withastro/astro" />
+
+## GitLab
+
+```mdx
+<GitLab repo="gitlab-org/gitlab" />
+```
+
+<GitLab repo="gitlab-org/gitlab" />
+
+## HideBlock
+
+```mdx
+<HideBlock text="显示内容">块级隐藏内容。</HideBlock>
+```
+
+<HideBlock text="显示内容">块级隐藏内容。</HideBlock>
+
+## HideInline
+
+```mdx
+<HideInline text="显示">行内内容</HideInline>
+```
+
+<HideInline text="显示">行内内容</HideInline>
+
+## HideToggle
+
+```mdx
+<HideToggle title="切换显示">可反复切换的内容。</HideToggle>
+```
+
+<HideToggle title="切换显示">可反复切换的内容。</HideToggle>
+
+## Image
+
+```mdx
+<Image src="/img/demo/cover-shortcodes-v2.webp" alt="Solitude 组件示例" caption="主题内置示例图" />
+```
+
+<Image src="/img/demo/cover-shortcodes-v2.webp" alt="Solitude 组件示例" caption="主题内置示例图" />
+
+## InlineImage
+
+```mdx
+<InlineImage src="/img/logo.png" alt="Solitude" height="32px" />
+```
+
+<InlineImage src="/img/logo.png" alt="Solitude" height="32px" />
+
+## Keyboard
+
+```mdx
+<Keyboard>⌘ K</Keyboard>
+```
+
+<Keyboard>⌘ K</Keyboard>
+
+## Label
+
+```mdx
+<Label color="green">已完成</Label>
+```
+
+<Label color="green">已完成</Label>
+
+## Link
+
+```mdx
+<Link title="Astro" desc="Astro 官方网站" url="https://astro.build/" />
+```
+
+<Link title="Astro" desc="Astro 官方网站" url="https://astro.build/" />
+
+## Mermaid
+
+```mdx
+<Mermaid code={"graph LR\nA[Content] --> B[Astro] --> C[HTML]"} />
+```
+
+<Mermaid code={"graph LR\nA[Content] --> B[Astro] --> C[HTML]"} />
+
+## Note
+
+```mdx
+<Note type="info">支持 **Markdown** 的提示内容。</Note>
+```
+
+<Note type="info">支持 **Markdown** 的提示内容。</Note>
+
+## Paragraph
+
+```mdx
+<Paragraph color="blue">一段彩色文字。</Paragraph>
+```
+
+<Paragraph color="blue">一段彩色文字。</Paragraph>
+
+## Radio
+
+```mdx
+<Radio checked={false}>可选项目</Radio>
+```
+
+<Radio checked={false}>可选项目</Radio>
+
+## Score
+
+```mdx
+<Score score={"X:1\nT:Simple tune\nM:4/4\nL:1/4\nK:C\nC D E F | G A B c |"} />
+```
+
+<Score score={"X:1\nT:Simple tune\nM:4/4\nL:1/4\nK:C\nC D E F | G A B c |"} />
+
+## Series
+
+```mdx
+<Series name="主题入门" />
+```
+
+<Series name="主题入门" />
+
+## Text
+
+```mdx
+<Text color="red">重点文字。</Text>
+```
+
+<Text color="red">重点文字。</Text>
+
+## Spoiler
+
+```mdx
+<Spoiler>隐藏的内容</Spoiler>
+```
+
+<Spoiler>隐藏的内容</Spoiler>
+
+## Subnote
+
+```mdx
+<Subnote type="success">补充说明。</Subnote>
+```
+
+<Subnote type="success">补充说明。</Subnote>
+
+## Tab
+
+```mdx
+<Tabs><Tab title="独立面板">Tab 作为 Tabs 的子组件。</Tab></Tabs>
+```
+
+<Tabs><Tab title="独立面板">Tab 作为 Tabs 的子组件。</Tab></Tabs>
+
+## Tabs
+
+```mdx
+<Tabs id="demo-tabs">
+<Tab title="Markdown">文字与列表。</Tab>
+<Tab title="MDX">组件与交互。</Tab>
+</Tabs>
+```
+
+<Tabs id="demo-tabs">
+<Tab title="Markdown">文字与列表。</Tab>
+<Tab title="MDX">组件与交互。</Tab>
+</Tabs>
+
+## Timeline
+
+```mdx
+<Timeline title="主题旅程" color="blue">
+<Timenode time="第一步" title="创建站点">从模板开始。</Timenode>
+<Timenode time="第二步" title="开始写作">发布第一篇文章。</Timenode>
+</Timeline>
+```
+
+<Timeline title="主题旅程" color="blue">
+<Timenode time="第一步" title="创建站点">从模板开始。</Timenode>
+<Timenode time="第二步" title="开始写作">发布第一篇文章。</Timenode>
+</Timeline>
+
+## Timenode
+
+```mdx
+<Timeline><Timenode time="现在" title="保持创作">记录值得分享的事情。</Timenode></Timeline>
+```
+
+<Timeline><Timenode time="现在" title="保持创作">记录值得分享的事情。</Timenode></Timeline>
+
+## Typeit
+
+```mdx
+<Typeit speed={80}>用文字记录生活。</Typeit>
+```
+
+<Typeit speed={80}>用文字记录生活。</Typeit>
+
+## Video
+
+```mdx
+<Video src="/media/shortcodes/flower.mp4" poster="/img/demo/cover-shortcodes-v2.webp" />
+```
+
+<Video src="/media/shortcodes/flower.mp4" poster="/img/demo/cover-shortcodes-v2.webp" />
+
+## Videos
+
+```mdx
+<Videos col={2} sources={["/media/shortcodes/flower.mp4"]} />
+```
+
+<Videos col={2} sources={["/media/shortcodes/flower.mp4"]} />
+
+## YouTube
+
+```mdx
+<YouTube id="aqz-KE-bpKQ" />
+```
+
+<YouTube id="aqz-KE-bpKQ" />
+
+
+## 数学公式
+
+MDX 也支持行内公式 $E = mc^2$ 和块级公式：
+
+$$
+a^2 + b^2 = c^2
+$$

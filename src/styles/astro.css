@@ -1,0 +1,14 @@
+.skip-link{position:fixed;left:1rem;top:-100px;z-index:10000;padding:1rem;background:var(--efu-card-bg);color:var(--efu-fontcolor)}.skip-link:focus{top:1rem}
+html[data-theme=dark] .astro-code,html[data-theme=dark] .astro-code span{color:var(--shiki-dark)!important;background-color:var(--shiki-dark-bg)!important;font-style:var(--shiki-dark-font-style)!important;font-weight:var(--shiki-dark-font-weight)!important;text-decoration:var(--shiki-dark-text-decoration)!important}
+html[data-theme=light] .astro-code,html[data-theme=light] .astro-code span{color:var(--shiki-light)!important;background-color:var(--shiki-light-bg)!important}
+.solitude-code{position:relative;border-radius:12px;overflow:hidden;margin:1rem 0;background:var(--efu-secondbg)}.solitude-code pre{margin:0!important;padding:1rem;overflow:auto}.solitude-code[data-collapsed=true] pre{max-height:var(--code-max-height,360px)}.solitude-code .code-toolbar{display:flex;justify-content:space-between;align-items:center;padding:.4rem .8rem}.solitude-code button{cursor:pointer;border:0;background:transparent;color:inherit}.solitude-code[data-line-numbers=true] code{counter-reset:line}.solitude-code[data-line-numbers=true] .line:before{counter-increment:line;content:counter(line);display:inline-block;width:2.5em;opacity:.45;text-align:right;margin-right:1em;user-select:none}
+.reward-list{display:flex;gap:1rem}.reward-list img{max-width:160px}.reward{margin:auto;text-align:center}.reward summary{cursor:pointer}.empty-state{padding:4rem 1rem;text-align:center}.console-btn-item button{color:inherit;background:transparent;border:0;cursor:pointer}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nowrapMove,.skills-marquee-track{animation:none!important}}
+
+.solitude-toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:99999;padding:.8rem 1.2rem;border-radius:12px;background:var(--efu-card-bg);color:var(--efu-fontcolor);box-shadow:var(--efu-shadow-border)}
+.solitude-memorial{filter:grayscale(1)}
+#loading-box{position:fixed;inset:0;z-index:9999;background:var(--efu-background);display:grid;place-items:center;pointer-events:none;transition:opacity .2s}
+#loading-box img{width:80px;height:80px}#loading-box.loaded{opacity:0;visibility:hidden}
+#navigation-progress{position:fixed;inset:0 auto auto 0;height:3px;background:var(--efu-theme);z-index:10000;width:70%;transform-origin:left;transition:width .3s,opacity .2s;pointer-events:none}
+html[data-solitude-runtime="ready"] #navigation-progress{width:100%;opacity:0}
+@media(min-width:901px){body[data-index-layout="column"] #recent-posts .recent-post-item{width:calc((100% - (var(--solitude-index-columns,2) - 1)*12px)/var(--solitude-index-columns,2))}}

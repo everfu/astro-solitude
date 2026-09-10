@@ -1,0 +1,9 @@
+---
+import Shortcode from './Shortcode.astro';
+import type { Props as ShortcodeProps } from './Shortcode.astro';
+type Props = Omit<ShortcodeProps, 'kind'>;
+---
+
+<Shortcode kind="button" {...Astro.props}>
+  <slot />
+</Shortcode>

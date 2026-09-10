@@ -1,0 +1,31 @@
+---
+import { config, url } from '../lib/site';
+---
+
+<div class="menus_items">
+  {config.menus.map((item) => (
+    <div class="menus_item">
+      <a class="site-page" href={item.children ? '#' : url(item.url)}>
+        {item.icon && <i class={`solitude ${item.icon}`} />}
+        <span>{item.name}</span>
+      </a>
+      {item.children && (
+        <ul class="menus_item_child">
+          {item.children.map((child) => (
+            <li>
+              <a
+                class="site-page child"
+                href={child.action ? '#' : url(child.url)}
+                data-solitude-action={child.action}
+                data-solitude-prevent={child.action ? 'true' : undefined}
+              >
+                {child.icon && <i class={`solitude ${child.icon}`} />}
+                <span>{child.name}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  ))}
+</div>

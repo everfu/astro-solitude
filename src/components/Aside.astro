@@ -1,0 +1,229 @@
+---
+import { cfg, config, t, url, dateLabel } from '../lib/site';
+import {
+  homePosts,
+  contentPath,
+  taxonomy,
+  wordCount,
+  type Post,
+} from '../lib/content';
+interface Props {
+  posts: Post[];
+  home?: boolean;
+  post?: boolean;
+  enabled?: boolean;
+  headings?: { depth: number; slug: string; text: string }[];
+}
+const {
+  posts,
+  home = false,
+  post = false,
+  enabled = true,
+  headings = [],
+} = Astro.props;
+const scope = home ? cfg.aside.home : post ? cfg.aside.post : cfg.aside.page;
+const groups = [scope.noSticky.split(','), scope.Sticky.split(',')];
+const card = cfg.aside.my_card;
+const recent = (home ? homePosts(posts) : posts)
+  .slice()
+  .sort((a, b) => +b.data.date - +a.data.date)
+  .slice(0, 5);
+const tags = taxonomy(posts, 'tags');
+---
+
+{enabled && (
+  <div class="aside-content" id="aside-content">
+    {groups.map((names, index) => (
+      <div class={index === 1 ? 'sticky_layout' : undefined}>
+        {index === 1 &&
+          headings.length > 0 &&
+          (post ? cfg.aside.toc.post : cfg.aside.toc.page) && (
+            <div class="card-widget" id="card-toc">
+              <div class="item-headline">
+                <i class="solitude fas fa-bars" />
+                <span>{t('toc')}</span>
+              </div>
+              <div class="toc-content" id="toc-content">
+                <ol class="toc">
+                  {headings.map((h) => (
+                    <li class={`toc-item toc-level-${h.depth}`}>
+                      <a
+                        class="toc-link"
+                        href={`#${h.slug}`}
+                        style={`padding-left:${(h.depth - 1) * 12}px`}
+                      >
+                        <span class="toc-text">{h.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          )}
+        {names.map((name) =>
+          name.trim() === 'about' ? (
+            <div class="card-widget card-info">
+              <div class="card-content">
+                <div class="card-info-avatar is-center">
+                  <div class="top-group">
+                    <div
+                      class="sayhi"
+                      id="sayhi"
+                      data-solitude-action="changeWittyWord"
+                    />
+                  </div>
+                </div>
+                <div class="avatar">
+                  <img
+                    src={url(card.author.img)}
+                    alt={config.author.name}
+                    loading="lazy"
+                  />
+                  {card.author.emoji ? (
+                    <span class="sticker sticker-emoji" aria-hidden="true">
+                      {card.author.emoji}
+                    </span>
+                  ) : (
+                    card.author.sticker && (
+                      <span class="sticker">
+                        <img
+                          class="sticker-img"
+                          src={url(card.author.sticker)}
+                          alt=""
+                        />
+                      </span>
+                    )
+                  )}
+                </div>
+                <div class="description" set:html={card.content} />
+                <div class="bottom-group">
+                  <span class="left">
+                    <div class="name">{config.author.name}</div>
+                    <div class="desc" set:html={card.description} />
+                  </span>
+                  <div class="social-icons is-center">
+                    {card.information.map((l: any) => (
+                      <a class="social-icon" href={url(l.url)} title={l.name}>
+                        <i class={`solitude ${l.icon}`} />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : name.trim() === 'newestPost' ? (
+            <div class="card-widget card-recent-post">
+              <div class="item-headline">
+                <i class="solitude fas fa-map" />
+                <span>{t('recentPosts')}</span>
+              </div>
+              <div class="aside-list">
+                {recent.map((p) => (
+                  <a
+                    class="aside-list-item"
+                    href={url(contentPath(p))}
+                    title={p.data.title}
+                  >
+                    {p.data.cover && (
+                      <div class="thumbnail">
+                        <img src={url(p.data.cover)} alt="" loading="lazy" />
+                      </div>
+                    )}
+                    <div class="content">
+                      <span class="title">{p.data.title}</span>
+                      <span class="categories">{p.data.categories[0]}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : name.trim() === 'allInfo' ? (
+            <div class="card-widget card-tags card-archives card-webinfo card-allinfo">
+              {cfg.aside.tags.enable && (
+                <>
+                  <div class="card-tag-cloud">
+                    {tags.slice(0, cfg.aside.tags.limit).map((tag) => (
+                      <a
+                        href={url(tag.path)}
+                        class={
+                          cfg.aside.tags.highlight_list.includes(tag.name)
+                            ? 'highlight'
+                            : undefined
+                        }
+                      >
+                        {tag.name}
+                        <sup>{tag.posts.length}</sup>
+                      </a>
+                    ))}
+                  </div>
+                  <hr />
+                </>
+              )}
+              <div class="webinfo">
+                {cfg.aside.siteinfo.postcount && (
+                  <div class="webinfo-item">
+                    <div class="item-name">{t('posts')}</div>
+                    <div class="item-count">{posts.length}</div>
+                  </div>
+                )}
+                {cfg.aside.siteinfo.runtimeenable && (
+                  <div class="webinfo-item">
+                    <div class="item-name">{t('uptime')}</div>
+                    <div class="item-count runtimeshow" />
+                  </div>
+                )}
+                {cfg.aside.siteinfo.updatetime && (
+                  <div class="webinfo-item">
+                    <div class="item-name">{t('lastUpdated')}</div>
+                    <time class="item-count">
+                      {dateLabel(
+                        posts[0]?.data.lastmod ??
+                          posts[0]?.data.date ??
+                          new Date(),
+                      )}
+                    </time>
+                  </div>
+                )}
+                {cfg.aside.siteinfo.wordcount && (
+                  <div class="webinfo-item">
+                    <div class="item-name">{t('totalWords')}</div>
+                    <div class="item-count">
+                      {posts.reduce((n, p) => n + wordCount(p.body ?? ''), 0)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : name.trim() === 'newest_comment' &&
+            cfg.comment.use &&
+            cfg.comment.sidebar ? (
+            <div class="card-widget card-recent-comment">
+              <div class="item-headline">
+                <i class="solitude fas fa-comment" />
+                <span>{t('recentComments')}</span>
+                {cfg.recent_comments.enable && (
+                  <a
+                    class="recent-comment-more"
+                    href={url(cfg.recent_comments.page)}
+                  >
+                    {t('more')}
+                  </a>
+                )}
+              </div>
+              <div
+                class="aside-list"
+                data-comment-provider={cfg.comment.use}
+                aria-live="polite"
+                aria-busy="true"
+              >
+                <div class="comment-loading" role="status">
+                  {t('commentsLoading')}
+                </div>
+              </div>
+            </div>
+          ) : null,
+        )}
+      </div>
+    ))}
+  </div>
+)}

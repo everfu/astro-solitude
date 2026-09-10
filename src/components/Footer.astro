@@ -1,0 +1,117 @@
+---
+import { cfg, config, t, url } from '../lib/site';
+const f = cfg.footer;
+const year = new Date().getFullYear();
+const start = new Date(cfg.aside.siteinfo.runtime).getFullYear();
+---
+
+<footer id="footer">
+  <div id="footer_deal">
+    {f.information.left.map((l: any) => (
+      <a class="deal_link" href={url(l.url)} title={l.name} aria-label={l.name}>
+        <i class={`solitude ${l.icon}`} />
+      </a>
+    ))}
+    {f.information.author && (
+      <button
+        class="footer_mini_logo nolazyload"
+        id="footer_mini_logo"
+        type="button"
+        data-solitude-action="toTop"
+        aria-label={t('backTop')}
+      >
+        <img src={url(f.information.author)} alt="" />
+      </button>
+    )}
+    {f.information.right.map((l: any) => (
+      <a class="deal_link" href={url(l.url)} title={l.name} aria-label={l.name}>
+        <i class={`solitude ${l.icon}`} />
+      </a>
+    ))}
+  </div>
+  <div id="st-footer">
+    {Object.entries(f.group).map(([name, items]) => (
+      <div class="footer-group">
+        <h3 class="footer-title">{name}</h3>
+        <div class="footer-links">
+          {(items as any[]).map((l) => (
+            <a class="footer-item" href={url(l.url)}>
+              {l.name}
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+    {f.randomlink && (
+      <div class="footer-group">
+        <div class="footer-title-group">
+          <h3 class="footer-title">{t('randomLink')}</h3>
+          <button
+            class="random-friends-btn"
+            type="button"
+            data-solitude-action="randomLinksList"
+            aria-label={t('randomLink')}
+          >
+            <i class="solitude fas fa-arrows-rotate" />
+          </button>
+        </div>
+        <div class="footer-links" id="friend-links-in-footer" />
+      </div>
+    )}
+  </div>
+  <div id="footer-bar">
+    <div class="footer-bar-links">
+      <div class="footer-bar-left">
+        <div class="copyright">
+          © {start === year ? year : `${start} – ${year}`} By{' '}
+          <a class="footer-bar-link" href={url('/')}>
+            <img class="author-avatar" src={url(cfg.site.icon)} alt="" />
+            {config.author.name}
+          </a>
+        </div>
+        <div class="beian-group">
+          {f.beian.map((l: any) => (
+            <a class="footer-bar-link" href={l.url}>
+              {l.icon && <img class="beian-icon" src={url(l.icon)} alt="" />}
+              <span class="beian-name">{l.name}</span>
+            </a>
+          ))}
+          <a
+            class="footer-bar-link"
+            href="https://astro.build/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('frameworkBy')} Astro
+          </a>
+          <a
+            class="footer-bar-link"
+            href="https://github.com/everfu/astro-solitude"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('themeBy')} Solitude
+          </a>
+        </div>
+      </div>
+      <div class="footer-bar-right">
+        {f.links.map((l: any) => (
+          <a class="footer-bar-link" href={url(l.url)} title={l.name}>
+            {l.icon ? (
+              (Array.isArray(l.icon) ? l.icon : [l.icon]).map(
+                (icon: string) => <i class={`solitude ${icon}`} />,
+              )
+            ) : l.img ? (
+              <img src={url(l.img)} alt={l.name} />
+            ) : (
+              l.name
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+  {cfg.comment.use && cfg.comment.commentBarrage && (
+    <div class="comment-barrage needEndHide" />
+  )}
+</footer>

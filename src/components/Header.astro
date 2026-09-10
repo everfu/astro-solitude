@@ -1,0 +1,164 @@
+---
+import { cfg, config, t, url } from '../lib/site';
+import type { Post } from '../lib/content';
+import Menu from './Menu.astro';
+import PostMeta from './PostMeta.astro';
+interface Props {
+  title: string;
+  post?: Post;
+}
+const { title, post } = Astro.props;
+const cover =
+  post && !post.data.not_cover
+    ? (post.data.cover ?? cfg.post.default.cover[0])
+    : undefined;
+---
+
+<header id="page-header" class={cover ? 'post-bg' : 'not-top-img'}>
+  <nav
+    id="nav"
+    class="show"
+    data-solitude-action="onNavBlankClickCloseConsole"
+    data-solitude-event="true"
+  >
+    <div id="nav-group">
+      <div id="blog_name">
+        {Object.keys(cfg.nav.group).length > 0 && (
+          <div class="back-home-button" tabindex="-1">
+            <svg
+              class="back-home-button-icon"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M6.75 2.5C9.1 2.5 11 4.4 11 6.75V11H6.75a4.25 4.25 0 1 1 0-8.5ZM6.75 13H11v4.25A4.25 4.25 0 1 1 6.75 13ZM17.25 2.5a4.25 4.25 0 0 1 0 8.5H13V6.75a4.25 4.25 0 0 1 4.25-4.25ZM13 13h4.25A4.25 4.25 0 1 1 13 17.25Z" />
+            </svg>
+            <div class="back-menu-list-groups">
+              {Object.entries(cfg.nav.group).map(([name, items]) => (
+                <div class="back-menu-list-group">
+                  <div class="back-menu-list-title">{name}</div>
+                  <div class="back-menu-list">
+                    {(items as any[]).map((item) => (
+                      <a class="back-menu-item" href={url(item.url)}>
+                        {item.icon && (
+                          <img
+                            class="nolazyload back-menu-item-icon"
+                            src={url(item.icon)}
+                            alt=""
+                          />
+                        )}
+                        <span class="back-menu-item-text">{item.name}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        <a id="site-name" href={url('/')} title={t('backHome')}>
+          {cfg.site.name.class === 'img' ? (
+            <img src={url(cfg.site.name.custom)} alt={config.title} />
+          ) : cfg.site.name.class === 'i_class' ? (
+            <i class={cfg.site.name.custom} />
+          ) : (
+            <span class="title">{cfg.site.name.custom}</span>
+          )}
+          <i class="solitude fas fa-home" />
+        </a>
+      </div>
+      <div id="page-name-mask">
+        <div id="page-name">
+          <a id="page-name-text" data-solitude-action="toTop">
+            {title}
+          </a>
+        </div>
+      </div>
+      <div id="menus">
+        <Menu />
+      </div>
+      <div id="nav-left" />
+      <div id="nav-right">
+        {cfg.nav.right.custom.map((item: any) => (
+          <div class="nav-button" id={item.id}>
+            <a
+              class="site-page"
+              href={url(item.url ?? '#')}
+              data-solitude-action={item.action}
+              title={item.title ?? item.name}
+            >
+              <i class={`solitude ${item.icon}`} />
+            </a>
+          </div>
+        ))}
+        {cfg.nav.right.random && (
+          <div class="nav-button" id="randomPost_button">
+            <a
+              class="site-page"
+              href="#"
+              data-solitude-action="randomPost"
+              data-solitude-prevent="true"
+              aria-label={t('randomPost')}
+            >
+              <i class="solitude fas fa-dice-d6" />
+            </a>
+          </div>
+        )}
+        {cfg.search.enable && (
+          <div class="nav-button" id="search-button">
+            <a
+              class="site-page social-icon search"
+              href="#"
+              aria-label={t('search')}
+            >
+              <i class="solitude fas fa-magnifying-glass" />
+            </a>
+          </div>
+        )}
+        {cfg.console.enable && (
+          <div class="nav-button" id="nav-console">
+            <a
+              class="console_switchbutton"
+              href="#"
+              data-solitude-action="toggleConsole"
+              data-solitude-prevent="true"
+              aria-label={t('console')}
+            >
+              <label>
+                <i class="left" />
+                <i class="center" />
+                <i class="right" />
+              </label>
+            </a>
+          </div>
+        )}
+        <div class="nav-button" id="nav-totop" data-solitude-action="toTop">
+          <a class="totopbtn">
+            <i class="solitude fas fa-arrow-up" />
+            <span id="percent">0</span>
+          </a>
+        </div>
+        <div id="toggle-menu">
+          <a class="site-page" href="#" aria-label={t('menu')}>
+            <i class="solitude fas fa-bars" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  {cover && post && (
+    <>
+      <div class="post-cover-aside">
+        <a class="post-cover-aside-link fancybox" href={url(cover)}>
+          <img
+            id="post-cover"
+            class="post-cover-aside-img nolazyload"
+            src={url(cover)}
+            alt={post.data.title}
+          />
+        </a>
+      </div>
+      <PostMeta post={post} />
+    </>
+  )}
+</header>

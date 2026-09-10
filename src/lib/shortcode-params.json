@@ -1,0 +1,168 @@
+{
+  "gitea": [
+    "host",
+    "repo",
+    "server"
+  ],
+  "link": [
+    "desc",
+    "link",
+    "subtitle",
+    "title",
+    "url"
+  ],
+  "videos": [
+    "col"
+  ],
+  "label": [
+    "color",
+    "text"
+  ],
+  "typeit": [
+    "speed"
+  ],
+  "github": [
+    "repo"
+  ],
+  "inlineImg": [
+    "alt",
+    "height",
+    "src"
+  ],
+  "audio": [
+    "name",
+    "src",
+    "url"
+  ],
+  "series": [
+    "name"
+  ],
+  "bubble": [
+    "color",
+    "notation",
+    "position",
+    "text"
+  ],
+  "img": [
+    "alt",
+    "caption",
+    "src",
+    "style"
+  ],
+  "video": [
+    "poster",
+    "src",
+    "url"
+  ],
+  "hideBlock": [
+    "text"
+  ],
+  "radio": [
+    "checked",
+    "style"
+  ],
+  "tabs": [
+    "id"
+  ],
+  "chartjs": [
+    "description",
+    "id",
+    "layout",
+    "width"
+  ],
+  "timeline": [
+    "color",
+    "title"
+  ],
+  "card": [
+    "bg",
+    "cover",
+    "desc",
+    "height",
+    "icon",
+    "name",
+    "star",
+    "tag",
+    "title",
+    "url",
+    "width"
+  ],
+  "button": [
+    "icon",
+    "option",
+    "text",
+    "url"
+  ],
+  "p": [
+    "color"
+  ],
+  "spoiler": [
+    "style"
+  ],
+  "bvideo": [
+    "bvid",
+    "id"
+  ],
+  "hideInline": [
+    "text"
+  ],
+  "galleryItem": [
+    "alt",
+    "src"
+  ],
+  "checkbox": [
+    "checked",
+    "style"
+  ],
+  "youtube": [
+    "id",
+    "privacy"
+  ],
+  "timenode": [
+    "time",
+    "title"
+  ],
+  "gallery": [
+    "columns"
+  ],
+  "keyboard": [],
+  "note": [
+    "style",
+    "type"
+  ],
+  "gitee": [
+    "repo"
+  ],
+  "mermaid": [],
+  "score": [
+    "score"
+  ],
+  "fold": [
+    "open",
+    "title"
+  ],
+  "subnote": [
+    "type"
+  ],
+  "flink": [],
+  "hideToggle": [
+    "text",
+    "title"
+  ],
+  "span": [
+    "color"
+  ],
+  "tab": [
+    "icon",
+    "title"
+  ],
+  "galleryGroup": [
+    "img",
+    "name",
+    "title",
+    "url"
+  ],
+  "gitlab": [
+    "repo"
+  ]
+}

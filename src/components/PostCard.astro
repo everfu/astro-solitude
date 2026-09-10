@@ -1,0 +1,80 @@
+---
+import { cfg, t, url, termPath, dateLabel, isoDate } from '../lib/site';
+import { contentPath, type Post } from '../lib/content';
+interface Props {
+  post: Post;
+  index?: number;
+  newest?: string;
+}
+const { post, index = 0, newest } = Astro.props;
+const p = post.data;
+const right =
+  cfg.index_post_list.direction !== 'column' &&
+  (cfg.index_post_list.cover === 'right' ||
+    (cfg.index_post_list.cover === 'both' && index % 2 === 1));
+---
+
+<article
+  class="recent-post-item"
+  style={right ? 'flex-direction:row-reverse' : undefined}
+  data-solitude-action="navigateTo"
+  data-solitude-url={url(contentPath(post))}
+>
+  <div class={`post_cover ${index % 2 ? 'right' : 'left'}`}>
+    <a href={url(contentPath(post))} title={p.title}>
+      <img
+        class="post_bg nolazyload"
+        src={url(p.cover ?? cfg.post.default.cover[0])}
+        alt={p.title}
+        loading="lazy"
+        data-solitude-fallback={url(cfg.post.default.cover[0])}
+      />
+    </a>
+  </div>
+  <div class="recent-post-info">
+    <div class="recent-post-info-top">
+      <div class="recent-post-info-top-tips">
+        {p.sticky && (
+          <span class="article-meta sticky-warp">
+            <i class="solitude fas fa-thumbtack sticky orange" />
+            <span class="sticky orange">{t('homeSticky')}</span>
+          </span>
+        )}
+        {p.categories.map((c) => (
+          <span class="original">{c}</span>
+        ))}
+        {newest === post.id && (
+          <span class="original latest-post">{t('homeNew')}</span>
+        )}
+        <a class="unvisited-post" href={url(contentPath(post))}>
+          {t('homeRead')}
+        </a>
+      </div>
+      <a class="article-title" href={url(contentPath(post))} title={p.title}>
+        {p.title}
+      </a>
+    </div>
+    <div class="article-meta-wrap">
+      {p.comment && (
+        <div
+          class="post-card-commenters"
+          data-comment-path={url(contentPath(post))}
+          hidden
+        />
+      )}
+      <span class="article-meta tags">
+        {p.tags.map((tag) => (
+          <a class="article-meta__tags" href={url(termPath('tags', tag))}>
+            <span class="tags-punctuation">
+              <i class="solitude fas fa-hashtag" />
+              {tag}
+            </span>
+          </a>
+        ))}
+      </span>
+      <span class="post-meta-date">
+        <time datetime={isoDate(p.date)}>{dateLabel(p.date)}</time>
+      </span>
+    </div>
+  </div>
+</article>

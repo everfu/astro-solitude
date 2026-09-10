@@ -1,0 +1,115 @@
+---
+import { cfg, url } from '../lib/site';
+import { homePosts, contentPath, type Post } from '../lib/content';
+interface Props {
+  posts: Post[];
+}
+const { posts } = Astro.props;
+const normalize = (s: string) => s.replace(/\/$/, '').replace(/\.html$/, '');
+const hidden = new Set(
+  posts.filter((p) => !p.data.home).map((p) => normalize(contentPath(p))),
+);
+const items: any[] = cfg.hometop.recommendList.filter(
+  (p: any) => p.enable !== false && !hidden.has(normalize(p.url)),
+);
+for (const post of homePosts(posts).sort(
+  (a, b) => +b.data.date - +a.data.date,
+)) {
+  if (items.length >= 5) break;
+  if (!items.some((p) => normalize(p.url) === normalize(contentPath(post))))
+    items.push({
+      title: post.data.title,
+      url: contentPath(post),
+      cover: post.data.cover,
+      label: post.data.categories[0],
+    });
+}
+const first = items[0];
+---
+
+{first && (
+  <div
+    class="home-center"
+    id="home_center"
+    style="--current-theme:var(--efu-main);--current-theme-op:color-mix(in srgb,var(--efu-main) 14%,transparent);--current-theme-op-deep:color-mix(in srgb,var(--efu-main) 87%,transparent)"
+  >
+    <div class="home-center-content">
+      <div class="home-center-left">
+        <div class="home-center-banner" data-mobile-loop="false">
+          {items.slice(0, 5).map((item, i) => (
+            <div
+              class:list={[
+                'home-center-banner-item has-banner-cover',
+                { active: i === 0 },
+              ]}
+              role="link"
+              tabindex={i === 0 ? 0 : -1}
+              aria-hidden={i !== 0}
+              data-index={i}
+              data-link={url(item.url)}
+              data-title={item.title}
+              data-label={item.label}
+              data-color={item.color}
+            >
+              <div class="home-center-cover">
+                <img
+                  class="home-center-cover-img nolazyload"
+                  src={url(item.cover ?? cfg.post.default.cover[0])}
+                  alt={item.title}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  data-solitude-fallback={url(cfg.post.default.cover[0])}
+                />
+              </div>
+              <div class="home-center-mask" />
+            </div>
+          ))}
+        </div>
+        <div class="home-center-title">
+          <a class="home-center-title-link" href={url(first.url)}>
+            {first.title}
+          </a>
+          <div class="home-center-title-tag">
+            <i class="solitude fas fa-star" />
+            <span>{first.label}</span>
+          </div>
+          <div class="home-center-indicators" aria-label="推荐内容切换">
+            {items.slice(0, 5).map((_, i) => (
+              <button
+                class:list={['home-center-indicator', { active: i === 0 }]}
+                type="button"
+                data-index={i}
+                aria-label={`查看第 ${i + 1} 条推荐`}
+                aria-current={i === 0 ? 'true' : 'false'}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      {items.length > 1 && (
+        <div class="home-center-right">
+          <div class="home-center-list">
+            {items.slice(0, 5).map((item, i) => (
+              <div
+                class:list={['home-center-item', { active: i === 0 }]}
+                data-index={i}
+                aria-current={i === 0 ? 'true' : 'false'}
+              >
+                <div class="home-center-item-icon">
+                  <img
+                    class="nolazyload"
+                    src={url(item.cover ?? cfg.post.default.cover[0])}
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+                <div class="home-center-item-title">
+                  <a href={url(item.url)}>{item.title}</a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+)}

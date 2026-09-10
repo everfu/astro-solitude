@@ -1,0 +1,21 @@
+{
+  "views": 72,
+  "overflows": [],
+  "viewports": [
+    390,
+    768,
+    1440
+  ],
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "routes": [
+    "/",
+    "/p/writing/",
+    "/about/",
+    "/links/",
+    "/equipment/",
+    "/archives/"
+  ]
+}
