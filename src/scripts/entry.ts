@@ -3,6 +3,21 @@ import './utils';
 import './comments';
 import { prepareAssets } from './assets';
 import { lifecycle } from './core/lifecycle';
+// Astro 7.3.2 does not observe ViewTransition.ready. A superseding navigation
+// legitimately rejects it when skipTransition() cancels the visual transition.
+// Observe that promise without changing DOM updates or suppressing page errors.
+const startViewTransition = document.startViewTransition?.bind(document);
+if (startViewTransition) {
+  document.startViewTransition = (...args) => {
+    const transition = startViewTransition(...args);
+    void transition.ready.catch((error: unknown) => {
+      if (!(error instanceof DOMException && error.name === 'AbortError')) {
+        console.warn('Solitude view transition could not animate:', error);
+      }
+    });
+    return transition;
+  };
+}
 let first = true;
 let navigation = 0;
 document.addEventListener('astro:before-swap', () => {

@@ -21,6 +21,11 @@ test('home, article, search and history retain responsive interactions', async (
     'data-solitude-runtime',
     'ready',
   );
+  await page.evaluate(async () => {
+    const transition = document.startViewTransition?.(() => {});
+    transition?.skipTransition();
+    await transition?.finished;
+  });
   await page.locator('#search-button a').click();
   await expect(page.locator('#search-input')).toBeVisible();
   await page.locator('#search-input').fill('隐藏');

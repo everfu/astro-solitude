@@ -66,3 +66,22 @@ test('static output includes articles, feeds, all components and a real legacy H
   ])
     assert.ok((await fs.stat(path.join('dist', file))).isFile(), file);
 });
+
+test('all emitted local asset and page URLs resolve', async () => {
+  const root = path.resolve('dist');
+  const files = await fs.readdir(root, { recursive: true });
+  const urls = new Set<string>();
+  for (const file of files.filter((name) => name.endsWith('.html'))) {
+    const html = await fs.readFile(path.join(root, file), 'utf8');
+    for (const match of html.matchAll(/\b(?:href|src)="(\/[^"\s]*)"/g)) {
+      if (!match[1].startsWith('//')) urls.add(match[1]);
+    }
+  }
+  for (const url of urls) {
+    const file = path.join(
+      root,
+      decodeURIComponent(new URL(url, 'https://example.org').pathname),
+    );
+    await assert.doesNotReject(fs.stat(file), `Missing local URL: ${url}`);
+  }
+});
