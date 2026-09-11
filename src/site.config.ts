@@ -3,31 +3,34 @@ import { defineSolitudeConfig } from './lib/config';
 export default defineSolitudeConfig({
   site: 'https://example.org',
   title: 'Solitude',
-  description: '用 Astro 记录与创造。轻盈、优雅、完整的个人博客主题。',
+  description:
+    'Write and create with Astro. A thoughtful home for your stories.',
+  locale: 'en',
+  timeZone: 'UTC',
   author: { name: 'Solitude' },
   menus: [
     {
-      name: '文库',
+      name: 'Library',
       children: [
-        { name: '全部文章', url: '/archives/', icon: 'fas fa-folder-closed' },
-        { name: '分类', url: '/categories/', icon: 'fas fa-clone' },
-        { name: '标签', url: '/tags/', icon: 'fas fa-tags' },
+        { name: 'All posts', url: '/archives/', icon: 'fas fa-folder-closed' },
+        { name: 'Categories', url: '/categories/', icon: 'fas fa-clone' },
+        { name: 'Tags', url: '/tags/', icon: 'fas fa-tags' },
       ],
     },
-    { name: '友链', url: '/links/' },
+    { name: 'Friends', url: '/links/' },
     {
-      name: '探索',
+      name: 'Explore',
       children: [
-        { name: '关于主题', url: '/about/' },
-        { name: '我的装备', url: '/equipment/' },
-        { name: '即刻短文', url: '/brevity/' },
+        { name: 'About the theme', url: '/about/' },
+        { name: 'My equipment', url: '/equipment/' },
+        { name: 'Short updates', url: '/brevity/' },
       ],
     },
   ],
   theme: {
     nav: {
       group: {
-        项目: [
+        Project: [
           {
             name: 'Astro Solitude',
             url: 'https://github.com/everfu/astro-solitude',
@@ -38,8 +41,8 @@ export default defineSolitudeConfig({
     },
     hometop: {
       banner: {
-        title: '用 Solitude 记录与创造',
-        desc: 'Astro 主题演示、配置指南与内容组件。',
+        title: 'Write and create with Solitude',
+        desc: 'An Astro theme with guides, examples, and content components.',
       },
     },
     aside: {
@@ -47,9 +50,9 @@ export default defineSolitudeConfig({
       post: { noSticky: 'about', Sticky: 'newestPost,allInfo' },
       page: { noSticky: 'about', Sticky: 'newestPost,allInfo' },
       my_card: {
-        description: '简洁、优雅、功能丰富的 Astro 主题。',
-        content: '让内容自然成为主角。',
-        witty_words: ['用文字记录生活', '用代码创造可能'],
+        description: 'An expressive Astro theme for your personal blog.',
+        content: 'Let your content take center stage.',
+        witty_words: ['Capture life in words', 'Create something with code'],
         information: [
           {
             name: 'GitHub',
@@ -71,18 +74,21 @@ export default defineSolitudeConfig({
         right: [{ name: 'RSS', url: '/index.xml', icon: 'fas fa-rss' }],
       },
       group: {
-        探索: [
-          { name: '文章', url: '/archives/' },
-          { name: '分类', url: '/categories/' },
+        Explore: [
+          { name: 'Posts', url: '/archives/' },
+          { name: 'Categories', url: '/categories/' },
         ],
-        关于: [
-          { name: '主题', url: '/about/' },
-          { name: '友链', url: '/links/' },
+        About: [
+          { name: 'Theme', url: '/about/' },
+          { name: 'Friends', url: '/links/' },
         ],
       },
     },
-    // 评论和在线音乐默认关闭。启用步骤见 docs/integrations.md。
-    post: { covercolor: { enable: true, mode: 'local' } },
+    // Comments and online music are disabled. See docs/integrations.md to enable them.
+    post: {
+      meta: { locate: false },
+      covercolor: { enable: true, mode: 'local' },
+    },
     brevity: { enable: true },
     keyboard: {
       enable: true,

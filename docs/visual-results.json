@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-09-11T09:27:30.814Z",
+  "capturedAt": "2026-09-11T09:45:30.349Z",
   "browser": "Chromium",
   "mode": "production preview; live optional resources",
   "results": [
@@ -29,7 +29,7 @@
       "width": 390,
       "height": 844,
       "theme": "dark",
-      "title": "用 Markdown 和 MDX 写作 | Solitude",
+      "title": "Write with Markdown and MDX | Solitude",
       "overflow": false,
       "errors": []
     },
@@ -39,7 +39,7 @@
       "width": 1440,
       "height": 1000,
       "theme": "light",
-      "title": "关于 | Solitude",
+      "title": "About | Solitude",
       "overflow": false,
       "errors": []
     },
@@ -49,7 +49,7 @@
       "width": 768,
       "height": 1000,
       "theme": "dark",
-      "title": "关于 | Solitude",
+      "title": "About | Solitude",
       "overflow": false,
       "errors": []
     }

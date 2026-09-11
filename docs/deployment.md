@@ -1,10 +1,10 @@
-# 部署指南
+# Deployment
 
-[文档首页](README.md) · [快速开始](getting-started.md)
+[Documentation](README.md) · [Getting started](getting-started.md)
 
-项目使用静态输出。构建命令为 `pnpm build`，发布目录为 `dist`，不需要服务端适配器。仓库自带的 `check.yml` 只执行检查，不会部署网站。
+The project produces a static website. Build with `pnpm build` and publish `dist/`; no server adapter is required. The included `check.yml` workflow validates the project without deploying it.
 
-## 通用流程
+## Build and preview
 
 ```sh
 pnpm install --frozen-lockfile
@@ -13,21 +13,21 @@ pnpm build
 pnpm preview
 ```
 
-确认首页、文章、图片、搜索与 404 后发布 `dist/`。托管环境使用 Node.js 22.12.0+，pnpm 版本跟随 `package.json`；不要把开发服务器作为生产服务。
+Check the homepage, posts, images, search, and 404 page before publishing. Use Node.js 22.12.0+ and the pnpm version in `package.json`. Do not use the development server as a production service.
 
-## 域名与子目录
+## Domains and subdirectories
 
-| 发布地址 | `site` | `base` |
+| Published URL | `site` | `base` |
 | --- | --- | --- |
 | `https://example.com/` | `https://example.com` | `/` |
 | `https://YOUR_NAME.github.io/` | `https://YOUR_NAME.github.io` | `/` |
 | `https://YOUR_NAME.github.io/my-blog/` | `https://YOUR_NAME.github.io` | `/my-blog/` |
 
-在 `src/site.config.ts` 中修改，不要在 Astro 配置再维护一份不同的地址。更换域名或前缀后重新构建；RSS、Sitemap、canonical 和搜索地址都依赖这些值。
+Set these values in `src/site.config.ts`; avoid maintaining a different address in Astro's configuration. Rebuild after changing the domain or prefix. RSS, Sitemap, canonical links, and search paths depend on these settings.
 
 ## GitHub Pages
 
-先设置上述 `site`、`base`，再在自己的仓库 Settings → Pages 选择 GitHub Actions 作为发布来源。创建 `.github/workflows/deploy.yml`：
+Set `site` and `base`, then select GitHub Actions under your repository's Settings → Pages. Create `.github/workflows/deploy.yml`:
 
 ```yaml
 name: Deploy blog
@@ -71,21 +71,21 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-提交后在 Actions 查看部署结果。自定义域名需要在 Pages 设置中配置并完成 DNS 设置；此时通常使用 `base: '/'`。平台流程可对照 [Astro 的 GitHub Pages 部署指南](https://docs.astro.build/en/guides/deploy/github/)。本文件提供可复制示例，不会替模板使用者自动开启部署。
+Commit the workflow and check Actions for the result. For a custom domain, configure Pages and DNS, usually with `base: '/'`. Refer to the [Astro GitHub Pages guide](https://docs.astro.build/en/guides/deploy/github/) for platform details. This is a copyable example; the template does not enable deployment for you.
 
-## Netlify 与 Vercel
+## Netlify and Vercel
 
-导入自己创建的 GitHub 仓库，选择 Astro / 静态构建，确认构建命令为 `pnpm build`、输出目录为 `dist`。依赖安装使用 `pnpm install --frozen-lockfile`，运行环境版本与项目一致。配置最终域名后更新 `site` 并重新发布。静态部署不需要添加 SSR 适配器。平台细节见 [Netlify 指南](https://docs.astro.build/en/guides/deploy/netlify/) 与 [Vercel 指南](https://docs.astro.build/en/guides/deploy/vercel/)。
+Import your own GitHub repository and select an Astro/static build. Set the build command to `pnpm build`, output directory to `dist`, and install command to `pnpm install --frozen-lockfile`. Match the project's runtime versions. Once your domain is ready, update `site` and publish again. Static hosting does not require an SSR adapter. See the [Netlify guide](https://docs.astro.build/en/guides/deploy/netlify/) and [Vercel guide](https://docs.astro.build/en/guides/deploy/vercel/).
 
-## 自建静态服务器与 404
+## Static servers and 404s
 
-上传 `dist/` 的内容，确保目录路径映射到对应 `index.html`，保留原样的 `.html` 文章和资源路径。不存在的页面应返回 `404.html` 与 HTTP 404，而不是统一返回首页的 200 响应。
+Upload the contents of `dist/`. Directory paths must resolve to their `index.html` files; preserve `.html` post URLs and asset paths. Unknown pages should serve `404.html` with HTTP 404, rather than returning the homepage with HTTP 200.
 
-主题生成的别名是静态跳转页面，不等同于服务端 301。需要 HTTP 重定向时，在托管平台按自己的旧地址配置规则。
+Aliases are static redirect pages, not server-side 301 responses. Configure HTTP redirects on your host when required by your existing URLs.
 
-## 发布检查
+## Before publishing
 
-- 首页、文章及子目录资源可以直接打开，也能刷新访问。
-- 搜索结果指向自己的域名和路径，RSS 与 Sitemap 不含示例域名。
-- 未启用的评论与音乐不连接原演示服务；已配置服务在自己的域名上可用。
-- 主题截图与演示数据已经替换为自己的内容，版权和依赖声明保留。
+- Open and refresh the homepage, posts, and subdirectory assets directly.
+- Check that search, RSS, and Sitemap use your domain and paths.
+- Keep unconfigured comment and music services disabled; test configured services on your own domain.
+- Replace sample identity and content while preserving copyright and dependency notices.

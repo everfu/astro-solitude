@@ -71,7 +71,7 @@ test('sidebar, console and recent page keep independent limits after client navi
   await ready(page);
   await expect(page.locator('#page .sharePage')).toBeVisible();
   await expect(page.locator('#page .author-content-item-title')).toHaveText(
-    '最近评论',
+    'Recent comments',
   );
   await expect(page.locator('#aside-content')).toHaveCount(0);
   await expect(page.locator('#post-comment')).toHaveCount(0);

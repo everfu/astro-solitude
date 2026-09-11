@@ -1,7 +1,7 @@
 ---
-title: 未发布的草稿
+title: An unpublished draft
 date: 2026-09-01
 draft: true
 ---
 
-生产构建不包含这篇草稿。
+Production builds exclude this draft.

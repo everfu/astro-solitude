@@ -1,43 +1,43 @@
-# 常见问题
+# Troubleshooting
 
-[文档首页](README.md) · [部署指南](deployment.md)
+[Documentation](README.md) · [Deployment](deployment.md)
 
-## 复制模板以后会自动上线吗？
+## Does creating a template copy publish my website?
 
-不会。模板创建自己的源码仓库；需要连接托管平台或部署 `dist/`。当前仓库的检查工作流只验证代码。
+No. It creates your source repository. Connect a hosting platform or deploy `dist/`. The included workflow checks the project without deploying it.
 
-## 为什么评论和音乐没有出现？
+## Why are comments and music missing?
 
-它们默认关闭。配置自己的服务、开启功能并添加菜单入口，见 [第三方集成](integrations.md)。单独填写文章 `comment: true` 不会启动全局评论服务。
+They are disabled by default. Configure your own services, enable the relevant features, and add navigation entries; see [Integrations](integrations.md). Setting `comment: true` on a post alone does not enable a global provider.
 
-## 开发预览能看到草稿，部署后找不到？
+## Why are drafts visible locally but absent after deployment?
 
-这是预期行为。`draft: true` 在生产构建被过滤。`home: false` 只从首页隐藏，仍可通过搜索和直接地址访问。
+Development includes `draft: true` content. Production excludes it. By contrast, `home: false` only hides a post from homepage areas; search and direct access remain available.
 
-## 图片或样式在子目录部署后丢失？
+## Why do images or styles break under a subdirectory?
 
-检查 `site` 是否为最终站点地址、`base` 是否为 `/仓库名/`，避免重复添加前缀。静态图片应位于 `public/`，引用中省略 `public`。原始 HTML、CSS 与自行添加的脚本资源也需要正确前缀。
+Check the final `site` URL and a `base` such as `/my-blog/`. Avoid adding the prefix twice. Store static images under `public/` and omit `public` in references. Raw HTML, CSS, and custom scripts also need correct paths.
 
-## 组件直接显示成文字或构建失败？
+## Why are components shown as text or failing to build?
 
-文件应使用 `.mdx`。使用 JSX 属性：布尔值写 `{true}`，对象写 `{{...}}`。组件内复杂 Markdown 用空行分隔。不要在 Astro 文章中直接粘贴 Hugo 短代码；参考 [组件示例](components.md)。
+Use `.mdx`. JSX booleans use `{true}` and objects use `{{...}}`. Separate complex Markdown inside components with blank lines. Do not paste Hugo shortcodes directly into Astro posts; see [Components](components.md).
 
-## 为什么切换界面语言后文章和菜单仍是中文？
+## Why does changing locale leave some text unchanged?
 
-`locale` 只影响内置界面文本，文章、菜单名和页面 JSON 数据由站长维护。
+`locale` controls built-in interface text. Translate your posts, navigation labels, and page JSON separately.
 
-## 页面提示 Duplicate route 或 Missing page data？
+## What do Duplicate route and Missing page data mean?
 
-前者表示文章、页面、别名或系统路径冲突；检查 `slug`、`url` 与 `aliases`。后者表示页面 `data` 指向的 JSON 不存在，应位于 `src/data/`，名称无需扩展名。
+A duplicate route means that content, an alias, or a system page shares a path; review `slug`, `url`, and `aliases`. Missing page data means the JSON named by a page's `data` field does not exist in `src/data/`; omit the `.json` extension from the field.
 
-## 图表、仓库卡片或在线资源加载失败？
+## Why do charts, repository cards, or online resources fail to load?
 
-检查浏览器网络请求、对应功能开关与 `theme.cdn` 地址。第三方资源需要网络；本地构建成功并不保证外部 API 始终可用。仓库卡片会在失败时保留链接与错误状态。
+Check browser requests, feature flags, and `theme.cdn`. Third-party resources need a working network. A successful static build does not guarantee external API availability. Repository cards retain their links and show an error state when loading fails.
 
-## 如何更新主题？
+## How do I update the theme?
 
-模板仓库不会自动同步上游，也不是 npm 主题包。先提交自己的配置与文章；在新分支中比较上游改动，再合并需要的主题代码与依赖变更。保留自己的内容、数据和配置，运行检查与预览后再发布。模板与上游历史独立，不建议直接强制合并无关历史。
+Template copies do not synchronize automatically, and this theme is not installed as an npm theme package. Commit your content and configuration first. Compare upstream changes on a separate branch, then integrate the required theme and dependency changes. Preserve your content, data, and configuration; check and preview before publishing. Template and upstream histories are independent, so avoid blindly forcing a merge of unrelated histories.
 
-## 如何反馈问题？
+## How do I report an issue?
 
-在 [Issues](https://github.com/everfu/astro-solitude/issues) 提供复现步骤、Node/pnpm 版本、相关配置、浏览器与错误日志。不要附带服务端凭证。贡献检查说明见 [开发与验收](parity.md)。
+Open an [issue](https://github.com/everfu/astro-solitude/issues) with reproduction steps, Node/pnpm versions, relevant configuration, browser information, and error logs. Do not include server credentials. See [Development and validation](parity.md) for contribution checks.

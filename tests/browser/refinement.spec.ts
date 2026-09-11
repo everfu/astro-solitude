@@ -383,6 +383,6 @@ test('long titles, many tags and long TOCs remain readable in both themes', asyn
       .toBe(true);
   }
   await page.keyboard.press('Control+k');
-  await page.locator('#search-input').fill('主题');
+  await page.locator('#search-input').fill('theme');
   await expect(page.locator('.search-result-title').first()).toBeVisible();
 });

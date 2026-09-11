@@ -44,7 +44,8 @@ const initializeDocSearch = async () => {
     container.hidden = false;
     container.classList.add('docsearch-unavailable');
     container.textContent =
-      'DocSearch 暂不可用，请检查 appId、apiKey 与 indexName。';
+      Solitude.config.lang?.ui?.docsearchUnavailable ||
+      'DocSearch is unavailable. Check appId, apiKey, and indexName.';
     console.warn(error);
   }
 };

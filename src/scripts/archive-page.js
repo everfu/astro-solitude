@@ -135,7 +135,7 @@ export const archivePageController = (() => {
             image.alt = post.title;
             image.loading = 'lazy';
             image.addEventListener('error', () => thumb.classList.add('is-fallback'), { once: true });
-            const fallback = createElement('span', 'archive-page-thumb-fallback', (post.title || '文').trim().charAt(0) || '文');
+            const fallback = createElement('span', 'archive-page-thumb-fallback', (post.title || 'A').trim().charAt(0) || 'A');
             thumb.append(image, fallback);
             const main = createElement('div', 'archive-page-item-main');
             const title = createElement('div', 'archive-page-item-title', post.title);

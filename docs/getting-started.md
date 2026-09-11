@@ -1,21 +1,21 @@
-# 快速开始
+# Getting started
 
-[文档首页](README.md) → 开始使用 → [主题配置](configuration.md)
+[Documentation](README.md) → Getting started → [Configuration](configuration.md)
 
-## 1. 创建自己的仓库
+## 1. Create your repository
 
-打开 [Use this template](https://github.com/everfu/astro-solitude/generate)，选择所有者与仓库名，例如 `my-blog`。创建完成后克隆自己的仓库：
+Open [Use this template](https://github.com/everfu/astro-solitude/generate), choose an owner and a repository name such as `my-blog`, then clone your new repository:
 
 ```sh
 git clone https://github.com/YOUR_NAME/my-blog.git
 cd my-blog
 ```
 
-将 `YOUR_NAME` 和 `my-blog` 替换为自己的信息。模板生成的仓库拥有独立历史，不会自动同步后续主题更新；区别见 [GitHub 模板说明](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)。
+Replace `YOUR_NAME` and `my-blog`. A repository created from a template has its own history and does not automatically receive future theme updates. See [GitHub's template documentation](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
 
-## 2. 安装并预览
+## 2. Install and preview
 
-需要 Node.js **22.12.0+**。安装 [package.json](../package.json) 的 `packageManager` 指定的 pnpm；当前为 `pnpm@11.24.0`。
+Use Node.js **22.12.0+** and the pnpm version specified by `packageManager` in [package.json](../package.json), currently `pnpm@11.24.0`.
 
 ```sh
 npm install -g pnpm@11.24.0
@@ -23,62 +23,61 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-打开终端显示的本地地址。停止预览按 `Ctrl+C`。依赖版本由锁文件固定，不需要先升级 Astro。
+Open the local address shown in your terminal. Press `Ctrl+C` for a foreground server; if Astro reports a background server, use `pnpm exec astro dev stop`. The lockfile pins the dependencies; an Astro upgrade is not required to get started.
 
-## 3. 配置身份与地址
+## 3. Set your identity and URL
 
-编辑 [src/site.config.ts](../src/site.config.ts)。可以保留模板中的导航和首页设置，也可以用下面的最小配置重新开始：
+Edit [src/site.config.ts](../src/site.config.ts). Keep the template navigation and appearance, or replace the file with this minimal configuration:
 
 ```ts
 import { defineSolitudeConfig } from './lib/config';
 
 export default defineSolitudeConfig({
   site: 'https://example.com',
-  title: '我的博客',
-  description: '记录生活，分享所见。',
-  locale: 'zh-CN',
-  timeZone: 'Asia/Shanghai',
-  hasCJKLanguage: true,
-  author: { name: '你的名字' },
+  title: 'My blog',
+  description: 'Notes, stories, and discoveries.',
+  locale: 'en',
+  timeZone: 'UTC',
+  author: { name: 'Your name' },
   menus: [
-    { name: '文章', url: '/archives/' },
-    { name: '关于', url: '/about/' },
+    { name: 'Articles', url: '/archives/' },
+    { name: 'About', url: '/about/' },
   ],
 });
 ```
 
-把 `site` 改为最终域名；部署在子目录时另设 `base`。最小配置会使用基础默认外观，与仓库截图略有区别，详见 [默认值与模板配置](configuration.md#默认值与模板配置)。
+Set `site` to your final domain. Set `base` separately when deploying under a subdirectory. A minimal configuration uses base appearance defaults and may look different from the repository screenshots; see [Base defaults and template settings](configuration.md#base-defaults-and-template-settings).
 
-## 4. 写第一篇文章
+## 4. Write your first post
 
-创建 `src/content/posts/hello-world.md`：
+Create `src/content/posts/hello-world.md`:
 
 ```md
 ---
-title: 你好，世界
-date: 2026-09-11T10:00:00+08:00
-description: 我的第一篇文章。
-tags: [生活]
+title: Hello, world
+date: 2026-09-11T10:00:00Z
+description: My first post.
+tags: [Life]
 ---
 
-从这里开始记录。
+Start your story here.
 ```
 
-预览 `/p/hello-world/`。普通文章用 `.md`，组件文章用 `.mdx`。发布规则见 [写作指南](writing.md)。
+Preview `/p/hello-world/`. Use `.md` for regular posts and `.mdx` for posts containing components. See [Writing](writing.md) for publishing behavior.
 
-## 5. 替换演示内容
+## 5. Replace sample content
 
-| 内容 | 修改位置 |
+| Content | Location |
 | --- | --- |
-| 文章与封面 | `src/content/posts/`、`public/img/` |
-| 自定义页面 | `src/content/pages/` |
-| 关于、友链、装备、短文 | `src/data/`，见 [特色页面](pages.md) |
-| 标题、头像、导航、侧栏、页脚 | `src/site.config.ts` |
-| 补充样式 | `src/styles/custom.css` |
+| Posts and cover images | `src/content/posts/`, `public/img/` |
+| Custom pages | `src/content/pages/` |
+| About, friends, equipment, short updates | `src/data/`; see [Pages](pages.md) |
+| Title, avatar, navigation, sidebar, footer | `src/site.config.ts` |
+| Additional styles | `src/styles/custom.css` |
 
-先保留组件示例方便参考；删除演示文章时，同时检查导航、推荐链接和正文中指向这些文章的链接。评论和在线音乐没有预填服务标识，按需阅读 [第三方集成](integrations.md)。
+Keep the component showcase as a reference until you no longer need it. When removing a sample post, also update navigation, recommendations, and links from other posts. Comments and online music have no preset service identifiers; enable your own through [Integrations](integrations.md).
 
-## 6. 发布
+## 6. Publish
 
 ```sh
 pnpm check
@@ -86,4 +85,4 @@ pnpm build
 pnpm preview
 ```
 
-检查构建预览后，按 [部署指南](deployment.md) 上传 `dist/` 或连接 GitHub 仓库自动构建。创建 GitHub 模板副本本身不会自动上线博客。
+Review the production preview, then follow [Deployment](deployment.md) to upload `dist/` or connect your repository to a hosting service. Creating a template repository does not automatically publish a website.

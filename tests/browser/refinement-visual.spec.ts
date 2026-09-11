@@ -31,7 +31,7 @@ test('core surfaces fit responsive light and dark layouts', async ({
         );
         if (surface === 'search') {
           await page.locator('#search-button a').click();
-          await page.locator('#search-input').fill('主题');
+          await page.locator('#search-input').fill('theme');
           await expect(
             page.locator('.search-result-title').first(),
           ).toBeVisible();

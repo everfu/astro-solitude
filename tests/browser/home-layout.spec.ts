@@ -62,11 +62,14 @@ test('mobile menu includes site statistics, theme control and navigation', async
   const menu = page.locator('#sidebar-menus');
   await expect(menu).toHaveClass(/open/);
   await expect(menu.locator('.site-data .data-item')).toHaveCount(3);
-  await expect(menu.locator('.site-data')).toContainText('分类');
+  await expect(menu.locator('.site-data')).toContainText('Categories');
   await expect(menu.locator('.card-tag-cloud a').first()).toBeVisible();
-  await expect(menu.locator('.webinfo')).toContainText('总字数');
+  await expect(menu.locator('.webinfo')).toContainText('Total words');
   const mode = await page.locator('html').getAttribute('data-theme');
-  const toggle = menu.getByRole('button', { name: '显示模式', exact: true });
+  const toggle = menu.getByRole('button', {
+    name: 'Display mode',
+    exact: true,
+  });
   await toggle.focus();
   await page.keyboard.press('Enter');
   await expect(page.locator('html')).toHaveAttribute(

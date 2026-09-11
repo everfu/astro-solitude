@@ -4,7 +4,7 @@ import { marked } from 'marked';
 
 const files = [
   'README.md',
-  'README.en.md',
+  'README.zh-CN.md',
   ...(await fs.readdir('docs'))
     .filter((f) => f.endsWith('.md'))
     .map((f) => `docs/${f}`),

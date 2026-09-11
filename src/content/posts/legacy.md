@@ -1,9 +1,9 @@
 ---
-title: 保留旧文章地址
+title: Preserve a legacy URL
 date: 2026-07-31
 url: /p/legacy.html
 aliases: [/old-legacy/]
 tags: [Astro]
 ---
 
-此页面保留 `.html` 地址。
+This page preserves its original `.html` URL.

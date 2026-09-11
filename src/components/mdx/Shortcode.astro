@@ -1,7 +1,7 @@
 ---
 import { randomUUID } from 'node:crypto';
 import { getPosts, contentPath } from '../../lib/content';
-import { cfg, url } from '../../lib/site';
+import { cfg, t, url } from '../../lib/site';
 export interface Props {
   kind: string;
   [key: string]: any;
@@ -182,7 +182,7 @@ const seriesPosts = allSeriesPosts
         <i
           class={`fas fa-${external ? 'arrow-up-right-from-square' : 'house'}`}
         />
-        {external ? '引用站外链接' : '站内链接'}
+        {external ? t('externalLink') : t('internalLink')}
       </div>
       <div class="tag-link-bottom">
         <div class="tag-link-left">
@@ -216,7 +216,7 @@ const seriesPosts = allSeriesPosts
       </div>
       <div class="card_mask card_info">
         <div class="card_content">
-          <span class="card_title">{p.title ?? p.name ?? '未知'}</span>
+          <span class="card_title">{p.title ?? p.name ?? t('untitled')}</span>
           <span class="card_description">
             {p.desc}
             <slot />
@@ -224,7 +224,10 @@ const seriesPosts = allSeriesPosts
         </div>
         <div class="card_footer">
           {p.star != null && (
-            <div class="card_rating" aria-label={`评分 ${p.star} / 5`}>
+            <div
+              class="card_rating"
+              aria-label={t('cardRating').replace('{rating}', String(p.star))}
+            >
               <i class="fa-solid fa-star" aria-hidden="true" />
               <span aria-hidden="true">{p.star} / 5</span>
             </div>
@@ -233,7 +236,10 @@ const seriesPosts = allSeriesPosts
             <a
               class="card_action"
               href={url(p.url)}
-              aria-label={`查看详情：${p.title ?? p.name}`}
+              aria-label={t('cardDetails').replace(
+                '{name}',
+                p.title ?? p.name ?? t('untitled'),
+              )}
               target={external ? '_blank' : undefined}
               rel={external ? 'noopener noreferrer' : undefined}
             >
@@ -269,7 +275,7 @@ const seriesPosts = allSeriesPosts
     >
       {p.repo?.split('/').pop()}
     </a>
-    <p class="repo-desc">正在读取仓库信息…</p>
+    <p class="repo-desc">{t('repoLoading')}</p>
     <div class="repo-card-footer">
       <div class="repo-gist" aria-label="Repository statistics">
         <span>
@@ -282,7 +288,7 @@ const seriesPosts = allSeriesPosts
         </span>
       </div>
       <span class="repo-status" role="status">
-        加载中
+        {t('loading')}
       </span>
     </div>
   </article>

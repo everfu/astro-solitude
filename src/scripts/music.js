@@ -1,3 +1,4 @@
+const musicText = (key, fallback) => window.Solitude?.config?.lang?.ui?.[key] || fallback;
 /** Browser behavior preserved from Solitude Hugo; typed boundary: core/api.ts. */
 import { Solitude } from "./core/api";
 const MEDIA_SESSION_ACTIONS = ["play", "pause", "previoustrack", "nexttrack", "seekto"];
@@ -103,15 +104,15 @@ class MusicPlayer {
     }
     enhanceControls() {
         const labels = [
-            [".aplayer-icon-back", "上一曲"],
-            [".aplayer-play", "播放"],
-            [".aplayer-icon-play", "播放"],
-            [".aplayer-icon-forward", "下一曲"],
-            [".aplayer-icon-volume-down", "静音或恢复音量"],
-            [".aplayer-icon-order", "切换播放顺序"],
-            [".aplayer-icon-loop", "切换循环模式"],
-            [".aplayer-icon-menu", "展开或收起歌单"],
-            [".aplayer-icon-lrc", "显示或隐藏歌词"]
+            [".aplayer-icon-back", musicText('musicPrevious', 'Previous track')],
+            [".aplayer-play", musicText('musicPlay', 'Play')],
+            [".aplayer-icon-play", musicText('musicPlay', 'Play')],
+            [".aplayer-icon-forward", musicText('musicNext', 'Next track')],
+            [".aplayer-icon-volume-down", musicText('musicMute', 'Mute or restore volume')],
+            [".aplayer-icon-order", musicText('musicOrder', 'Change playback order')],
+            [".aplayer-icon-loop", musicText('musicLoop', 'Change repeat mode')],
+            [".aplayer-icon-menu", musicText('musicPlaylist', 'Show or hide playlist')],
+            [".aplayer-icon-lrc", musicText('musicLyrics', 'Show or hide lyrics')]
         ];
         labels.forEach(([selector, label]) => {
             this.playerRoot.querySelectorAll(selector).forEach((control) => {
@@ -127,7 +128,7 @@ class MusicPlayer {
             item.setAttribute("role", "button");
             item.tabIndex = 0;
             const title = item.querySelector(".aplayer-list-title")?.textContent?.trim();
-            item.setAttribute("aria-label", title ? `播放 ${title}` : `播放第 ${index + 1} 首歌曲`);
+            item.setAttribute("aria-label", title ? musicText('musicPlayTitle', 'Play {title}').replace('{title}', title) : musicText('musicPlayIndex', 'Play track {index}').replace('{index}', String(index + 1)));
         });
     }
     extractCoverUrl(backgroundImage) {
@@ -164,7 +165,7 @@ class MusicPlayer {
         const isPlaying = Boolean(this.audio && !this.audio.paused);
         this.playerRoot?.classList.toggle("is-playing", isPlaying);
         document.getElementById("Music-page")?.classList.toggle("is-playing", isPlaying);
-        const label = isPlaying ? "暂停" : "播放";
+        const label = isPlaying ? musicText('musicPause', 'Pause') : musicText('musicPlay', 'Play');
         this.playerRoot?.querySelectorAll(".aplayer-play, .aplayer-icon-play").forEach((control) => {
             control.setAttribute("aria-label", label);
             control.setAttribute("title", label);
@@ -268,9 +269,9 @@ class MusicPlayer {
             return;
         const cover = song.cover || song.pic || this.getCurrentCoverUrl();
         const metadata = {
-            title: song.name || song.title || "音乐馆",
-            artist: song.artist || "未知歌手",
-            album: song.album || "音乐馆"
+            title: song.name || song.title || musicText('musicHall', 'Music hall'),
+            artist: song.artist || musicText('unknownArtist', 'Unknown artist'),
+            album: song.album || musicText('musicHall', 'Music hall')
         };
         if (cover)
             metadata.artwork = [{ src: cover }];

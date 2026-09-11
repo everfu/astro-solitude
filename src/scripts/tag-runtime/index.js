@@ -1,6 +1,7 @@
 /** Browser behavior preserved from Solitude Hugo; typed boundary: core/api.ts. */
 /* eslint-env browser */
 (() => {
+    const uiText = (key, fallback) => window.Solitude?.config?.lang?.ui?.[key] || fallback;
     const runtimeKey = '__solitudeShortcodeRuntime';
     const owner = document.currentScript || document.querySelector('script[data-solitude-tag-runtime]');
     const initialConfig = {
@@ -202,7 +203,7 @@
             if (title)
                 title.textContent = data.name || title.textContent;
             if (description)
-                description.textContent = data.description || '这个仓库暂时没有简介。';
+                description.textContent = data.description || uiText('repoEmpty', 'This repository has no description yet.');
             if (starsElement)
                 starsElement.textContent = Number.isFinite(Number(stars)) ? Number(stars).toLocaleString() : '0';
             if (forksElement)
@@ -214,7 +215,7 @@
                 languageIcon.hidden = false;
             }
             if (status)
-                status.textContent = '已更新';
+                status.textContent = uiText('repoUpdated', 'Updated');
             card.classList.add('is-loaded');
             card.classList.remove('tag-plugin-error');
             card.setAttribute('aria-busy', 'false');
@@ -224,9 +225,9 @@
             const description = card.querySelector('.repo-desc');
             const status = card.querySelector('.repo-status');
             if (description)
-                description.textContent = '仓库信息暂时无法加载，请稍后重试。';
+                description.textContent = uiText('repoError', 'Repository information is unavailable. Please try again later.');
             if (status)
-                status.textContent = '加载失败';
+                status.textContent = uiText('loadFailed', 'Loading failed');
             card.classList.add('tag-plugin-error');
             card.setAttribute('aria-busy', 'false');
             card.dataset.repoLoaded = 'error';
@@ -245,7 +246,7 @@
             const nav = document.createElement('ul');
             nav.className = 'nav-tabs';
             nav.setAttribute('role', 'tablist');
-            nav.setAttribute('aria-label', '内容标签页');
+            nav.setAttribute('aria-label', uiText('contentTabs', 'Content tabs'));
             nav.setAttribute('aria-orientation', 'horizontal');
             const buttons = [];
             const activateTab = (activeIndex, moveFocus = false) => {

@@ -1,8 +1,8 @@
-# 开发与验收
+# Development and validation
 
-[文档首页](README.md) · [项目说明](../README.md)
+[Documentation](README.md) · [Project overview](../README.md)
 
-## 本地检查
+## Local checks
 
 ```sh
 pnpm install --frozen-lockfile
@@ -16,53 +16,54 @@ pnpm exec playwright install chromium
 pnpm test:e2e
 ```
 
-`docs:generate` 只写配置字段清单和组件参数索引，不覆盖手写指南，也不需要外部 Hugo 目录。`docs:check` 检查文档本地链接、锚点和参考清单是否过期；外部链接不纳入该自动检查。
+`docs:generate` updates only the configuration reference and component parameter index. It does not overwrite authored guides or require a Hugo source directory. `docs:check` verifies local links, heading anchors, and generated reference freshness; it does not crawl external links.
 
-`pnpm test` 中的输出测试依赖已生成的 `dist/`，因此先构建。浏览器测试依赖独立测试站构建，并由 Playwright 启动预览服务。
+Output tests in `pnpm test` read `dist/`, so build first. Browser tests require the fixture builds; Playwright starts the preview servers.
 
-## 测试站与覆盖
+## Fixtures and coverage
 
-| 测试站 | 地址 | 用途 |
+| Fixture | Address | Coverage |
 | --- | --- | --- |
-| 默认模板 | `http://127.0.0.1:4321` | 首页、文章、路由、搜索、明暗主题与响应式布局 |
-| 集成配置 | `http://127.0.0.1:4332` | 评论挂载、音乐、资源生命周期 |
-| Algolia | `http://127.0.0.1:4333/sub/` | 子目录与第三方搜索适配 |
-| DocSearch | `http://127.0.0.1:4334` | DocSearch 与英文以外的界面语言 |
-| 在线音乐 | `http://127.0.0.1:4336` | 汽水播放器、封面取色与移动端目录遮罩 |
-| Valine 聚合 | `http://127.0.0.1:4335` | 最新评论、留言弹幕、文章参与者头像及样式恢复 |
+| Default template | `http://127.0.0.1:4321` | Homepage, posts, routes, search, themes, responsive layout |
+| Integrations | `http://127.0.0.1:4332` | Comment adapters, music, resource lifecycle |
+| Algolia | `http://127.0.0.1:4333/sub/` | Subdirectory deployment and search adapter |
+| DocSearch | `http://127.0.0.1:4334` | DocSearch and Spanish interface |
+| Valine aggregation | `http://127.0.0.1:4335` | Recent comments, message wall, participant avatars, style restoration |
+| Online music | `http://127.0.0.1:4336` | Qishui player, cover colors, mobile table-of-contents overlay |
 
-第三方服务在测试中使用模拟响应或本地测试资源，测试标识不是线上账号。生产模板保持评论与在线音乐关闭，不以启用真实服务作为回归测试前提。
+Third-party services use mocked responses or local resources in tests. Fixture identifiers are not live accounts. Production defaults keep comments and online music disabled.
 
-## 来源与保留内容
+## Source attribution
 
-项目来自 Hugo Solitude 的 Astro 迁移。原始来源快照、提交和文件哈希保留在 [source-manifest.json](source-manifest.json)，版权和改动说明见 [NOTICE](../NOTICE) 与 [LICENSE](../LICENSE)。这些哈希描述迁移时的来源，不代表当前 Astro 文件内容。
+The project originated as an Astro migration of Hugo Solitude. [source-manifest.json](source-manifest.json) preserves the original source snapshot, commit, and file hashes. See [NOTICE](../NOTICE) and [LICENSE](../LICENSE) for attribution and modification details. These hashes describe the migration source, not the current Astro files.
 
-本次发布保留现有功能成果。历史截图和旧比较统计不作为当前版本验收证据；新截图记录当前模板，见下节。
+Existing feature work is retained in this release. Historical screenshots and comparison counts are not evidence for the current version. Current template screenshots are listed below.
 
-## 当前发布验证
+## Release validation
 
-2026-09-11 在 macOS、Node.js 24.16.0、pnpm 11.24.0、Chromium 下完成本地验证。Browser 插件未提供，使用项目现有 Playwright 流程。测试结果仅对应本次模板整理，不代表未来改动自动通过。
+Validated on September 11, 2026 with Node.js 24.16.0, pnpm 11.24.0, and Playwright Chromium on macOS:
 
-| 检查 | 结果 |
+| Check | Observed result |
 | --- | --- |
-| 干净副本安装、启动首页与静态构建 | 通过，生成 37 个页面 |
-| Astro 类型检查 | 0 errors、0 warnings；4 个非阻断 hints |
-| 单元测试 | 21 / 21 通过 |
-| 浏览器回归 | 51 / 51 通过 |
-| 文档配置示例 | 10 段通过 TypeScript 检查 |
-| 本地文档链接、锚点、参考清单 | 通过 `pnpm docs:check` |
-| 默认服务配置 | 评论与在线音乐关闭；没有请求原评论服务或歌单 |
-| 页面身份、可见内容、错误遮罩、页面脚本 | 截图页面标题正确，内容正常，无错误遮罩；无 pageerror |
-| 截图布局 | 390、768、1440 像素，5 个视图无横向溢出 |
+| Fresh copy | Frozen-lockfile installation, development startup, and production build succeeded |
+| Documentation | 174 local links and anchors checked across 15 documents; generated references current |
+| Configuration examples | 10 TypeScript documentation snippets type-checked |
+| Astro check | 155 files checked: 0 errors, 0 warnings, 4 hints |
+| Production build | 37 pages generated |
+| Unit tests | 21 passed |
+| Browser tests | 51 passed |
+| English defaults | Tested default pages use `lang="en"` and English visible text; local search finds English content |
+| Optional services | No configured comment or online playlist requests in the default-template browser test |
+| Screenshots | Five captures; no horizontal overflow or page errors recorded |
 
-交互覆盖包括：首页 → 打开搜索 → 显示结果；进入文章 → 返回 → 恢复页面；切换主题；移动端目录的打开、焦点、关闭与定位；独立测试配置中的评论和音乐生命周期。
+The browser suite uses production builds and isolated integration fixtures. It covers responsive layouts, light and dark modes, navigation, search, comments, music, and resource cleanup. The English comment-card date was allowed to shrink after a 320px overflow was found; the complete suite passed after that correction.
 
-截图使用生产预览，尺寸与标题记录在 [截图数据](visual-results.json)。
+Screenshots and their dimensions are recorded in [visual-results.json](visual-results.json):
 
-- [桌面首页](screenshots/home-desktop.png)
-- [深色首页](screenshots/home-desktop-dark.png)
-- [移动端深色文章](screenshots/post-mobile-dark.png)
-- [桌面关于页面](screenshots/about-desktop.png)
-- [平板深色关于页面](screenshots/about-tablet-dark.png)
+- [Desktop homepage](screenshots/home-desktop.png)
+- [Dark homepage](screenshots/home-desktop-dark.png)
+- [Mobile dark article](screenshots/post-mobile-dark.png)
+- [Desktop About page](screenshots/about-desktop.png)
+- [Tablet dark About page](screenshots/about-tablet-dark.png)
 
-未验证真实评论账号、在线音乐服务可用性、Safari/Firefox 或用户自己的托管平台。公开模板无需部署在线演示站即可使用，仓库检查工作流不执行部署。GitHub 的持续检查覆盖 Node.js 22 与 24，最新状态以仓库 Actions 为准。
+Production accounts, online music availability, Safari/Firefox, and user hosting platforms are not covered by mocked browser tests. GitHub Actions checks Node.js 22 and 24; the workflow does not deploy the website.

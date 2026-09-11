@@ -178,7 +178,7 @@ class AlgoliaSearch {
             this.delayedFocus();
             return `
                 <a href="${this.escapeHtml(link)}" class="algolia-hit-item-link">
-                    <span class="algolia-hits-item-title">${result.title?.value || "无标题"}</span>
+                    <span class="algolia-hits-item-title">${result.title?.value || Solitude.config.lang?.ui?.untitled || "Untitled"}</span>
                 </a>`;
         }
         catch (error) {

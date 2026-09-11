@@ -1,5 +1,5 @@
 ---
-import { cfg, url } from '../lib/site';
+import { cfg, t, url } from '../lib/site';
 import { homePosts, contentPath, type Post } from '../lib/content';
 interface Props {
   posts: Post[];
@@ -72,13 +72,16 @@ const first = items[0];
             <i class="solitude fas fa-star" />
             <span>{first.label}</span>
           </div>
-          <div class="home-center-indicators" aria-label="推荐内容切换">
+          <div class="home-center-indicators" aria-label={t('recommendations')}>
             {items.slice(0, 5).map((_, i) => (
               <button
                 class:list={['home-center-indicator', { active: i === 0 }]}
                 type="button"
                 data-index={i}
-                aria-label={`查看第 ${i + 1} 条推荐`}
+                aria-label={t('recommendationItem').replace(
+                  '{index}',
+                  String(i + 1),
+                )}
                 aria-current={i === 0 ? 'true' : 'false'}
               />
             ))}

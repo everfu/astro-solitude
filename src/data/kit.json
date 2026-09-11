@@ -1,20 +1,20 @@
 {
   "groups": [
     {
-      "name": "创作工具",
-      "description": "这是通用装备页面示例，可替换为自己的设备。",
+      "name": "Creative tools",
+      "description": "Sample equipment to replace with your own everyday tools.",
       "items": [
         {
-          "name": "工作笔记本",
-          "specification": "便携工作站",
-          "description": "编写代码、整理照片与记录灵感。",
+          "name": "Laptop",
+          "specification": "Portable workstation",
+          "description": "Write code, organize photos, and capture ideas.",
           "image": "/img/demo/cover-getting-started-v2.webp",
           "link": "https://astro.build/"
         },
         {
-          "name": "阅读设备",
-          "specification": "日常阅读",
-          "description": "阅读与记录，保留值得回顾的内容。",
+          "name": "E-reader",
+          "specification": "Everyday reading",
+          "description": "Read, reflect, and keep the ideas worth revisiting.",
           "image": "/img/demo/cover-pagination-v2.webp"
         }
       ]

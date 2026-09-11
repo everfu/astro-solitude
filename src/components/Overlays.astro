@@ -96,7 +96,7 @@ const contextItems = [
               <div class="console-card tags" data-solitude-action="hideConsole">
                 <div class="card-content">
                   <div class="author-content-item-tips">{t('tags')}</div>
-                  <div class="author-content-item-title">探索</div>
+                  <div class="author-content-item-title">{t('explore')}</div>
                 </div>
                 <div class="card-tag-cloud">
                   {tags.slice(0, 20).map((tag) => (
@@ -126,7 +126,7 @@ const contextItems = [
                               ).length
                             }
                           </span>
-                          <span class="unit">篇</span>
+                          <span class="unit">{t('postUnit')}</span>
                         </div>
                       </a>
                     </li>
@@ -136,7 +136,7 @@ const contextItems = [
                       <span class="date">{t('allPosts')}</span>
                       <div class="count-group">
                         <span class="count">{posts.length}</span>
-                        <span class="unit">篇</span>
+                        <span class="unit">{t('postUnit')}</span>
                       </div>
                     </a>
                   </li>
@@ -341,7 +341,12 @@ const contextItems = [
   <div id="rightside" class="needEndHide">
     <div id="rightside-config-hide" class="rs_hide">
       {cfg.translate.enable && cfg.rightside.hide.translate && (
-        <button id="translateLink" class="translate" type="button" aria-label="Translate">
+        <button
+          id="translateLink"
+          class="translate"
+          type="button"
+          aria-label="Translate"
+        >
           繁
         </button>
       )}

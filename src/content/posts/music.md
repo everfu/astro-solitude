@@ -1,38 +1,38 @@
 ---
-title: 音乐与页面切换
+title: Music and page navigation
 date: '2026-08-20T10:00:00+08:00'
 slug: music
-description: 音乐与页面切换：Solitude Astro 主题的可运行示例。
+description: Music and page navigation — a working example for the Astro Solitude theme.
 categories:
-- 主题指南
+- Theme guides
 tags:
 - Solitude
 series:
-- 主题入门
+- Theme essentials
 cover: /img/demo/cover-getting-started-v2.webp
 ---
 
-# 音乐与页面切换
+# Music and page navigation
 
-欢迎使用 **Astro Solitude**。本篇是通用演示内容，可以直接替换为自己的文章。
+Welcome to **Astro Solitude**. This sample post is ready to replace with your own story.
 
-## 内容与表达
+## Content and expression
 
-主题把内容、配置和页面组件分开。文章保留在 `src/content/posts`，站点配置位于 `src/site.config.ts`。
+The theme separates content, configuration, and page components. Keep posts in `src/content/posts` and site settings in `src/site.config.ts`.
 
-> 让内容自然成为主角。
+> Let your content take center stage.
 
-## 开始创作
+## Start creating
 
-- 使用 Markdown 编写文字。
-- 使用 MDX 组合提示、图库与媒体。
-- 在明暗主题下阅读相同内容。
+- Write your story in Markdown.
+- Use MDX for callouts, galleries, and media.
+- Enjoy the same content in light and dark mode.
 
 ```typescript
 const message: string = "Hello, Solitude";
 console.log(message);
 ```
 
-### 下一步
+### Next steps
 
-访问 [组件示例](/p/components/) 或 [全部文章](/archives/)。
+Explore the [component showcase](/p/components/) or [all posts](/archives/).

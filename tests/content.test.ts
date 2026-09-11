@@ -70,6 +70,8 @@ test('configuration merges objects and replaces arrays', () => {
     { a: { b: 3, c: 2 }, list: [9] },
   );
   const c = defineSolitudeConfig({ theme: { hometop: { enable: false } } });
+  assert.equal(c.locale, 'en');
+  assert.equal(c.timeZone, 'UTC');
   assert.equal(c.theme.hometop.enable, false);
   assert.equal(c.theme.search.enable, true);
   assert.throws(() => defineSolitudeConfig({ pagination: 0 }));
@@ -104,6 +106,6 @@ test('directory index aliases cannot collide with a page', () => {
 test('word counts preserve Hugo render-hook labels and optional CJK counting', () => {
   assert.equal(wordCount('你好 世界\n\n**Hello** world'), 4);
   assert.equal(wordCount('你好 世界\n\n**Hello** world', true), 6);
-  assert.equal(wordCount('```js\nconst a = 1\n```'), 7);
+  assert.equal(wordCount('```js\nconst a = 1\n```'), 8);
   assert.equal(wordCount(''), 0);
 });

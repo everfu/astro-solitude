@@ -1,53 +1,53 @@
-# MDX 内容组件
+# MDX components
 
-[文档首页](README.md) · [写作指南](writing.md) · [参数索引](component-inventory.md)
+[Documentation](README.md) · [Writing](writing.md) · [Parameter index](component-inventory.md)
 
-主题提供 41 个内容组件。以下示例来自仓库内可构建的 [完整演示文章](../src/content/posts/components.mdx)，启动后访问 `/p/components/`。
+The theme provides 41 content components. Examples below are also included in the buildable [component showcase](../src/content/posts/components.mdx), available at `/p/components/` after starting the site.
 
-在 `src/content/posts/` 或 `src/content/pages/` 的 `.mdx` 正文中可以直接使用组件，主题会自动注入。其他 Astro 布局可从 `src/components/mdx/index.ts` 显式导入。布尔值写 `{true}` / `{false}`，对象写 JSX 表达式；组件内部复杂 Markdown 用空行包围。
+Use components directly in `.mdx` files under `src/content/posts/` or `src/content/pages/`; the theme injects them automatically. Other Astro layouts can import them from `src/components/mdx/index.ts`. Write booleans as `{true}` / `{false}` and objects as JSX expressions. Separate complex Markdown inside components with blank lines.
 
-示例使用模板内置媒体，可直接复制；发布自己的文章时替换图片、音视频与外部仓库。`children` 表示组件开闭标签之间的正文。隐藏组件只改变展示，不用于保护私密内容。
+Examples use bundled media. Replace sample images, videos, and repository names for your own content. Children are the content between opening and closing tags. Hidden-content components only change presentation; they do not protect private information.
 
-## 选择组件
+## Choose a component
 
-| 用途 | 组件 |
+| Purpose | Components |
 | --- | --- |
-| 提示与文字 | Note、Subnote、Bubble、Label、Text、Paragraph、Keyboard、Spoiler |
-| 折叠与分组 | Fold、HideBlock、HideInline、HideToggle、Tabs、Tab |
-| 图片与媒体 | Image、InlineImage、Gallery、GalleryItem、GalleryGroup、Audio、Video、Videos、BVideo、YouTube |
-| 链接与内容集合 | Button、Link、Card、Flink、Series、Timeline、Timenode |
-| 仓库信息 | GitHub、GitLab、Gitee、Gitea |
-| 图表与展示 | ChartJS、Mermaid、Score、Typeit、Checkbox、Radio |
+| Callouts and text | Note, Subnote, Bubble, Label, Text, Paragraph, Keyboard, Spoiler |
+| Disclosure and grouping | Fold, HideBlock, HideInline, HideToggle, Tabs, Tab |
+| Images and media | Image, InlineImage, Gallery, GalleryItem, GalleryGroup, Audio, Video, Videos, BVideo, YouTube |
+| Links and collections | Button, Link, Card, Flink, Series, Timeline, Timenode |
+| Repository cards | GitHub, GitLab, Gitee, Gitea |
+| Charts and displays | ChartJS, Mermaid, Score, Typeit, Checkbox, Radio |
 
-第三方视频、仓库卡片和图表脚本可能发起外部请求；网络失败不影响普通文章写作。库地址在 `theme.cdn` 中配置。
+Embedded video, repository cards, and chart libraries can make external requests. Regular posts do not depend on those services. Library URLs are configured through `theme.cdn`.
 
 ## Audio
 
-播放音频。`src` 或 `url`：音频路径；`name`：可访问名称。
+Play audio. Set `src` or `url` to the file, and `name` to its accessible label.
 
 ```mdx
-<Audio src="/media/shortcodes/t-rex-roar.mp3" name="演示音频" />
+<Audio src="/media/shortcodes/t-rex-roar.mp3" name="Sample audio" />
 ```
 
 ## Bubble
 
-补充悬停解释。`notation`：解释文本；`color`：样式色；正文为触发文字。
+Add a tooltip. `notation` is the explanation, `color` selects a style, and children provide the trigger text.
 
 ```mdx
-<Bubble notation="补充解释">悬停提示</Bubble>
+<Bubble notation="A little more context">Hover for a note</Bubble>
 ```
 
 ## Button
 
-跳转按钮。`url`：目标；`text`：文字；`icon`：图标类；`option`：附加样式类。
+Link to a destination with `url`, `text`, and an optional Font Awesome `icon`. `option` adds style classes.
 
 ```mdx
-<Button url="/archives/" text="查看文章" icon="fas fa-book" />
+<Button url="/archives/" text="Read the posts" icon="fas fa-book" />
 ```
 
 ## BVideo
 
-嵌入 Bilibili 视频。`bvid`（或 `id`）：BV 编号；浏览器加载第三方播放器。
+Embed Bilibili using a `bvid` (or `id`). The browser loads a third-party player.
 
 ```mdx
 <BVideo bvid="BV1GJ411x7h7" />
@@ -55,74 +55,74 @@
 
 ## Card
 
-展示项目卡片。`title`（或 `name`）、`desc`、`cover`（或 `bg`）、`url`；可选 `tag`、`star`、`icon`、CSS 尺寸 `width`、`height`。
+Introduce a project with `title` (or `name`), `desc`, `cover` (or `bg`), and `url`. Optional fields include `tag`, `star`, `icon`, and CSS `width` and `height`.
 
 ```mdx
-<Card title="内容卡片" desc="用于展示一个项目。" cover="/img/demo/cover-getting-started-v2.webp" url="/about/" tag="主题" star={5} />
+<Card title="Project card" desc="A space to introduce your project." cover="/img/demo/cover-getting-started-v2.webp" url="/about/" tag="Theme" star={5} />
 ```
 
 ## ChartJS
 
-绘制数据图表。`config`：Chart.js 配置对象，或 `code`：JSON 字符串；可选 `id`、`description`、`width`（百分比数值）、`layout`；依赖 `theme.chart`。
+Render a chart with a Chart.js `config` object or a JSON `code` string. Optional: `id`, `description`, percentage `width`, and `layout`. Requires `theme.chart`.
 
 ```mdx
-<ChartJS config={{type:"bar",data:{labels:["文章","笔记","项目"],datasets:[{label:"内容",data:[12,8,4]}]}}} description="本地演示数据" />
+<ChartJS config={{type:"bar",data:{labels:["Posts","Notes","Projects"],datasets:[{label:"Content",data:[12,8,4]}]}}} description="Local sample data" />
 ```
 
 ## Checkbox
 
-展示任务状态。`checked`：布尔值，默认选中；`style`：样式类；`label`：可访问名称。为禁用的展示控件，不收集表单输入。
+Show task status. `checked` is a boolean, defaulting to true; `style` adds classes and `label` sets an accessible name. This is a disabled display control, not form input.
 
 ```mdx
-<Checkbox checked={true}>已完成任务</Checkbox>
+<Checkbox checked={true}>Completed task</Checkbox>
 ```
 
 ## Flink
 
-嵌入友链分组。`groups`：包含 `class_name`、`class_desc`、`link_list` 的数组，链接字段同友链数据。
+Embed link groups. `groups` contains `class_name`, `class_desc`, and `link_list`; link fields match the friends dataset.
 
 ```mdx
-<Flink groups={[{class_name:"官方资源",link_list:[{name:"Astro",link:"https://astro.build/",avatar:"/img/logo.png",descr:"静态网站框架"}]}]} />
+<Flink groups={[{class_name:"Official resources",link_list:[{name:"Astro",link:"https://astro.build/",avatar:"/img/logo.png",descr:"Static site framework"}]}]} />
 ```
 
 ## Fold
 
-原生折叠面板。`title`：标题；`open={true}`：初始展开，默认关闭。
+Create a native disclosure panel with `title`. Set `open={true}` to start expanded; the default is closed.
 
 ```mdx
-<Fold title="展开内容">折叠面板中的内容。</Fold>
+<Fold title="Expand this section">A note inside the fold.</Fold>
 ```
 
 ## Gallery
 
-组织图片网格。`columns`：列数；内部使用 `GalleryItem`。
+Arrange images in a grid with `columns`. Place `GalleryItem` components inside.
 
 ```mdx
 <Gallery columns={2}>
-<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="创作" />
-<GalleryItem src="/img/demo/cover-pagination-v2.webp" alt="记录" />
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="Create" />
+<GalleryItem src="/img/demo/cover-pagination-v2.webp" alt="Collect" />
 </Gallery>
 ```
 
 ## GalleryGroup
 
-创建相册入口。`title`（或 `name`）：名称；`img`：封面；`url`：目标，正文为描述。
+Create a gallery entry with `title` (or `name`), cover `img`, and destination `url`. Children provide the description.
 
 ```mdx
-<GalleryGroup title="相册入口" img="/img/demo/cover-shortcodes-v2.webp" url="/about/">走进内容世界。</GalleryGroup>
+<GalleryGroup title="Explore the gallery" img="/img/demo/cover-shortcodes-v2.webp" url="/about/">A collection of moments.</GalleryGroup>
 ```
 
 ## GalleryItem
 
-单张图库图片。`src`：图片；`alt`：替代文本；通常放入 `Gallery`。
+Display a gallery image with `src` and `alt`, usually inside `Gallery`.
 
 ```mdx
-<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="画廊图片" />
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="Gallery image" />
 ```
 
 ## Gitea
 
-展示 Gitea 仓库。`host`（或 `server`）：服务 URL；`repo`：所有者/仓库；需服务支持浏览器跨域读取。
+Show a Gitea repository using `host` (or `server`) and `repo` in owner/repository format. The server must allow browser requests.
 
 ```mdx
 <Gitea host="https://codeberg.org" repo="forgejo/forgejo" />
@@ -130,7 +130,7 @@
 
 ## Gitee
 
-展示 Gitee 仓库。`repo`：所有者/仓库；在浏览器请求公开仓库 API。
+Show a Gitee repository. Set `repo` to owner/repository. Data is fetched from the public API in the browser.
 
 ```mdx
 <Gitee repo="mirrors/vue" />
@@ -138,7 +138,7 @@
 
 ## GitHub
 
-展示 GitHub 仓库。`repo`：所有者/仓库；在浏览器请求公开仓库 API。
+Show a GitHub repository. Set `repo` to owner/repository. Data is fetched from the public API in the browser.
 
 ```mdx
 <GitHub repo="withastro/astro" />
@@ -146,7 +146,7 @@
 
 ## GitLab
 
-展示 GitLab 仓库。`repo`：命名空间/项目；当前内置请求 gitlab.com。
+Show a GitLab project. Set `repo` to namespace/project. The built-in provider targets gitlab.com.
 
 ```mdx
 <GitLab repo="gitlab-org/gitlab" />
@@ -154,39 +154,39 @@
 
 ## HideBlock
 
-点击显示块内容。`text` 或 `title`：按钮文字；正文为隐藏内容，可用 `id` 标识。
+Reveal a block on click. Set `text` or `title` for the button; children contain the hidden content. Optionally set an `id`.
 
 ```mdx
-<HideBlock text="显示内容">块级隐藏内容。</HideBlock>
+<HideBlock text="Reveal content">Hidden block content.</HideBlock>
 ```
 
 ## HideInline
 
-点击显示行内内容。`text` 或 `title`：按钮文字；正文为隐藏内容。
+Reveal inline content on click. Set `text` or `title` for the button and put the content inside.
 
 ```mdx
-<HideInline text="显示">行内内容</HideInline>
+<HideInline text="Reveal">Hidden inline content</HideInline>
 ```
 
 ## HideToggle
 
-切换内容可见性。`title` 或 `text`：按钮文字；正文为隐藏内容。
+Toggle content visibility. Set `title` or `text` for the button; children contain the hidden content.
 
 ```mdx
-<HideToggle title="切换显示">可反复切换的内容。</HideToggle>
+<HideToggle title="Toggle content">Open and close this content.</HideToggle>
 ```
 
 ## Image
 
-带说明的图片。`src`、`alt`；可选 `caption`：图注、`style`：图片 CSS。
+Display an image with `src` and `alt`. Optional `caption` adds a figure caption and `style` sets image CSS.
 
 ```mdx
-<Image src="/img/demo/cover-shortcodes-v2.webp" alt="Solitude 组件示例" caption="主题内置示例图" />
+<Image src="/img/demo/cover-shortcodes-v2.webp" alt="Solitude component example" caption="Bundled sample image" />
 ```
 
 ## InlineImage
 
-行内小图片。`src`、`alt`；`height`：带单位高度，如 `32px`。
+Display a small inline image using `src`, `alt`, and a CSS `height` such as `32px`.
 
 ```mdx
 <InlineImage src="/img/logo.png" alt="Solitude" height="32px" />
@@ -194,7 +194,7 @@
 
 ## Keyboard
 
-标注按键组合。正文或 `text`：按键文字。
+Label a key combination using children or `text`.
 
 ```mdx
 <Keyboard>⌘ K</Keyboard>
@@ -202,23 +202,23 @@
 
 ## Label
 
-高亮标签。正文或 `text`：文字；`color`：样式色。
+Highlight a label using children or `text`; `color` selects the style.
 
 ```mdx
-<Label color="green">已完成</Label>
+<Label color="green">Complete</Label>
 ```
 
 ## Link
 
-展示链接摘要。`url`（或 `link`）：目标；`title`：标题；`desc`（或 `subtitle`）：简介。
+Show a link summary. Use `url` (or `link`), `title`, and `desc` (or `subtitle`).
 
 ```mdx
-<Link title="Astro" desc="Astro 官方网站" url="https://astro.build/" />
+<Link title="Astro" desc="Astro website" url="https://astro.build/" />
 ```
 
 ## Mermaid
 
-绘制流程图。`code`：Mermaid 文本；依赖 `theme.mermaid` 和浏览器脚本。
+Render a diagram from Mermaid text in `code`. Requires `theme.mermaid` and its browser script.
 
 ```mdx
 <Mermaid code={"graph LR\nA[Content] --> B[Astro] --> C[HTML]"} />
@@ -226,31 +226,31 @@
 
 ## Note
 
-正文提示框。`type`：如 `info`、`success`、`warning`、`danger`；`style` 默认 `flat`。
+Add a callout. `type` can be `info`, `success`, `warning`, or `danger`; `style` defaults to `flat`.
 
 ```mdx
-<Note type="info">支持 **Markdown** 的提示内容。</Note>
+<Note type="info">A callout with **Markdown** support.</Note>
 ```
 
 ## Paragraph
 
-彩色段落。`color`：样式类；正文为段落内容。
+Style a paragraph. `color` selects a style class; children provide its content.
 
 ```mdx
-<Paragraph color="blue">一段彩色文字。</Paragraph>
+<Paragraph color="blue">A paragraph with a splash of color.</Paragraph>
 ```
 
 ## Radio
 
-展示单选状态。`checked`：布尔值，默认选中；`style`：样式类；`label`：可访问名称。为禁用的展示控件。
+Show a selection state. `checked` defaults to true; `style` adds classes and `label` sets an accessible name. This is a disabled display control.
 
 ```mdx
-<Radio checked={false}>可选项目</Radio>
+<Radio checked={false}>An option</Radio>
 ```
 
 ## Score
 
-展示乐谱。`score`：ABC 文本；`params`：ABCJS 渲染选项对象。
+Render ABC music notation from `score`. `params` accepts an ABCJS rendering options object.
 
 ```mdx
 <Score score={"X:1\nT:Simple tune\nM:4/4\nL:1/4\nK:C\nC D E F | G A B c |"} />
@@ -258,85 +258,85 @@
 
 ## Series
 
-列出系列文章。`name`：文章 `series` 中的名称；省略时尝试使用当前文章的第一个系列，按日期正序列出。
+List posts in a series using `name`. If omitted, the component tries the current post’s first series. Posts are ordered from oldest to newest.
 
 ```mdx
-<Series name="主题入门" />
+<Series name="Theme essentials" />
 ```
 
 ## Text
 
-彩色行内文字。`color`：样式类；正文为文字。
+Style inline text. `color` selects a class; children provide the text.
 
 ```mdx
-<Text color="red">重点文字。</Text>
+<Text color="red">Something worth highlighting.</Text>
 ```
 
 ## Spoiler
 
-隐藏剧透文字。正文为内容；`style` 默认 `block`，通过悬停或聚焦显示。
+Hide spoiler text until hover or focus. Children provide the content; `style` defaults to `block`.
 
 ```mdx
-<Spoiler>隐藏的内容</Spoiler>
+<Spoiler>A little spoiler</Spoiler>
 ```
 
 ## Subnote
 
-补充提示。`type` 与 `style` 同 `Note`。
+Add a supplementary callout. `type` and `style` work like `Note`.
 
 ```mdx
-<Subnote type="success">补充说明。</Subnote>
+<Subnote type="success">An additional note.</Subnote>
 ```
 
 ## Tab
 
-标签页内容面板。`title`：页签名；可选 `icon`；必须放入 `Tabs`。
+Create a panel inside `Tabs`. Set its `title` and optional `icon`.
 
 ```mdx
-<Tabs><Tab title="独立面板">Tab 作为 Tabs 的子组件。</Tab></Tabs>
+<Tabs><Tab title="A single panel">Place Tab inside Tabs.</Tab></Tabs>
 ```
 
 ## Tabs
 
-组合多个标签页。`id`：可选且应唯一；内部使用 `Tab`。
+Group `Tab` children. An optional `id` must be unique on the page.
 
 ```mdx
 <Tabs id="demo-tabs">
-<Tab title="Markdown">文字与列表。</Tab>
-<Tab title="MDX">组件与交互。</Tab>
+<Tab title="Markdown">Text and lists.</Tab>
+<Tab title="MDX">Components and interactions.</Tab>
 </Tabs>
 ```
 
 ## Timeline
 
-创建时间线。`title`：标题；`color`：样式类；内部使用 `Timenode`。
+Create a timeline with `title`, `color`, and nested `Timenode` children.
 
 ```mdx
-<Timeline title="主题旅程" color="blue">
-<Timenode time="第一步" title="创建站点">从模板开始。</Timenode>
-<Timenode time="第二步" title="开始写作">发布第一篇文章。</Timenode>
+<Timeline title="A theme journey" color="blue">
+<Timenode time="Step one" title="Create a site">Start from the template.</Timenode>
+<Timenode time="Step two" title="Start writing">Publish your first post.</Timenode>
 </Timeline>
 ```
 
 ## Timenode
 
-时间线节点。`time`：时间文字；`title`：节点标题；正文为详情，放入 `Timeline`。
+Add a timeline entry with `time`, `title`, and body content. Place it inside `Timeline`.
 
 ```mdx
-<Timeline><Timenode time="现在" title="保持创作">记录值得分享的事情。</Timenode></Timeline>
+<Timeline><Timenode time="Now" title="Keep creating">Keep the moments worth sharing.</Timenode></Timeline>
 ```
 
 ## Typeit
 
-打字动画。`speed`：速度，默认 80；正文为文字；动画依赖 `theme.typeit`。
+Animate typed text. `speed` defaults to 80; children provide the text. Animation requires `theme.typeit`.
 
 ```mdx
-<Typeit speed={80}>用文字记录生活。</Typeit>
+<Typeit speed={80}>Capture everyday life in words.</Typeit>
 ```
 
 ## Video
 
-播放本地视频。`src` 或 `url`：视频；`poster`：封面；使用原生播放器。
+Play a video with `src` (or `url`) and optional `poster`, using the native browser player.
 
 ```mdx
 <Video src="/media/shortcodes/flower.mp4" poster="/img/demo/cover-shortcodes-v2.webp" />
@@ -344,7 +344,7 @@
 
 ## Videos
 
-多个视频网格。`sources`：视频路径数组；`col`：列数，默认 2。
+Display a video grid. `sources` is an array of media paths; `col` defaults to 2.
 
 ```mdx
 <Videos col={2} sources={["/media/shortcodes/flower.mp4"]} />
@@ -352,7 +352,7 @@
 
 ## YouTube
 
-嵌入 YouTube 视频。`id`：视频编号；默认使用 nocookie 域名，`privacy={false}` 改用普通域名。
+Embed a YouTube video by `id`. The default uses the nocookie domain; set `privacy={false}` for the regular domain.
 
 ```mdx
 <YouTube id="aqz-KE-bpKQ" />

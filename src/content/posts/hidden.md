@@ -1,10 +1,10 @@
 ---
-title: 仅从首页隐藏的示例
+title: Hidden from the homepage
 date: 2026-08-01
 slug: hidden-example
 home: false
 tags: [Solitude]
-categories: [主题指南]
+categories: [Theme guides]
 ---
 
-这篇文章可在归档、搜索和 RSS 中找到。
+This post remains available in archives, search, and RSS.

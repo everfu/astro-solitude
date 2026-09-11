@@ -157,8 +157,8 @@
     "enable": false,
     "time": 30,
     "position": "top",
-    "text_prev": "本文最后更新于",
-    "text_next": "天前，部分内容可能已经失效。"
+    "text_prev": "This post was last updated ",
+    "text_next": " days ago. Some information may be out of date."
   },
   "right_menu": {
     "enable": true,

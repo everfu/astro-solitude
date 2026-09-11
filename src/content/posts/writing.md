@@ -1,54 +1,54 @@
 ---
-title: 用 Markdown 和 MDX 写作
+title: Write with Markdown and MDX
 date: '2026-08-24T10:00:00+08:00'
 slug: writing
-description: 用 Markdown 和 MDX 写作：Solitude Astro 主题的可运行示例。
+description: Write with Markdown and MDX — a working example for the Astro Solitude theme.
 categories:
-- 主题指南
+- Theme guides
 tags:
 - MDX
 - Solitude
 series:
-- 主题入门
+- Theme essentials
 cover: /img/demo/cover-shortcodes-v2.webp
 ---
 
-# 用 Markdown 和 MDX 写作
+# Write with Markdown and MDX
 
-欢迎使用 **Astro Solitude**。本篇是通用演示内容，可以直接替换为自己的文章。
+Welcome to **Astro Solitude**. This sample post is ready to replace with your own story.
 
-## 内容与表达
+## Content and expression
 
-主题把内容、配置和页面组件分开。文章保留在 `src/content/posts`，站点配置位于 `src/site.config.ts`。
+The theme separates content, configuration, and page components. Keep posts in `src/content/posts` and site settings in `src/site.config.ts`.
 
-> 让内容自然成为主角。
+> Let your content take center stage.
 
-## 开始创作
+## Start creating
 
-- 使用 Markdown 编写文字。
-- 使用 MDX 组合提示、图库与媒体。
-- 在明暗主题下阅读相同内容。
+- Write your story in Markdown.
+- Use MDX for callouts, galleries, and media.
+- Enjoy the same content in light and dark mode.
 
 ```typescript
 const message: string = "Hello, Solitude";
 console.log(message);
 ```
 
-### 下一步
+### Next steps
 
-访问 [组件示例](/p/components/) 或 [全部文章](/archives/)。
+Explore the [component showcase](/p/components/) or [all posts](/archives/).
 
-## 数学公式
+## Math formulas
 
-行内公式 $E = mc^2$。
+Inline math $E = mc^2$.
 
 $$
 \sum_{i=1}^{n} i = \frac{n(n+1)}{2}
 $$
 
-## 长代码与复制
+## Long code blocks and copying
 
-超过配置高度的代码块可以展开，复制按钮始终复制完整内容。
+Expand code blocks that exceed the configured height. The copy button always copies the complete code.
 
 ```ts
 const steps = [

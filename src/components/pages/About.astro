@@ -1,6 +1,6 @@
 ---
 import about from '../../data/about.json';
-import { url, json } from '../../lib/site';
+import { url, json, t } from '../../lib/site';
 import { marked } from 'marked';
 interface Props {
   data?: { title?: string; sections: any[] };
@@ -146,7 +146,7 @@ for (const section of data.sections)
                       <div class="career-timeline-axis" aria-hidden="true" />
                       <i class="career-timeline-tick career-timeline-tick--start" />
                       <i class="career-timeline-tick career-timeline-tick--end" />
-                      <ul class="career-track" aria-label="生涯阶段">
+                      <ul class="career-track" aria-label={t('careerStages')}>
                         {s.career.timeline.events?.map((event: any) => (
                           <li
                             class:list={[
@@ -275,7 +275,10 @@ for (const section of data.sections)
                     </h2>
                     <div class="interest-card-footer">
                       {item.heroes && (
-                        <ul class="interest-heroes" aria-label="擅长英雄">
+                        <ul
+                          class="interest-heroes"
+                          aria-label={t('favoriteHeroes')}
+                        >
                           {item.heroes.map((hero: any, i: number) => (
                             <li style={`--hero-index:${i}`}>
                               <img

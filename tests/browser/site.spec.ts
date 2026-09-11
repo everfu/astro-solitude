@@ -28,8 +28,10 @@ test('home, article, search and history retain responsive interactions', async (
   });
   await page.locator('#search-button a').click();
   await expect(page.locator('#search-input')).toBeVisible();
-  await page.locator('#search-input').fill('隐藏');
-  await expect(page.locator('#search-results')).toContainText('仅从首页隐藏');
+  await page.locator('#search-input').fill('hidden');
+  await expect(page.locator('#search-results')).toContainText(
+    'Hidden from the homepage',
+  );
   await page.keyboard.press('Escape');
   await page.locator('#recent-posts .article-title').first().click();
   await expect(page.locator('#post h1')).toHaveCount(1);
@@ -126,7 +128,7 @@ test('code expansion, keyboard search, TOC and repeated page cleanup', async ({
     'ready',
   );
   const long = page.locator('.solitude-code').last();
-  const expand = long.getByRole('button', { name: '展开全部', exact: true });
+  const expand = long.getByRole('button', { name: 'Expand all', exact: true });
   await expect(expand).toBeVisible();
   await expand.click();
   await expect(long.locator('button[aria-expanded]')).toHaveAttribute(
@@ -134,7 +136,7 @@ test('code expansion, keyboard search, TOC and repeated page cleanup', async ({
     'true',
   );
   await long.hover();
-  await long.getByRole('button', { name: '复制', exact: true }).click();
+  await long.getByRole('button', { name: 'Copy', exact: true }).click();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
     'Publish your own site',
   );
@@ -148,8 +150,10 @@ test('code expansion, keyboard search, TOC and repeated page cleanup', async ({
   }
   await page.keyboard.press('Control+k');
   await expect(page.locator('#search-input')).toBeFocused();
-  await page.locator('#search-input').fill('隐藏');
-  await expect(page.locator('#search-results')).toContainText('仅从首页隐藏');
+  await page.locator('#search-input').fill('hidden');
+  await expect(page.locator('#search-results')).toContainText(
+    'Hidden from the homepage',
+  );
   await page.keyboard.press('Escape');
   await expect(page.locator('#search-input')).not.toBeVisible();
   await page

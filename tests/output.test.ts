@@ -8,7 +8,8 @@ test('static output includes articles, feeds, all components and a real legacy H
   assert.ok(!home.includes('/p/hidden-example/" class="article-title'));
   const search = await fs.readFile('dist/search.xml', 'utf8');
   assert.ok(search.includes('/p/hidden-example/'));
-  assert.ok(!search.includes('未发布的草稿'));
+  assert.ok(!search.includes('/p/draft/'));
+  assert.ok(home.includes('lang="en"'));
   assert.ok((await fs.stat('dist/p/legacy.html')).isFile());
   const html = await fs.readFile('dist/p/components/index.html', 'utf8');
   for (const marker of [

@@ -1,37 +1,37 @@
 ---
-title: MDX 组件完整示例
+title: MDX component showcase
 date: 2026-08-23T10:00:00+08:00
 slug: components
 cover: /img/demo/cover-shortcodes-v2.webp
-categories: [内容组件]
+categories: [Components]
 tags: [MDX, Solitude]
 ---
 
-本页演示从 Hugo 迁移的全部 41 个内容组件。普通文章继续使用 Markdown；需要组件的文章使用 `.mdx`。
+This page demonstrates all 41 content components. Use Markdown for regular posts and `.mdx` when you need components.
 
 ## Audio
 
 ```mdx
-<Audio src="/media/shortcodes/t-rex-roar.mp3" name="演示音频" />
+<Audio src="/media/shortcodes/t-rex-roar.mp3" name="Sample audio" />
 ```
 
-<Audio src="/media/shortcodes/t-rex-roar.mp3" name="演示音频" />
+<Audio src="/media/shortcodes/t-rex-roar.mp3" name="Sample audio" />
 
 ## Bubble
 
 ```mdx
-<Bubble notation="补充解释">悬停提示</Bubble>
+<Bubble notation="A little more context">Hover for a note</Bubble>
 ```
 
-<Bubble notation="补充解释">悬停提示</Bubble>
+<Bubble notation="A little more context">Hover for a note</Bubble>
 
 ## Button
 
 ```mdx
-<Button url="/archives/" text="查看文章" icon="fas fa-book" />
+<Button url="/archives/" text="Read the posts" icon="fas fa-book" />
 ```
 
-<Button url="/archives/" text="查看文章" icon="fas fa-book" />
+<Button url="/archives/" text="Read the posts" icon="fas fa-book" />
 
 ## BVideo
 
@@ -44,72 +44,72 @@ tags: [MDX, Solitude]
 ## Card
 
 ```mdx
-<Card title="内容卡片" desc="用于展示一个项目。" cover="/img/demo/cover-getting-started-v2.webp" url="/about/" tag="主题" star={5} />
+<Card title="Project card" desc="A space to introduce your project." cover="/img/demo/cover-getting-started-v2.webp" url="/about/" tag="Theme" star={5} />
 ```
 
-<Card title="内容卡片" desc="用于展示一个项目。" cover="/img/demo/cover-getting-started-v2.webp" url="/about/" tag="主题" star={5} />
+<Card title="Project card" desc="A space to introduce your project." cover="/img/demo/cover-getting-started-v2.webp" url="/about/" tag="Theme" star={5} />
 
 ## ChartJS
 
 ```mdx
-<ChartJS config={{type:"bar",data:{labels:["文章","笔记","项目"],datasets:[{label:"内容",data:[12,8,4]}]}}} description="本地演示数据" />
+<ChartJS config={{type:"bar",data:{labels:["Posts","Notes","Projects"],datasets:[{label:"Content",data:[12,8,4]}]}}} description="Local sample data" />
 ```
 
-<ChartJS config={{type:"bar",data:{labels:["文章","笔记","项目"],datasets:[{label:"内容",data:[12,8,4]}]}}} description="本地演示数据" />
+<ChartJS config={{type:"bar",data:{labels:["Posts","Notes","Projects"],datasets:[{label:"Content",data:[12,8,4]}]}}} description="Local sample data" />
 
 ## Checkbox
 
 ```mdx
-<Checkbox checked={true}>已完成任务</Checkbox>
+<Checkbox checked={true}>Completed task</Checkbox>
 ```
 
-<Checkbox checked={true}>已完成任务</Checkbox>
+<Checkbox checked={true}>Completed task</Checkbox>
 
 ## Flink
 
 ```mdx
-<Flink groups={[{class_name:"官方资源",link_list:[{name:"Astro",link:"https://astro.build/",avatar:"/img/logo.png",descr:"静态网站框架"}]}]} />
+<Flink groups={[{class_name:"Official resources",link_list:[{name:"Astro",link:"https://astro.build/",avatar:"/img/logo.png",descr:"Static site framework"}]}]} />
 ```
 
-<Flink groups={[{class_name:"官方资源",link_list:[{name:"Astro",link:"https://astro.build/",avatar:"/img/logo.png",descr:"静态网站框架"}]}]} />
+<Flink groups={[{class_name:"Official resources",link_list:[{name:"Astro",link:"https://astro.build/",avatar:"/img/logo.png",descr:"Static site framework"}]}]} />
 
 ## Fold
 
 ```mdx
-<Fold title="展开内容">折叠面板中的内容。</Fold>
+<Fold title="Expand this section">A note inside the fold.</Fold>
 ```
 
-<Fold title="展开内容">折叠面板中的内容。</Fold>
+<Fold title="Expand this section">A note inside the fold.</Fold>
 
 ## Gallery
 
 ```mdx
 <Gallery columns={2}>
-<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="创作" />
-<GalleryItem src="/img/demo/cover-pagination-v2.webp" alt="记录" />
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="Create" />
+<GalleryItem src="/img/demo/cover-pagination-v2.webp" alt="Collect" />
 </Gallery>
 ```
 
 <Gallery columns={2}>
-<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="创作" />
-<GalleryItem src="/img/demo/cover-pagination-v2.webp" alt="记录" />
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="Create" />
+<GalleryItem src="/img/demo/cover-pagination-v2.webp" alt="Collect" />
 </Gallery>
 
 ## GalleryGroup
 
 ```mdx
-<GalleryGroup title="相册入口" img="/img/demo/cover-shortcodes-v2.webp" url="/about/">走进内容世界。</GalleryGroup>
+<GalleryGroup title="Explore the gallery" img="/img/demo/cover-shortcodes-v2.webp" url="/about/">A collection of moments.</GalleryGroup>
 ```
 
-<GalleryGroup title="相册入口" img="/img/demo/cover-shortcodes-v2.webp" url="/about/">走进内容世界。</GalleryGroup>
+<GalleryGroup title="Explore the gallery" img="/img/demo/cover-shortcodes-v2.webp" url="/about/">A collection of moments.</GalleryGroup>
 
 ## GalleryItem
 
 ```mdx
-<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="画廊图片" />
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="Gallery image" />
 ```
 
-<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="画廊图片" />
+<GalleryItem src="/img/demo/cover-getting-started-v2.webp" alt="Gallery image" />
 
 ## Gitea
 
@@ -146,34 +146,34 @@ tags: [MDX, Solitude]
 ## HideBlock
 
 ```mdx
-<HideBlock text="显示内容">块级隐藏内容。</HideBlock>
+<HideBlock text="Reveal content">Hidden block content.</HideBlock>
 ```
 
-<HideBlock text="显示内容">块级隐藏内容。</HideBlock>
+<HideBlock text="Reveal content">Hidden block content.</HideBlock>
 
 ## HideInline
 
 ```mdx
-<HideInline text="显示">行内内容</HideInline>
+<HideInline text="Reveal">Hidden inline content</HideInline>
 ```
 
-<HideInline text="显示">行内内容</HideInline>
+<HideInline text="Reveal">Hidden inline content</HideInline>
 
 ## HideToggle
 
 ```mdx
-<HideToggle title="切换显示">可反复切换的内容。</HideToggle>
+<HideToggle title="Toggle content">Open and close this content.</HideToggle>
 ```
 
-<HideToggle title="切换显示">可反复切换的内容。</HideToggle>
+<HideToggle title="Toggle content">Open and close this content.</HideToggle>
 
 ## Image
 
 ```mdx
-<Image src="/img/demo/cover-shortcodes-v2.webp" alt="Solitude 组件示例" caption="主题内置示例图" />
+<Image src="/img/demo/cover-shortcodes-v2.webp" alt="Solitude component example" caption="Bundled sample image" />
 ```
 
-<Image src="/img/demo/cover-shortcodes-v2.webp" alt="Solitude 组件示例" caption="主题内置示例图" />
+<Image src="/img/demo/cover-shortcodes-v2.webp" alt="Solitude component example" caption="Bundled sample image" />
 
 ## InlineImage
 
@@ -194,18 +194,18 @@ tags: [MDX, Solitude]
 ## Label
 
 ```mdx
-<Label color="green">已完成</Label>
+<Label color="green">Complete</Label>
 ```
 
-<Label color="green">已完成</Label>
+<Label color="green">Complete</Label>
 
 ## Link
 
 ```mdx
-<Link title="Astro" desc="Astro 官方网站" url="https://astro.build/" />
+<Link title="Astro" desc="Astro website" url="https://astro.build/" />
 ```
 
-<Link title="Astro" desc="Astro 官方网站" url="https://astro.build/" />
+<Link title="Astro" desc="Astro website" url="https://astro.build/" />
 
 ## Mermaid
 
@@ -218,26 +218,26 @@ tags: [MDX, Solitude]
 ## Note
 
 ```mdx
-<Note type="info">支持 **Markdown** 的提示内容。</Note>
+<Note type="info">A callout with **Markdown** support.</Note>
 ```
 
-<Note type="info">支持 **Markdown** 的提示内容。</Note>
+<Note type="info">A callout with **Markdown** support.</Note>
 
 ## Paragraph
 
 ```mdx
-<Paragraph color="blue">一段彩色文字。</Paragraph>
+<Paragraph color="blue">A paragraph with a splash of color.</Paragraph>
 ```
 
-<Paragraph color="blue">一段彩色文字。</Paragraph>
+<Paragraph color="blue">A paragraph with a splash of color.</Paragraph>
 
 ## Radio
 
 ```mdx
-<Radio checked={false}>可选项目</Radio>
+<Radio checked={false}>An option</Radio>
 ```
 
-<Radio checked={false}>可选项目</Radio>
+<Radio checked={false}>An option</Radio>
 
 ## Score
 
@@ -250,86 +250,86 @@ tags: [MDX, Solitude]
 ## Series
 
 ```mdx
-<Series name="主题入门" />
+<Series name="Theme essentials" />
 ```
 
-<Series name="主题入门" />
+<Series name="Theme essentials" />
 
 ## Text
 
 ```mdx
-<Text color="red">重点文字。</Text>
+<Text color="red">Something worth highlighting.</Text>
 ```
 
-<Text color="red">重点文字。</Text>
+<Text color="red">Something worth highlighting.</Text>
 
 ## Spoiler
 
 ```mdx
-<Spoiler>隐藏的内容</Spoiler>
+<Spoiler>A little spoiler</Spoiler>
 ```
 
-<Spoiler>隐藏的内容</Spoiler>
+<Spoiler>A little spoiler</Spoiler>
 
 ## Subnote
 
 ```mdx
-<Subnote type="success">补充说明。</Subnote>
+<Subnote type="success">An additional note.</Subnote>
 ```
 
-<Subnote type="success">补充说明。</Subnote>
+<Subnote type="success">An additional note.</Subnote>
 
 ## Tab
 
 ```mdx
-<Tabs><Tab title="独立面板">Tab 作为 Tabs 的子组件。</Tab></Tabs>
+<Tabs><Tab title="A single panel">Place Tab inside Tabs.</Tab></Tabs>
 ```
 
-<Tabs><Tab title="独立面板">Tab 作为 Tabs 的子组件。</Tab></Tabs>
+<Tabs><Tab title="A single panel">Place Tab inside Tabs.</Tab></Tabs>
 
 ## Tabs
 
 ```mdx
 <Tabs id="demo-tabs">
-<Tab title="Markdown">文字与列表。</Tab>
-<Tab title="MDX">组件与交互。</Tab>
+<Tab title="Markdown">Text and lists.</Tab>
+<Tab title="MDX">Components and interactions.</Tab>
 </Tabs>
 ```
 
 <Tabs id="demo-tabs">
-<Tab title="Markdown">文字与列表。</Tab>
-<Tab title="MDX">组件与交互。</Tab>
+<Tab title="Markdown">Text and lists.</Tab>
+<Tab title="MDX">Components and interactions.</Tab>
 </Tabs>
 
 ## Timeline
 
 ```mdx
-<Timeline title="主题旅程" color="blue">
-<Timenode time="第一步" title="创建站点">从模板开始。</Timenode>
-<Timenode time="第二步" title="开始写作">发布第一篇文章。</Timenode>
+<Timeline title="A theme journey" color="blue">
+<Timenode time="Step one" title="Create a site">Start from the template.</Timenode>
+<Timenode time="Step two" title="Start writing">Publish your first post.</Timenode>
 </Timeline>
 ```
 
-<Timeline title="主题旅程" color="blue">
-<Timenode time="第一步" title="创建站点">从模板开始。</Timenode>
-<Timenode time="第二步" title="开始写作">发布第一篇文章。</Timenode>
+<Timeline title="A theme journey" color="blue">
+<Timenode time="Step one" title="Create a site">Start from the template.</Timenode>
+<Timenode time="Step two" title="Start writing">Publish your first post.</Timenode>
 </Timeline>
 
 ## Timenode
 
 ```mdx
-<Timeline><Timenode time="现在" title="保持创作">记录值得分享的事情。</Timenode></Timeline>
+<Timeline><Timenode time="Now" title="Keep creating">Keep the moments worth sharing.</Timenode></Timeline>
 ```
 
-<Timeline><Timenode time="现在" title="保持创作">记录值得分享的事情。</Timenode></Timeline>
+<Timeline><Timenode time="Now" title="Keep creating">Keep the moments worth sharing.</Timenode></Timeline>
 
 ## Typeit
 
 ```mdx
-<Typeit speed={80}>用文字记录生活。</Typeit>
+<Typeit speed={80}>Capture everyday life in words.</Typeit>
 ```
 
-<Typeit speed={80}>用文字记录生活。</Typeit>
+<Typeit speed={80}>Capture everyday life in words.</Typeit>
 
 ## Video
 
@@ -356,9 +356,9 @@ tags: [MDX, Solitude]
 <YouTube id="aqz-KE-bpKQ" />
 
 
-## 数学公式
+## Math formulas
 
-MDX 也支持行内公式 $E = mc^2$ 和块级公式：
+MDX also supports inline formulas $E = mc^2$ and display formulas:
 
 $$
 a^2 + b^2 = c^2

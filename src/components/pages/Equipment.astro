@@ -1,6 +1,6 @@
 ---
 import kit from '../../data/kit.json';
-import { cfg, url } from '../../lib/site';
+import { cfg, t, url } from '../../lib/site';
 interface Props {
   comment?: boolean;
   data?: typeof kit;
@@ -30,7 +30,7 @@ const { comment = true, data = kit } = Astro.props;
                 tabindex="0"
                 data-solitude-action="copy"
                 data-solitude-value={item.name}
-                aria-label={`复制装备名称：${item.name}`}
+                aria-label={t('copyEquipment').replace('{name}', item.name)}
               >
                 {item.name}
               </div>
@@ -48,7 +48,7 @@ const { comment = true, data = kit } = Astro.props;
                     rel="external nofollow noreferrer"
                     target="_blank"
                   >
-                    详情
+                    {t('details')}
                   </a>
                 )}
                 {cfg.comment.use && comment && (
@@ -58,7 +58,7 @@ const { comment = true, data = kit } = Astro.props;
                     tabindex="0"
                     data-solitude-action="toTalk"
                     data-solitude-value={item.description}
-                    aria-label="引用这件装备并评论"
+                    aria-label={t('quoteEquipment')}
                   >
                     <i class="solitude fas fa-comment" />
                   </a>

@@ -19,7 +19,7 @@
 .recent-post-item .article-meta-wrap { flex-wrap: wrap; gap: var(--efu-space-2); white-space: normal; }
 .recent-post-item .article-meta-wrap > .article-meta.tags { flex: 1 1 120px; flex-wrap: wrap; min-width: 0; gap: 4px 8px; overflow: visible; white-space: normal; margin: 0; }
 .recent-post-item .article-meta-wrap > .article-meta > .article-meta__tags { margin: 0; max-width: 100%; overflow-wrap: anywhere; }
-.recent-post-item .article-meta-wrap > .post-meta-date { flex: 0 0 auto; margin-inline-start: auto; white-space: nowrap; color: var(--efu-secondtext); }
+.recent-post-item .article-meta-wrap > .post-meta-date { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; margin-inline-start: auto; white-space: nowrap; color: var(--efu-secondtext); }
 /* Keep loaded participants on one footer row; these unlayered tag rules
    must respect the hidden state applied by the shared comments renderer. */
 .recent-post-item .article-meta-wrap > [hidden] { display: none; }
