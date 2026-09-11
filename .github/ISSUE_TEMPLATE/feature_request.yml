@@ -1,0 +1,33 @@
+name: Feature request / 功能建议
+description: Suggest a focused improvement to the theme or documentation.
+title: '[Feature]: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English and Chinese suggestions are welcome / 欢迎使用中文或英文提出建议。
+        Check the [documentation](https://github.com/everfu/astro-solitude/blob/main/docs/README.md) and existing issues before proposing a change.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What are you trying to do, and what is missing or difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the desired behavior and how it would help theme users.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe existing settings, workarounds, or other approaches you have tried.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add examples, mockups, or relevant documentation links if helpful.

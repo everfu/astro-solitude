@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation / 使用文档
+    url: https://github.com/everfu/astro-solitude/blob/main/docs/README.md
+    about: Read setup, configuration, integration, and troubleshooting guides.
+  - name: Security report / 安全问题
+    url: https://github.com/everfu/astro-solitude/blob/main/SECURITY.md
+    about: Report vulnerabilities privately using the contact in the security policy.

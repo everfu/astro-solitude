@@ -1,0 +1,61 @@
+name: Bug report / 问题反馈
+description: Report a reproducible problem with Astro Solitude.
+title: '[Bug]: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English and Chinese reports are welcome / 欢迎使用中文或英文反馈。
+        Search existing issues and read the [FAQ](https://github.com/everfu/astro-solitude/blob/main/docs/faq.md) first.
+        For vulnerabilities, follow the [security policy](https://github.com/everfu/astro-solitude/blob/main/SECURITY.md) instead of posting details here.
+        Remove credentials and personal data from configuration, logs, and screenshots.
+  - type: input
+    id: version
+    attributes:
+      label: Theme version or commit
+      description: Provide the commit hash or release you are using.
+      placeholder: 'Commit hash from git rev-parse HEAD'
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include Node.js and pnpm versions, OS, browser, and hosting platform where relevant.
+      placeholder: |
+        Node.js:
+        pnpm:
+        OS:
+        Browser and version:
+        Hosting platform:
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include a minimal reproduction repository or relevant configuration and content. A deployed URL alone may not be enough.
+      placeholder: |
+        1. Configure ...
+        2. Open ...
+        3. Click ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Describe what happened and include relevant error output or screenshots.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: For visual issues, include viewport size and light or dark mode. Mention customizations or integrations involved.
