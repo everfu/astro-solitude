@@ -106,4 +106,17 @@ test('persistent capsule retains the same playing audio element across navigatio
         (window as any).__audio === document.querySelector('#fixture-audio'),
     ),
   ).toBe(true);
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-solitude-runtime',
+    'ready',
+  );
+  await page.locator('.home-center-banner-item.active').click();
+  await expect(page.locator('#post')).toBeVisible();
+  expect(
+    await page.evaluate(
+      () =>
+        (window as any).__audio === document.querySelector('#fixture-audio') &&
+        !(window as any).__audio.paused,
+    ),
+  ).toBe(true);
 });

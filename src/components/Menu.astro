@@ -5,7 +5,14 @@ import { config, url } from '../lib/site';
 <div class="menus_items">
   {config.menus.map((item) => (
     <div class="menus_item">
-      <a class="site-page" href={item.children ? '#' : url(item.url)}>
+      <a
+        class="site-page"
+        href={item.children || item.action ? '#' : url(item.url)}
+        data-solitude-action={item.children ? 'noop' : item.action}
+        data-solitude-prevent={
+          item.children || item.action ? 'true' : undefined
+        }
+      >
         {item.icon && <i class={`solitude ${item.icon}`} />}
         <span>{item.name}</span>
       </a>

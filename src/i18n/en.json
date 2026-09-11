@@ -146,5 +146,8 @@
   "showBarrage": "Show comments",
   "hideBarrage": "Hide comments",
   "playerLoading": "Loading player…",
-  "musicSetup": "Add a playlist and enable the music page in site settings."
+  "musicSetup": "Add a playlist and enable the music page in site settings.",
+  "randomFriends": "Random friends",
+  "moreTags": "More tags",
+  "readingMinutes": "min"
 }

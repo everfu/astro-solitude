@@ -373,6 +373,7 @@ export function convertConfig(source: Record<string, any>) {
         ).toLowerCase()
       ] ?? 'zh-CN',
     timeZone: source.timeZone ?? 'Asia/Shanghai',
+    hasCJKLanguage: source.hasCJKLanguage === true,
     author:
       typeof source.params?.author === 'string'
         ? { name: source.params.author }

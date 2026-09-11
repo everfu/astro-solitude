@@ -1,5 +1,7 @@
 ---
-import { cfg, config, t, url, dateLabel } from '../lib/site';
+import { cfg, config, t, url, dateLabel, isoDate } from '../lib/site';
+import TocItems, { type Heading } from './TocItems.astro';
+import AsideGroup from './AsideGroup.astro';
 import {
   homePosts,
   contentPath,
@@ -29,12 +31,22 @@ const recent = (home ? homePosts(posts) : posts)
   .sort((a, b) => +b.data.date - +a.data.date)
   .slice(0, 5);
 const tags = taxonomy(posts, 'tags');
+const updated = new Date();
+const toc: Heading[] = [];
+const ancestors: Heading[] = [];
+for (const heading of headings) {
+  const item: Heading = { ...heading, children: [] };
+  while (ancestors.length && ancestors.at(-1)!.depth >= item.depth)
+    ancestors.pop();
+  (ancestors.at(-1)?.children ?? toc).push(item);
+  ancestors.push(item);
+}
 ---
 
 {enabled && (
   <div class="aside-content" id="aside-content">
     {groups.map((names, index) => (
-      <div class={index === 1 ? 'sticky_layout' : undefined}>
+      <AsideGroup sticky={index === 1}>
         {index === 1 &&
           headings.length > 0 &&
           (post ? cfg.aside.toc.post : cfg.aside.toc.page) && (
@@ -45,17 +57,7 @@ const tags = taxonomy(posts, 'tags');
               </div>
               <div class="toc-content" id="toc-content">
                 <ol class="toc">
-                  {headings.map((h) => (
-                    <li class={`toc-item toc-level-${h.depth}`}>
-                      <a
-                        class="toc-link"
-                        href={`#${h.slug}`}
-                        style={`padding-left:${(h.depth - 1) * 12}px`}
-                      >
-                        <span class="toc-text">{h.text}</span>
-                      </a>
-                    </li>
-                  ))}
+                  <TocItems headings={toc} />
                 </ol>
               </div>
             </div>
@@ -156,6 +158,11 @@ const tags = taxonomy(posts, 'tags');
                       </a>
                     ))}
                   </div>
+                  {tags.length >= cfg.aside.tags.limit && (
+                    <span id="more-tags-btn" data-solitude-action="openAllTags">
+                      {t('moreTags')}
+                    </span>
+                  )}
                   <hr />
                 </>
               )}
@@ -175,12 +182,8 @@ const tags = taxonomy(posts, 'tags');
                 {cfg.aside.siteinfo.updatetime && (
                   <div class="webinfo-item">
                     <div class="item-name">{t('lastUpdated')}</div>
-                    <time class="item-count">
-                      {dateLabel(
-                        posts[0]?.data.lastmod ??
-                          posts[0]?.data.date ??
-                          new Date(),
-                      )}
+                    <time class="item-count" datetime={isoDate(updated)}>
+                      {dateLabel(updated)}
                     </time>
                   </div>
                 )}
@@ -206,7 +209,10 @@ const tags = taxonomy(posts, 'tags');
                     class="recent-comment-more"
                     href={url(cfg.recent_comments.page)}
                   >
-                    {t('more')}
+                    <i
+                      class="solitude fas fa-circle-chevron-right"
+                      aria-label={t('more')}
+                    />
                   </a>
                 )}
               </div>
@@ -223,7 +229,7 @@ const tags = taxonomy(posts, 'tags');
             </div>
           ) : null,
         )}
-      </div>
+      </AsideGroup>
     ))}
   </div>
 )}

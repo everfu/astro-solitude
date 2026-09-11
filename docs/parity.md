@@ -18,7 +18,7 @@
 | 手动推荐、首页隐藏 | HomeTop + homePosts | `home: false` 从列表/推荐/首页最近文章排除；归档、搜索、RSS 保留 |
 | 作者卡片、最新文章、标签、站点信息 | Aside | 对照截图、生产构建；侧栏范围配置 |
 | 文章头部、元信息、目录 | Header、PostMeta、Aside、main | 正文产物断言、浏览器目录滚动与重复导航 |
-| 上下篇、相关文章、版权、RSS、赞赏 | EntryPage、Copyright | 生产构建；独立测试站启用赞赏 |
+| 上下篇、相关文章、版权、赞赏 | EntryPage、Copyright | 生产构建；独立测试站启用赞赏 |
 | 归档、分类、标签、系列 | Archive、routes | 归档与术语页输出；分页单测；响应式检查 |
 | About 各内容区、卡片光效 | pages/About、about.css、main | 保留源光效；三种宽度、两种模式对照 |
 | Links 卡片、随机友链、JSON | pages/Links、friend_links、links.json | 页面输出、响应式检查；服务脚本复用 |
@@ -57,7 +57,7 @@ pnpm exec playwright install chromium
 pnpm test:e2e
 ```
 
-类型检查无错误；生产站生成 37 个页面及 RSS、搜索、Sitemap 等静态端点。18 项单元/产物测试通过，覆盖内容、转换与输出；10 项浏览器测试通过，覆盖核心交互、三种宽度和服务适配器。可复现命令与断言在仓库内，CI 在 Node.js 22、24 上执行同一套验收。
+类型检查无错误；生产站生成 37 个页面及 RSS、搜索、Sitemap 等静态端点。19 项单元/产物测试通过，覆盖内容、转换与输出；11 项浏览器测试通过，覆盖核心交互、三种宽度和服务适配器。可复现命令与断言在仓库内，CI 在 Node.js 22、24 上执行同一套验收。
 
 视觉对照使用统一的演示文章元数据和特殊页面 JSON。Hugo 对照站由脚本生成；MDX 示例仅共享元数据用于首页比较，组件本体由 Astro 单独验收。检查首页、文章、About、Links、Equipment、归档 × 390/768/1440 px × light/dark × 两个引擎，共 72 个视图。没有发现横向溢出。保留选定截图于 `docs/screenshots`；完整本地截图在忽略提交的 `artifacts/visual`。
 
@@ -67,10 +67,20 @@ pnpm exec tsx scripts/compare-hugo.ts /path/to/hugo-theme
 pnpm exec tsx scripts/visual-check.ts
 ```
 
-字数统计改为按中文字与西文词计算，代码与公式由 Astro 构建，导航使用 ClientRouter；这些是迁移后的预期实现差异。About 的卡片尺寸和光效遵循源样式。
+字数统计保留 Hugo 的默认分词口径与代码工具栏文本，`hasCJKLanguage: true` 可启用中日韩文字统计。代码与公式由 Astro 构建，导航使用 ClientRouter。About 的卡片尺寸和光效遵循源样式。
 
 ## 外部验证边界
 
 没有使用个人评论配置、访问令牌或个人歌单完成线上联调。五种评论服务、Algolia、DocSearch 的测试都是模拟响应；音乐验证是本地媒体跨导航持续播放。CDN、真实仓库 API、远端视频、评论权限和外部歌单的服务可用性不由模拟结果担保。PWA 范围为图标和清单，不提供离线缓存。
 
 English: this report maps inherited features to implementations and reproducible evidence. It distinguishes compilation, browser checks, visual review, mocks, and live services. The original source is preserved. Some inherited JavaScript remains behind typed APIs; third-party service tests do not establish production connectivity. No domain migration, production deployment, npm publication, or formal release is performed by this repository setup.
+
+## 实际博客对照复核（2026-09-11）
+
+以正在运行的 Hugo 博客为参考，使用不提交的本地导入副本复核。修复无标签文章日期位置、侧栏更新时间与额外包装产生的移动端间距、页脚分组排序与文案、普通内容页目录、嵌套目录、原主题代码块结构、字数与阅读时间，以及推荐图点击绕过 ClientRouter 的问题。保留 About 光效与原始 CSS。
+
+覆盖 13 个路由（首页、两篇文章、About、Links、Equipment、归档、分类、标签、相册、普通内容页、音乐和 404），390/768/1440 px、明暗模式、Hugo 与 Astro 共 156 个视图。图片加载完成后，25 类主要区域的可见位置和尺寸没有超过 1 px 的差异；无横向溢出和未捕获脚本错误。人工检查首页、文章、About 的桌面与移动截图。动态 GIF、随机友链、远端音乐返回和相对更新时间会随运行变化，不作为像素一致性断言。
+
+冷启动 12 次均进入 ready；曾出现一次未复现的初始化等待超时，后续两轮完整矩阵与冷启动复查未再发生，保留为外部资源加载的观察项。当前第三方依赖在不可用时有超时回退。新增实际推荐图点击的持续播放验证，以及标签链接、菜单键盘操作、更新时间的回归验证。源博客和主题工作目录未改动，个人数据只用于本地副本，未加入公开仓库。
+
+English: a private, uncommitted import was compared with the running Hugo reference in 156 views. The measured visible layout regions agree within 1 px after images load. Animated and remote data are excluded from pixel identity claims. Code highlighting remains generated at build time; an unavailable source-side highlighter can therefore show uncolored fallback text. Twelve cold starts passed after one non-reproduced initialization timeout. No private content was published.

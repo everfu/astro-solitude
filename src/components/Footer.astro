@@ -30,27 +30,29 @@ const start = new Date(cfg.aside.siteinfo.runtime).getFullYear();
     ))}
   </div>
   <div id="st-footer">
-    {Object.entries(f.group).map(([name, items]) => (
-      <div class="footer-group">
-        <h3 class="footer-title">{name}</h3>
-        <div class="footer-links">
-          {(items as any[]).map((l) => (
-            <a class="footer-item" href={url(l.url)}>
-              {l.name}
-            </a>
-          ))}
+    {Object.entries(f.group)
+      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+      .map(([name, items]) => (
+        <div class="footer-group">
+          <h3 class="footer-title">{name}</h3>
+          <div class="footer-links">
+            {(items as any[]).map((l) => (
+              <a class="footer-item" href={url(l.url)}>
+                {l.name}
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
+      ))}
     {f.randomlink && (
       <div class="footer-group">
         <div class="footer-title-group">
-          <h3 class="footer-title">{t('randomLink')}</h3>
+          <h3 class="footer-title">{t('randomFriends')}</h3>
           <button
             class="random-friends-btn"
             type="button"
             data-solitude-action="randomLinksList"
-            aria-label={t('randomLink')}
+            aria-label={t('randomFriends')}
           >
             <i class="solitude fas fa-arrows-rotate" />
           </button>

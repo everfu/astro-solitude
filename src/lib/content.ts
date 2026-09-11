@@ -1,5 +1,6 @@
 import type { CollectionEntry } from 'astro:content';
-import { termPath } from './site';
+import { config, t, termPath } from './site';
+import { marked } from 'marked';
 export type Post = CollectionEntry<'posts'>;
 export type Page = CollectionEntry<'pages'>;
 export function contentPath(entry: {
@@ -79,8 +80,32 @@ export function assertUniquePaths(paths: string[]) {
     used.add(key);
   }
 }
-export const wordCount = (text: string) =>
-  (text.match(/[\p{Script=Han}]|[\p{L}\p{N}]+/gu) ?? []).length;
+export const wordCount = (markdown: string, cjk = config.hasCJKLanguage) => {
+  // Hugo's Plain includes the code render hook's language, copy and expand labels.
+  const labels: string[] = [];
+  marked.walkTokens(marked.lexer(markdown), (token) => {
+    if (token.type === 'code') {
+      labels.push(token.lang || 'text', t('codeExpand'));
+      if (config.theme.highlight.copy !== false) labels.push(t('codeCopy'));
+    }
+  });
+  const text = marked
+    .parse(markdown, { async: false })
+    .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;|&#160;/g, ' ')
+    .replace(/&(?:#\d+|#x[\da-f]+|\w+);/gi, 'x')
+    .concat(' ', labels.join(' '))
+    .trim();
+  if (!text) return 0;
+  return cjk
+    ? (
+        text.match(
+          /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]|[^\s\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+/gu,
+        ) ?? []
+      ).length
+    : text.split(/\s+/u).length;
+};
 export const plainText = (text: string) =>
   text
     .replace(/```[\s\S]*?```/g, ' ')

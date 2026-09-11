@@ -50,13 +50,12 @@ const previous = posts[index + 1],
   next = posts[index - 1];
 const related = post
   ? posts
-      .filter((item) => item.id !== post.id)
+      .filter(
+        (item) => item.id !== post.id && +item.data.date <= +post.data.date,
+      )
       .map((item) => ({
         item,
-        score:
-          item.data.tags.filter((x) => post.data.tags.includes(x)).length * 2 +
-          item.data.categories.filter((x) => post.data.categories.includes(x))
-            .length,
+        score: item.data.tags.filter((x) => post.data.tags.includes(x)).length,
       }))
       .filter((x) => x.score > 0)
       .sort((a, b) => b.score - a.score)

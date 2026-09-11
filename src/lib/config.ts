@@ -32,6 +32,7 @@ export interface SiteConfig {
   description: string;
   locale: Locale;
   timeZone: string;
+  hasCJKLanguage: boolean;
   author: { name: string; email?: string };
   pagination: number;
   menus: Link[];
@@ -64,6 +65,7 @@ export function defineSolitudeConfig(
       description: 'A place to write, collect, and share.',
       locale: 'zh-CN',
       timeZone: 'Asia/Shanghai',
+      hasCJKLanguage: false,
       author: { name: 'Solitude' },
       pagination: 10,
       menus: [],

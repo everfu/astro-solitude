@@ -11,6 +11,7 @@ export default defineSolitudeConfig({
   locale: 'en', // zh-CN | zh-TW | en | es
   author: { name: 'Writer' },
   pagination: 10,
+  hasCJKLanguage: false, // 与 Hugo 默认字数、阅读时间口径一致
   menus: [{ name: 'Archive', url: '/archives/' }],
   theme: {
     display_mode: { type: 'auto' },
@@ -49,6 +50,8 @@ random: true
 ```
 
 `date` 为文章必填项，页面可省略。日期按 `timeZone` 显示。`home` 只影响首页三个区域，`random` 控制随机文章入口，`sticky` 接受布尔值或数值。`not_cover: true` 去掉文章头部封面。`copyright: false` 关闭当前文章的版权声明；作者头像、背景可由 `avatar`、`avatar_background` 覆盖。
+
+`hasCJKLanguage` 从 Hugo 配置迁移，默认为 `false`；开启后按中日韩字符与西文词统计。默认阅读速度为每分钟 212 词，CJK 模式为每分钟 500 字。
 
 所有内容必须通过构建：重复 URL、文件输出冲突、缺失的特殊页面数据和正文渲染失败会报错。
 

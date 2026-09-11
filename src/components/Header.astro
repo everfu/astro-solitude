@@ -14,7 +14,10 @@ const cover =
     : undefined;
 ---
 
-<header id="page-header" class={cover ? 'post-bg' : 'not-top-img'}>
+<header
+  id="page-header"
+  class:list={[cover ? 'post-bg' : 'not-top-img', 'nav-at-top']}
+>
   <nav
     id="nav"
     class="show"
@@ -34,29 +37,36 @@ const cover =
               <path d="M6.75 2.5C9.1 2.5 11 4.4 11 6.75V11H6.75a4.25 4.25 0 1 1 0-8.5ZM6.75 13H11v4.25A4.25 4.25 0 1 1 6.75 13ZM17.25 2.5a4.25 4.25 0 0 1 0 8.5H13V6.75a4.25 4.25 0 0 1 4.25-4.25ZM13 13h4.25A4.25 4.25 0 1 1 13 17.25Z" />
             </svg>
             <div class="back-menu-list-groups">
-              {Object.entries(cfg.nav.group).map(([name, items]) => (
-                <div class="back-menu-list-group">
-                  <div class="back-menu-list-title">{name}</div>
-                  <div class="back-menu-list">
-                    {(items as any[]).map((item) => (
-                      <a class="back-menu-item" href={url(item.url)}>
-                        {item.icon && (
-                          <img
-                            class="nolazyload back-menu-item-icon"
-                            src={url(item.icon)}
-                            alt=""
-                          />
-                        )}
-                        <span class="back-menu-item-text">{item.name}</span>
-                      </a>
-                    ))}
+              {Object.entries(cfg.nav.group)
+                .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+                .map(([name, items]) => (
+                  <div class="back-menu-list-group">
+                    <div class="back-menu-list-title">{name}</div>
+                    <div class="back-menu-list">
+                      {(items as any[]).map((item) => (
+                        <a class="back-menu-item" href={url(item.url)}>
+                          {item.icon && (
+                            <img
+                              class="nolazyload back-menu-item-icon"
+                              src={url(item.icon)}
+                              alt=""
+                            />
+                          )}
+                          <span class="back-menu-item-text">{item.name}</span>
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         )}
-        <a id="site-name" href={url('/')} title={t('backHome')}>
+        <a
+          id="site-name"
+          href={url('/')}
+          title={t('backHome')}
+          heotip={t('backHome')}
+        >
           {cfg.site.name.class === 'img' ? (
             <img src={url(cfg.site.name.custom)} alt={config.title} />
           ) : cfg.site.name.class === 'i_class' ? (
@@ -69,7 +79,12 @@ const cover =
       </div>
       <div id="page-name-mask">
         <div id="page-name">
-          <a id="page-name-text" data-solitude-action="toTop">
+          <a
+            id="page-name-text"
+            data-solitude-action="toTop"
+            title={t('backTop')}
+            heotip={t('backTop')}
+          >
             {title}
           </a>
         </div>
@@ -85,7 +100,9 @@ const cover =
               class="site-page"
               href={url(item.url ?? '#')}
               data-solitude-action={item.action}
+              data-solitude-prevent={item.action ? 'true' : undefined}
               title={item.title ?? item.name}
+              heotip={item.title ?? item.name}
             >
               <i class={`solitude ${item.icon}`} />
             </a>
@@ -99,6 +116,8 @@ const cover =
               data-solitude-action="randomPost"
               data-solitude-prevent="true"
               aria-label={t('randomPost')}
+              title={t('randomPost')}
+              heotip={t('randomPost')}
             >
               <i class="solitude fas fa-dice-d6" />
             </a>
@@ -110,6 +129,8 @@ const cover =
               class="site-page social-icon search"
               href="#"
               aria-label={t('search')}
+              title={t('search')}
+              heotip={t('search')}
             >
               <i class="solitude fas fa-magnifying-glass" />
             </a>
@@ -123,6 +144,8 @@ const cover =
               data-solitude-action="toggleConsole"
               data-solitude-prevent="true"
               aria-label={t('console')}
+              title={t('console')}
+              heotip={t('console')}
             >
               <label>
                 <i class="left" />
@@ -132,7 +155,13 @@ const cover =
             </a>
           </div>
         )}
-        <div class="nav-button" id="nav-totop" data-solitude-action="toTop">
+        <div
+          class="nav-button"
+          id="nav-totop"
+          data-solitude-action="toTop"
+          title={t('backTop')}
+          heotip={t('backTop')}
+        >
           <a class="totopbtn">
             <i class="solitude fas fa-arrow-up" />
             <span id="percent">0</span>

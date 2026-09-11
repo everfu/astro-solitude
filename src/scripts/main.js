@@ -335,11 +335,8 @@ const initHomeCenter = () => {
         if (event?.metaKey || event?.ctrlKey) {
             window.open(link, "_blank");
         }
-        else if (Solitude.pjax?.loadUrl) {
-            Solitude.navigate(link);
-        }
         else {
-            window.location.href = link;
+            Solitude.navigate(link);
         }
     };
     const select = (index) => {

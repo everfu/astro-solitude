@@ -7,6 +7,7 @@ import {
   contentPath,
   assertUniquePaths,
   taxonomy,
+  wordCount,
 } from '../src/lib/content';
 import { defineSolitudeConfig, mergeConfig } from '../src/lib/config';
 const post = (id: string, home = true, draft = false, sticky = false) =>
@@ -98,4 +99,11 @@ test('directory index aliases cannot collide with a page', () => {
     () => assertUniquePaths(['/same/', '/same/index.html']),
     /Duplicate route/,
   );
+});
+
+test('word counts preserve Hugo render-hook labels and optional CJK counting', () => {
+  assert.equal(wordCount('你好 世界\n\n**Hello** world'), 4);
+  assert.equal(wordCount('你好 世界\n\n**Hello** world', true), 6);
+  assert.equal(wordCount('```js\nconst a = 1\n```'), 7);
+  assert.equal(wordCount(''), 0);
 });

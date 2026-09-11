@@ -104,6 +104,11 @@ for (const width of [390, 768, 1440])
         'data-solitude-runtime',
         'ready',
       );
+      expect(
+        await page
+          .locator('#aside-content')
+          .evaluate((el) => el.getBoundingClientRect().height),
+      ).toBe(0);
       await page.locator('#toggle-menu a').click();
       await expect(page.locator('#sidebar-menus')).toHaveClass(/open/);
       await page.locator('#menu-mask').click({ position: { x: 10, y: 10 } });
@@ -121,14 +126,15 @@ test('code expansion, keyboard search, TOC and repeated page cleanup', async ({
     'ready',
   );
   const long = page.locator('.solitude-code').last();
-  const expand = long.getByRole('button', { name: 'Expand', exact: true });
+  const expand = long.getByRole('button', { name: '展开全部', exact: true });
   await expect(expand).toBeVisible();
   await expand.click();
   await expect(long.locator('button[aria-expanded]')).toHaveAttribute(
     'aria-expanded',
     'true',
   );
-  await long.getByRole('button', { name: 'Copy code' }).click();
+  await long.hover();
+  await long.getByRole('button', { name: '复制', exact: true }).click();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
     'Publish your own site',
   );
@@ -146,6 +152,11 @@ test('code expansion, keyboard search, TOC and repeated page cleanup', async ({
   await expect(page.locator('#search-results')).toContainText('仅从首页隐藏');
   await page.keyboard.press('Escape');
   await expect(page.locator('#search-input')).not.toBeVisible();
+  await page
+    .locator('#card-toc > .toc-content > .toc > .toc-item > a')
+    .first()
+    .click();
+  await expect(page.locator('#card-toc .toc-child').first()).toBeVisible();
   await page.locator('#card-toc a').last().click();
   await expect
     .poll(() =>
@@ -156,4 +167,24 @@ test('code expansion, keyboard search, TOC and repeated page cleanup', async ({
     )
     .toBeLessThan(120);
   expect(await page.locator('.solitude-code').count()).toBe(2);
+});
+
+test('home metadata, category tags and hover menus retain source behavior', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-solitude-runtime',
+    'ready',
+  );
+  const update = page.locator('.webinfo-item time');
+  await expect(update).toHaveAttribute('datetime', /\d{4}-\d{2}-\d{2}T/);
+  await expect(update).not.toContainText('1970');
+  const group = page.locator('#menus > .menus_items > .menus_item > a').first();
+  await group.focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL('http://127.0.0.1:4321/');
+  await page.locator('.recent-post-item .article-meta__tags').first().click();
+  await expect(page).toHaveURL(/\/tags\/astro\/$/);
+  await expect(page.locator('#post')).toHaveCount(0);
 });

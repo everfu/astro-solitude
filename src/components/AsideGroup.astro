@@ -1,0 +1,14 @@
+---
+interface Props {
+  sticky: boolean;
+}
+const { sticky } = Astro.props;
+---
+
+{sticky ? (
+  <div class="sticky_layout">
+    <slot />
+  </div>
+) : (
+  <slot />
+)}

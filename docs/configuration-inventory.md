@@ -36,7 +36,7 @@
 | `theme.aside.my_card.witty_words` | `[]` | Aside |
 | `theme.aside.my_card.information` | `[]` | Aside |
 | `theme.aside.toc.post` | `true` | Aside |
-| `theme.aside.toc.page` | `false` | Aside |
+| `theme.aside.toc.page` | `true` | Aside |
 | `theme.aside.toc.vague` | `true` | Aside |
 | `theme.aside.tags.enable` | `true` | Aside |
 | `theme.aside.tags.limit` | `20` | Aside |
@@ -70,7 +70,7 @@
 | `theme.post.award.list` | `[]` | PostCard, PostMeta, Copyright |
 | `theme.post.share.enable` | `false` | PostCard, PostMeta, Copyright |
 | `theme.post.share.list` | `[]` | PostCard, PostMeta, Copyright |
-| `theme.post.rss` | `"/index.xml"` | PostCard, PostMeta, Copyright |
+| `theme.post.rss` | `"/index.xml"` | 兼容字段；订阅使用 RSS 端点与 footer.links |
 | `theme.post.covercolor.enable` | `false` | PostCard, PostMeta, Copyright |
 | `theme.post.covercolor.mode` | `"local"` | PostCard, PostMeta, Copyright |
 | `theme.post.covercolor.api` | `"https://api.qjqq.cn/api/Imgcolor?img="` | PostCard, PostMeta, Copyright |

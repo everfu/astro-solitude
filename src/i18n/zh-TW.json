@@ -146,5 +146,8 @@
   "showBarrage": "開啟彈幕",
   "hideBarrage": "關閉彈幕",
   "playerLoading": "播放器載入中…",
-  "musicSetup": "請在站點設定中填寫歌單並啟用音樂館。"
+  "musicSetup": "請在站點設定中填寫歌單並啟用音樂館。",
+  "randomFriends": "隨機友鏈",
+  "moreTags": "更多標籤",
+  "readingMinutes": "分鐘"
 }

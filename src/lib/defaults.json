@@ -57,7 +57,7 @@
     },
     "toc": {
       "post": true,
-      "page": false,
+      "page": true,
       "vague": true
     },
     "tags": {

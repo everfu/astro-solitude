@@ -1,0 +1,25 @@
+---
+export interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+  children: Heading[];
+}
+interface Props {
+  headings: Heading[];
+}
+const { headings } = Astro.props;
+---
+
+{headings.map((heading) => (
+  <li class={`toc-item toc-level-${heading.depth}`}>
+    <a class="toc-link" href={`#${heading.slug}`}>
+      <span class="toc-text">{heading.text}</span>
+    </a>
+    {heading.children.length > 0 && (
+      <ol class="toc-child">
+        <Astro.self headings={heading.children} />
+      </ol>
+    )}
+  </li>
+))}

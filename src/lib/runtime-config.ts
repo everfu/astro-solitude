@@ -62,6 +62,7 @@ export function runtimeConfig(
     lang: {
       theme: labels({ dark: 'themeDark', light: 'themeLight' }),
       copy: labels({ success: 'copySuccess', error: 'copyError' }),
+      code: labels({ copy: 'codeCopy', expand: 'codeExpand' }),
       ...labels({
         backtop: 'backTop',
         day: 'dayUnit',

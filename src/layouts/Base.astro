@@ -35,7 +35,7 @@ const pageConfig = {
   is_page: type !== 'solitude' && !post,
   is_home: type === 'solitude',
   page: type,
-  toc: page.toc !== false && Boolean(post || page.type === 'page'),
+  toc: page.toc !== false && Boolean(post || type === 'page'),
   comment: page.comment !== false,
   color: page.color ?? false,
 };

@@ -62,16 +62,23 @@ const right =
           hidden
         />
       )}
-      <span class="article-meta tags">
-        {p.tags.map((tag) => (
-          <a class="article-meta__tags" href={url(termPath('tags', tag))}>
-            <span class="tags-punctuation">
-              <i class="solitude fas fa-hashtag" />
-              {tag}
-            </span>
-          </a>
-        ))}
-      </span>
+      {p.tags.length > 0 && (
+        <span class="article-meta tags">
+          {p.tags.map((tag) => (
+            <a
+              class="article-meta__tags"
+              href={url(termPath('tags', tag))}
+              data-solitude-action="noop"
+              data-solitude-stop="true"
+            >
+              <span class="tags-punctuation">
+                <i class="solitude fas fa-hashtag" />
+                {tag}
+              </span>
+            </a>
+          ))}
+        </span>
+      )}
       <span class="post-meta-date">
         <time datetime={isoDate(p.date)}>{dateLabel(p.date)}</time>
       </span>

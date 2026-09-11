@@ -146,5 +146,8 @@
   "showBarrage": "Mostrar comentarios",
   "hideBarrage": "Ocultar comentarios",
   "playerLoading": "Cargando reproductor…",
-  "musicSetup": "Añade una lista y activa la página de música en la configuración."
+  "musicSetup": "Añade una lista y activa la página de música en la configuración.",
+  "randomFriends": "Amigos al azar",
+  "moreTags": "Más etiquetas",
+  "readingMinutes": "min"
 }

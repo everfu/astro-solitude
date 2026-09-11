@@ -1,5 +1,5 @@
 ---
-import { cfg, t, url, dateLabel, isoDate, termPath } from '../lib/site';
+import { cfg, config, t, url, dateLabel, isoDate, termPath } from '../lib/site';
 import { contentPath, wordCount, type Post } from '../lib/content';
 interface Props {
   post: Post;
@@ -17,7 +17,10 @@ const count = wordCount(post.body ?? '');
       </a>
       {p.categories[0] && (
         <span class="post-meta-categories">
-          <a href={url(termPath('categories', p.categories[0]))}>
+          <a
+            class="post-meta-categories"
+            href={url(termPath('categories', p.categories[0]))}
+          >
             {p.categories[0]}
           </a>
         </span>
@@ -62,13 +65,19 @@ const count = wordCount(post.body ?? '');
       {cfg.post.meta.readtime && (
         <span class="post-meta-readtime">
           <i class="post-meta-icon solitude fas fa-clock" />
-          {Math.max(1, Math.ceil(count / 300))} min
+          <span>
+            {Math.max(
+              1,
+              Math.ceil(count / (config.hasCJKLanguage ? 500 : 212)),
+            )}{' '}
+            {t('readingMinutes')}
+          </span>
         </span>
       )}
       {cfg.post.meta.locate && (
         <span class="post-meta-position">
           <i class="solitude fas fa-location-dot" />
-          {String(p.locate ?? cfg.post.default.locate)}
+          <span>{String(p.locate ?? cfg.post.default.locate)}</span>
         </span>
       )}
       {cfg.post.meta.pv &&
