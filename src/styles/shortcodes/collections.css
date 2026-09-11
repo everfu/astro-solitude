@@ -146,19 +146,25 @@
   }
 }
 
+/* Content-card metrics are shared by cover and text-only variants. */
 .article-container .solitude-tag.card_box {
+  --tag-card-cover-width: 30%;
+  --tag-card-title-size: 20px;
+  --tag-card-text-size: 14px;
+  --tag-card-meta-size: 12px;
+  --tag-card-action-size: 44px;
   position: relative;
   display: grid;
-  grid-template-columns: minmax(132px, 42%) minmax(0, 1fr);
+  grid-template-columns: minmax(0, var(--tag-card-cover-width)) minmax(0, 1fr);
   width: 100%;
-  min-height: 190px;
   max-width: 680px;
   margin: var(--efu-space-4) auto;
+  padding: var(--efu-space-3);
+  gap: var(--efu-space-5);
   overflow: hidden;
   border: 1px solid var(--efu-card-border);
   border-radius: var(--efu-radius-lg);
-  background: var(--efu-secondbg);
-  box-shadow: var(--efu-shadow-border);
+  background: var(--efu-card-bg);
   color: var(--efu-fontcolor);
   isolation: isolate;
   transition: border-color var(--efu-motion-fast), box-shadow var(--efu-motion-fast);
@@ -166,42 +172,42 @@
 
 .article-container .solitude-tag.card_box .card_cover {
   min-width: 0;
-  margin: var(--efu-space-3);
-  margin-right: 0;
-  border-radius: calc(var(--efu-radius-lg) - 4px);
-  background-color: var(--efu-secondbg-bg);
+  min-height: 168px;
+  border-radius: var(--efu-radius-sm);
+  background-color: var(--efu-secondbg);
   background-position: center;
   background-size: cover;
 }
 
-.article-container .solitude-tag.card_box:hover,
+.article-container .solitude-tag.card_box.has-action:hover,
 .article-container .solitude-tag.card_box:focus-within {
-  border-color: color-mix(in srgb, var(--efu-theme) 38%, var(--efu-card-border));
-  box-shadow: var(--efu-shadow-main);
+  border-color: color-mix(in srgb, var(--efu-theme) 45%, var(--efu-card-border));
+  box-shadow: var(--efu-shadow-border);
 }
 
 .article-container .solitude-tag.card_box .card_body {
   display: flex;
   min-width: 0;
-  padding: 22px;
+  padding: var(--efu-space-2) var(--efu-space-3) var(--efu-space-2) 0;
   flex-direction: column;
 }
 
 .article-container .solitude-tag.card_box .card_top {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--efu-space-2);
   min-width: 0;
-  color: var(--efu-secondtext);
-  font-size: 0.76rem;
-  font-weight: 700;
-  line-height: 1.4;
+  color: var(--efu-theme);
+  font-size: var(--tag-card-meta-size);
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .article-container .solitude-tag.card_box .card_tag {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  padding: 2px var(--efu-space-2);
+  border-radius: var(--efu-radius-sm);
+  background: var(--efu-theme-op);
+  overflow-wrap: anywhere;
 }
 
 .article-container .solitude-tag.card_box .card_mask {
@@ -218,104 +224,93 @@
   min-width: 0;
   margin-top: var(--efu-space-2);
   flex-direction: column;
-  gap: 6px;
+  gap: var(--efu-space-2);
 }
 
 .article-container .solitude-tag.card_box a.card_action {
-  position: relative;
-  z-index: 1;
+  position: static;
   display: inline-flex;
-  flex: 0 0 44px;
+  flex: 0 0 var(--tag-card-action-size);
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--efu-border-strong);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--efu-secondtext);
-  font-size: 0.82rem;
+  width: var(--tag-card-action-size);
+  height: var(--tag-card-action-size);
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid var(--efu-card-border);
+  border-radius: var(--efu-radius-sm);
+  background: var(--efu-secondbg);
+  color: var(--efu-fontcolor);
+  font-size: var(--tag-card-text-size);
   text-decoration: none;
-  transition: border-color var(--efu-motion-fast), background-color var(--efu-motion-fast), color var(--efu-motion-fast), transform var(--efu-motion-fast);
+  transition: border-color var(--efu-motion-fast), background-color var(--efu-motion-fast), color var(--efu-motion-fast);
 }
 
 .article-container .solitude-tag.card_box a.card_action::after {
   position: absolute;
-  z-index: -1;
-  inset: -100vh -100vw;
+  inset: 0;
   content: '';
 }
 
-.article-container .solitude-tag.card_box a.card_action:hover,
+.article-container .solitude-tag.card_box.has-action:hover a.card_action,
 .article-container .solitude-tag.card_box a.card_action:focus-visible {
   border-color: var(--efu-theme);
   background: var(--efu-theme);
   color: var(--efu-nav-hover-text);
+}
+
+.article-container .solitude-tag.card_box a.card_action i {
+  margin: 0;
+  transition: transform var(--efu-motion-fast);
+}
+
+.article-container .solitude-tag.card_box.has-action:hover a.card_action i {
   transform: translateX(2px);
 }
 
 .article-container .solitude-tag.card_box.no-cover {
   display: block;
-  min-height: 145px;
-  padding-left: 4px;
-  border-color: var(--efu-card-border);
-  background: var(--efu-secondbg);
-  color: var(--efu-fontcolor);
-}
-
-.article-container .solitude-tag.card_box.no-cover::before {
-  position: absolute;
-  top: 22px;
-  bottom: 22px;
-  left: 22px;
-  width: 3px;
-  border-radius: var(--efu-radius-pill);
-  background: var(--efu-blue);
-  content: '';
+  padding: var(--efu-space-5);
 }
 
 .article-container .solitude-tag.card_box.no-cover .card_body {
-  min-height: inherit;
-  padding-left: 42px;
+  padding: 0;
 }
 
 .article-container .solitude-tag.card_box .card_footer {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: var(--efu-space-3);
   margin-top: var(--efu-space-3);
 }
 
 .article-container .solitude-tag.card_box .card_title {
-  display: -webkit-box;
-  overflow: hidden;
   color: var(--efu-fontcolor);
-  font-size: clamp(1.08rem, 2.3vw, 1.35rem);
-  font-weight: 760;
-  line-height: 1.28;
+  font-size: var(--tag-card-title-size);
+  font-weight: 650;
+  line-height: 1.4;
   overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 .article-container .solitude-tag.card_box .card_description {
-  display: -webkit-box;
-  overflow: hidden;
   color: var(--efu-secondtext);
-  font-size: 0.82rem;
-  line-height: 1.55;
+  font-size: var(--tag-card-text-size);
+  line-height: 1.6;
   overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 .article-container .solitude-tag.card_box .card_rating {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
+  gap: var(--efu-space-1);
+  color: var(--efu-secondtext);
+  font-size: var(--tag-card-meta-size);
+  font-weight: 600;
+}
+
+.article-container .solitude-tag.card_box .card_rating i {
   color: var(--efu-yellow);
-  font-size: 0.9rem;
 }
 
 .article-container .solitude-tag.tag-series {

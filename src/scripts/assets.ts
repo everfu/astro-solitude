@@ -1,4 +1,5 @@
 import { Solitude } from './core/api';
+import { registerMetingElement } from './core/meting';
 export async function prepareAssets() {
   const c = Solitude.config,
     cdn = c.cdn;
@@ -13,7 +14,8 @@ export async function prepareAssets() {
   if (
     c.capsule.enable ||
     (c.music.enable && Solitude.page.page === 'music') ||
-    (c.brevity.music && Boolean(document.querySelector('#bber meting-js')))
+    (c.brevity.music &&
+      Boolean(document.querySelector('#bber solitude-meting')))
   ) {
     styles.push(cdn.aplayer_css);
     await Solitude.loadScript(cdn.aplayer_js).catch(() => {});
@@ -42,4 +44,5 @@ export async function prepareAssets() {
     if (result.status === 'rejected')
       console.warn('Optional Solitude integration unavailable:', result.reason);
   });
+  registerMetingElement();
 }

@@ -1,3 +1,5 @@
+import { navigate } from 'astro:transitions/client';
+import { pageRange } from '../lib/pagination';
 /** Browser behavior preserved from Solitude Hugo; typed boundary: core/api.ts. */
 const SAFE_ARCHIVE_PROTOCOLS = new Set(['http:', 'https:']);
 const resolveArchivePostUrl = (value) => {
@@ -57,29 +59,35 @@ export const archivePageController = (() => {
             this.posts = Array.isArray(posts) ? posts : [];
             this.perPage = Math.max(Number(shell.dataset.perPage) || 10, 1);
             this.years = [...new Set(this.posts.map((post) => String(post.year)))].sort((a, b) => Number(b) - Number(a));
-            this.activeYear = this.years.includes(shell.dataset.initialYear) ? shell.dataset.initialYear : 'all';
-            this.currentPage = Math.max(Number(shell.dataset.initialPage) || 1, 1);
+            const params = new URL(location.href).searchParams;
+            this.activeYear = this.years.includes(params.get('year')) ? params.get('year') : 'all';
+            const requestedPage = Number(params.get('page'));
+            this.currentPage = Number.isSafeInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1;
             this.abortController = new AbortController();
             this.renderYears();
             this.bindEvents();
             this.render();
+            history.replaceState(history.state, '', this.stateUrl(this.activeYear, this.currentPage));
+        },
+        stateUrl(year, page) {
+            const target = new URL(location.href);
+            if (year === 'all') target.searchParams.delete('year');
+            else target.searchParams.set('year', year);
+            if (page === 1) target.searchParams.delete('page');
+            else target.searchParams.set('page', String(page));
+            return target;
         },
         bindEvents() {
             this.shell.addEventListener('click', (event) => {
                 const yearButton = event.target.closest('.archive-year-button');
                 if (yearButton) {
-                    this.activeYear = yearButton.dataset.year;
-                    this.currentPage = 1;
-                    this.render();
+                    void navigate(this.stateUrl(yearButton.dataset.year, 1).href);
                     return;
                 }
                 const pageButton = event.target.closest('[data-archive-page]');
                 if (!pageButton || pageButton.disabled)
                     return;
-                this.currentPage = Number(pageButton.dataset.archivePage);
-                this.render();
-                const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                this.shell.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+                void navigate(this.stateUrl(this.activeYear, Number(pageButton.dataset.archivePage)).href);
             }, { signal: this.abortController.signal });
         },
         renderYears() {
@@ -147,8 +155,8 @@ export const archivePageController = (() => {
             if (totalPages <= 1)
                 return;
             this.pagination.appendChild(this.createPageButton(this.currentPage - 1, this.labels.previous, 'archive-page-extend prev', this.currentPage === 1, 'fa-chevron-left'));
-            this.getPageRange(totalPages).forEach((page) => {
-                if (page === 'space') {
+            pageRange(this.currentPage, totalPages).forEach((page) => {
+                if (page === 'gap') {
                     this.pagination.appendChild(createElement('span', 'archive-page-space', '...'));
                     return;
                 }
@@ -173,15 +181,6 @@ export const archivePageController = (() => {
             if (iconName === 'fa-chevron-right')
                 button.appendChild(createElement('i', `solitude fas ${iconName}`));
             return button;
-        },
-        getPageRange(totalPages) {
-            if (totalPages <= 7)
-                return Array.from({ length: totalPages }, (_, index) => index + 1);
-            if (this.currentPage <= 4)
-                return [1, 2, 3, 4, 5, 'space', totalPages];
-            if (this.currentPage >= totalPages - 3)
-                return [1, 'space', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
-            return [1, 'space', this.currentPage - 1, this.currentPage, this.currentPage + 1, 'space', totalPages];
         },
         renderState(shell, message) {
             const list = shell.querySelector('#archives-page-list');

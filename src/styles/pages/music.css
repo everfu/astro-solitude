@@ -73,7 +73,7 @@ body[data-type="music"] .page .layout#content-inner {
   overflow: hidden;
 }
 
-#Music-page meting-js {
+#Music-page solitude-meting {
   display: block;
   width: 100%;
   height: 100%;
@@ -84,7 +84,7 @@ body[data-type="music"] .page .layout#content-inner {
   box-sizing: content-box;
 }
 
-#Music-page meting-js .aplayer {
+#Music-page solitude-meting .aplayer {
   display: flex;
   width: 100%;
   height: 100%;
@@ -510,7 +510,7 @@ body[data-type="music"] .page .layout#content-inner {
     margin: 0;
   }
 
-  #Music-page meting-js .aplayer {
+  #Music-page solitude-meting .aplayer {
     display: block;
     width: 100%;
     height: 100%;

@@ -44,27 +44,35 @@ export async function initializeCodeBlocks(signal: AbortSignal) {
         copy.dataset.codeCopy = '';
         copy.textContent = labels.copy;
         copy.setAttribute('aria-label', labels.copy);
+        copy.setAttribute('aria-live', 'polite');
+        let resetTimer: ReturnType<typeof setTimeout> | undefined;
+        Solitude.onPageCleanup(() => clearTimeout(resetTimer));
         copy.addEventListener(
           'click',
           async () => {
             try {
               await navigator.clipboard.writeText(source);
+              if (signal.aborted) return;
               copy.dataset.copyState = 'success';
-              Solitude.snackbarShow(
-                Solitude.config.lang.copy.success,
-                false,
-                2000,
-              );
+              copy.textContent = labels.copied;
+              copy.setAttribute('aria-label', labels.copied);
             } catch {
+              if (signal.aborted) return;
               copy.dataset.copyState = 'error';
+              copy.textContent = labels.copy;
+              copy.setAttribute('aria-label', labels.copy);
               Solitude.snackbarShow(
                 Solitude.config.lang.copy.error,
                 false,
                 2000,
               );
             }
-            const timer = setTimeout(() => delete copy.dataset.copyState, 2000);
-            Solitude.onPageCleanup(() => clearTimeout(timer));
+            clearTimeout(resetTimer);
+            resetTimer = setTimeout(() => {
+              delete copy.dataset.copyState;
+              copy.textContent = labels.copy;
+              copy.setAttribute('aria-label', labels.copy);
+            }, 2000);
           },
           { signal },
         );

@@ -1,0 +1,52 @@
+---
+import { cfg, t, url } from '../../lib/site';
+interface Props {
+  title: string;
+  page?: Record<string, any>;
+}
+const { title, page = {} } = Astro.props;
+const cover = page.cover || '/img/demo/cover-pagination-v2.webp';
+const tip = page.desc || page.description;
+---
+
+{cfg.recent_comments.enable && cfg.comment.use && (
+  <>
+    <section
+      class="author-content author-content-item single sharePage"
+      style={{
+        background: `url(${JSON.stringify(url(cover))}) no-repeat center`,
+        backgroundSize: 'cover',
+      }}
+    >
+      <div class="card-content">
+        {tip && <div class="author-content-item-tips">{tip}</div>}
+        <span class="author-content-item-title">{title}</span>
+        {(page.leftend || page.rightend) && (
+          <div class="content-bottom">
+            {page.leftend && <span class="tips">{page.leftend}</span>}
+            {page.rightend && <span class="tips">{page.rightend}</span>}
+          </div>
+        )}
+        {page.rightbtn && page.rightbtnlink && (
+          <div class="banner-button-group">
+            <a class="banner-button" href={url(page.rightbtnlink)}>
+              <i
+                class="solitude fas fa-circle-chevron-right"
+                aria-hidden="true"
+              />
+              <span class="banner-button-text">{page.rightbtn}</span>
+            </a>
+          </div>
+        )}
+      </div>
+    </section>
+    <div
+      class="console_recentcomments recent-comments-list"
+      data-comment-provider={cfg.comment.use.toLowerCase()}
+      aria-live="polite"
+      aria-busy="true"
+    >
+      {t('commentsLoading')}
+    </div>
+  </>
+)}

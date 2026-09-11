@@ -196,11 +196,11 @@ document.addEventListener("contextmenu", (ele) => {
             rm.hideRightMenu();
         });
         addEventListener(rm.menuItems.music[1], "click", () => {
-            document.querySelector("meting-js").aplayer.skipBack();
+            Solitude.musicSkipBack();
             rm.hideRightMenu();
         });
         addEventListener(rm.menuItems.music[2], "click", () => {
-            document.querySelector("meting-js").aplayer.skipForward();
+            Solitude.musicSkipForward();
             rm.hideRightMenu();
         });
         addEventListener(rm.menuItems.music[3], "click", () => {

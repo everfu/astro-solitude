@@ -16,7 +16,9 @@
     "test": "tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
     "migrate:hugo": "tsx scripts/migrate-hugo.ts",
-    "build:fixture": "tsx scripts/build-fixture.ts"
+    "build:fixture": "tsx scripts/build-fixture.ts",
+    "docs:generate": "tsx scripts/document-inventory.ts",
+    "docs:check": "tsx scripts/check-docs.ts && tsx scripts/document-inventory.ts --check"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "0.4.1",

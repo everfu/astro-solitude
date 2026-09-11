@@ -348,7 +348,9 @@ export function convertConfig(source: Record<string, any>) {
         ...x.params,
       });
       const children = original
-        .filter((x: any) => x.parent === item.identifier)
+        .filter(
+          (x: any) => x.parent && x.parent === (item.identifier || item.name),
+        )
         .sort((a: any, b: any) => (a.weight ?? 0) - (b.weight ?? 0))
         .map(convert);
       return { ...convert(item), ...(children.length ? { children } : {}) };

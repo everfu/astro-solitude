@@ -223,9 +223,12 @@ const seriesPosts = allSeriesPosts
           </span>
         </div>
         <div class="card_footer">
-          <div class="card_rating" aria-label={`评分 ${p.star ?? 0} / 5`}>
-            <i class="fa-solid fa-star" />
-          </div>
+          {p.star != null && (
+            <div class="card_rating" aria-label={`评分 ${p.star} / 5`}>
+              <i class="fa-solid fa-star" aria-hidden="true" />
+              <span aria-hidden="true">{p.star} / 5</span>
+            </div>
+          )}
           {p.url && (
             <a
               class="card_action"
@@ -234,7 +237,7 @@ const seriesPosts = allSeriesPosts
               target={external ? '_blank' : undefined}
               rel={external ? 'noopener noreferrer' : undefined}
             >
-              <i class="fa-solid fa-arrow-right" />
+              <i class="fa-solid fa-arrow-right" aria-hidden="true" />
             </a>
           )}
         </div>

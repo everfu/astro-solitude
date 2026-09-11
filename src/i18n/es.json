@@ -1,5 +1,6 @@
 {
   "home": "Inicio",
+  "settings": "Ajustes",
   "startReading": "Empezar a leer",
   "backHome": "Volver al inicio",
   "pageNotFound": "Página no encontrada",
@@ -67,6 +68,8 @@
   "nextPost": "Siguiente",
   "previousPage": "Página anterior",
   "nextPage": "Página siguiente",
+  "previousPageShort": "Ant.",
+  "nextPageShort": "Sig.",
   "paginationNavigation": "Paginación",
   "postNavigation": "Navegación de artículos",
   "author": "Autor",
@@ -96,7 +99,7 @@
   "searchPlaceholder": "Buscar artículos",
   "searchEmpty": "No hay resultados para ${query}",
   "searchHit": "${hits} resultados en ${time} ms",
-  "searchCount": "${count} resultados",
+  "searchCount": "${count} resultados encontrados",
   "searchLoading": "Buscando…",
   "more": "Más",
   "explore": "Explorar temas",
@@ -107,6 +110,7 @@
   "copySuccess": "Copiado",
   "copyError": "Error al copiar",
   "codeCopy": "Copiar",
+  "codeCopied": "Copiado",
   "codeExpand": "Expandir todo",
   "timeDay": "días",
   "timeHour": "horas",
@@ -149,5 +153,14 @@
   "musicSetup": "Añade una lista y activa la página de música en la configuración.",
   "randomFriends": "Amigos al azar",
   "moreTags": "Más etiquetas",
-  "readingMinutes": "min"
+  "readingMinutes": "min",
+  "sidebarFeatures": "Funciones",
+  "displayMode": "Modo de visualización",
+  "siteInformation": "Información del sitio",
+  "brevityDescription": "Las pequeñas alegrías de la vida",
+  "brevityReadMore": "Leer artículos",
+  "brevityLink": "Enlace",
+  "brevityCount": "Mostrando las últimas {count} novedades",
+  "brevityEmpty": "Aún no hay novedades. Pronto llegará un nuevo momento.",
+  "searchError": "No se pudo cargar el índice de búsqueda. Inténtalo de nuevo."
 }

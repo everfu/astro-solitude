@@ -337,6 +337,15 @@
     max-width: 50%;
     box-shadow: var(--efu-shadow-border);
   }
+
+  /* Apply configured columns at the same breakpoint as the wrapping feed.
+     Keep the source theme's half-row cap for an incomplete final row. */
+  body[data-index-layout="column"] #recent-posts > .recent-post-item {
+    --post-card-width: calc((100% - (var(--solitude-index-columns, 2) - 1) * 0.5rem) / var(--solitude-index-columns, 2));
+    width: var(--post-card-width);
+    flex: 1 1 var(--post-card-width);
+    max-width: calc(100% / var(--solitude-index-columns, 2));
+  }
 }
 
 #sidebar {
@@ -602,23 +611,23 @@
   margin-bottom: 6px;
 }
 
-#sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton {
+#sidebar #sidebar-menus .sidebar-menu-item .darkmode_switchbutton {
   padding: 4px 8px;
   cursor: pointer;
   transition: all 0.5s ease 0s;
 }
 
-#sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton:hover {
+#sidebar #sidebar-menus .sidebar-menu-item .darkmode_switchbutton:hover {
   background: var(--efu-main);
   color: var(--efu-white);
 }
 
-[data-theme="dark"] #sidebar #sidebar-menus .sidebar-menu-item span.darkmode_switchbutton {
+[data-theme="dark"] #sidebar #sidebar-menus .sidebar-menu-item .darkmode_switchbutton {
   background: var(--efu-orange);
   color: var(--efu-white);
 }
 
-#sidebar #sidebar-menus .sidebar-menu-item span.menu-child {
+#sidebar #sidebar-menus .sidebar-menu-item .menu-child {
   width: 100%;
   background: var(--efu-card-bg);
   border-radius: 8px;
@@ -626,9 +635,13 @@
   display: flex;
   align-items: center;
   font-size: 14px;
+  color: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  text-align: left;
 }
 
-#sidebar #sidebar-menus .sidebar-menu-item span.menu-child i {
+#sidebar #sidebar-menus .sidebar-menu-item .menu-child i {
   width: 24px;
   height: 24px;
   display: flex;
@@ -636,7 +649,7 @@
   justify-content: center;
 }
 
-#sidebar #sidebar-menus .sidebar-menu-item span.menu-child span {
+#sidebar #sidebar-menus .sidebar-menu-item .menu-child span {
   margin-left: 10px;
 }
 

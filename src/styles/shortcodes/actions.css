@@ -1,99 +1,64 @@
 /* Shortcode buttons and link components. */
 /* Buttons and links */
+/* Shared button metrics; color variants override the accent below. */
 .article-container a.solitude-tag.tag-button {
   --tag-button-color: var(--efu-theme);
-  --tag-button-background: var(--efu-secondbg);
-  --tag-button-border: var(--efu-card-border);
-  --tag-button-text: var(--tag-button-color);
+  --tag-button-background: var(--tag-button-color);
+  --tag-button-border: var(--tag-button-color);
+  --tag-button-text: var(--efu-nav-hover-text);
   --tag-button-soft: color-mix(in srgb, var(--tag-button-color) 14%, transparent);
-  --tag-button-icon-background: var(--efu-theme-op);
-  position: relative;
+  --tag-button-height: 44px;
+  --tag-button-font-size: 14px;
+  --tag-button-icon-size: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  min-height: 44px;
+  gap: var(--efu-space-2);
+  min-height: var(--tag-button-height);
+  max-width: 100%;
   margin: var(--efu-space-2) var(--efu-space-2) var(--efu-space-2) 0;
-  padding: 7px 14px;
-  overflow: hidden;
+  padding: var(--efu-space-2) var(--efu-space-4);
   border: 1px solid var(--tag-button-border);
-  border-radius: var(--efu-radius-lg);
+  border-radius: var(--efu-radius-sm);
   background: var(--tag-button-background);
-  box-shadow: 0 2px 8px rgba(44, 45, 48, 0.06);
+  box-shadow: none;
   color: var(--tag-button-text);
-  font-size: 0.82rem;
-  font-weight: 650;
-  line-height: 1.2;
+  font-size: var(--tag-button-font-size);
+  font-weight: 600;
+  line-height: 1.5;
   text-decoration: none;
-  isolation: isolate;
-  transition: border-color var(--efu-motion-fast), background var(--efu-motion-fast), color var(--efu-motion-fast), transform var(--efu-motion-fast), box-shadow var(--efu-motion-fast);
-}
-
-.article-container a.solitude-tag.tag-button::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  right: 10px;
-  left: 10px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.55);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--efu-motion-fast);
-}
-
-.article-container a.solitude-tag.tag-button.has-icon {
-  padding: 6px 14px 6px 7px;
+  vertical-align: middle;
+  transition: border-color var(--efu-motion-fast), background var(--efu-motion-fast), transform var(--efu-motion-fast), box-shadow var(--efu-motion-fast);
 }
 
 .article-container a.solitude-tag.tag-button i {
-  display: flex;
-  flex: 0 0 28px;
+  display: inline-flex;
+  flex: 0 0 var(--tag-button-icon-size);
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--tag-button-icon-size);
   margin: 0;
-  border: 0;
-  border-radius: var(--efu-radius-sm);
-  background: var(--tag-button-icon-background);
   color: inherit;
-  font-size: 0.78rem;
-  transition: background var(--efu-motion-fast), transform var(--efu-motion-fast);
+  font-size: var(--tag-button-icon-size);
 }
 
 .article-container a.solitude-tag.tag-button span {
   min-width: 0;
   margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .article-container a.solitude-tag.tag-button:hover {
   border-color: var(--tag-button-color);
-  border-radius: var(--efu-radius-lg);
-  background: var(--efu-card-bg);
-  box-shadow: 0 6px 16px var(--tag-button-soft);
-  transform: translateY(-1px);
-}
-
-.article-container a.solitude-tag.tag-button:hover::before {
-  opacity: 1;
-}
-
-.article-container a.solitude-tag.tag-button:hover i {
+  border-radius: var(--efu-radius-sm);
+  background: color-mix(in srgb, var(--tag-button-background) 90%, var(--efu-black));
+  color: var(--tag-button-text);
+  box-shadow: 0 4px 12px var(--tag-button-soft);
   transform: translateY(-1px);
 }
 
 .article-container a.solitude-tag.tag-button:active {
-  border-radius: var(--efu-radius-lg);
-  box-shadow: 0 2px 6px rgba(44, 45, 48, 0.08);
-  transform: translateY(0);
-}
-
-.article-container a.solitude-tag.tag-button:active i {
+  box-shadow: none;
   transform: translateY(0);
 }
 
@@ -108,16 +73,16 @@
 }
 
 .article-container a.solitude-tag.tag-button:focus-visible {
-  border-radius: var(--efu-radius-lg);
-  outline: 3px solid var(--tag-button-soft);
+  border-radius: var(--efu-radius-sm);
+  outline: 2px solid var(--tag-button-color);
   outline-offset: 3px;
   box-shadow: none;
 }
 
 .article-container a.solitude-tag.tag-button.is-icon-only {
-  width: 44px;
-  min-width: 44px;
-  padding: 7px;
+  width: var(--tag-button-height);
+  min-width: var(--tag-button-height);
+  padding: var(--efu-space-2);
   aspect-ratio: 1;
 }
 
@@ -149,20 +114,12 @@
   --tag-button-background: var(--tag-button-color);
   --tag-button-border: var(--tag-button-color);
   --tag-button-text: var(--efu-white);
-  --tag-button-icon-background: rgba(255, 255, 255, 0.14);
-}
-
-.article-container a.solitude-tag.tag-button:is(.blue, .pink, .red, .purple, .orange, .green):not(.outline):hover {
-  background: var(--tag-button-color);
-  box-shadow: 0 6px 16px var(--tag-button-soft);
-  filter: brightness(1.04);
 }
 
 .article-container a.solitude-tag.tag-button.outline {
   --tag-button-background: var(--efu-card-bg);
   --tag-button-border: var(--tag-button-color);
   --tag-button-text: var(--tag-button-color);
-  --tag-button-icon-background: var(--efu-secondbg);
   box-shadow: none;
 }
 
@@ -188,20 +145,10 @@
 }
 
 .article-container a.solitude-tag.tag-button.larger {
-  min-height: 48px;
-  padding-inline: 17px;
-  font-size: 0.88rem;
-}
-
-.article-container a.solitude-tag.tag-button.larger.has-icon {
-  padding: 7px 17px 7px 8px;
-}
-
-.article-container a.solitude-tag.tag-button.larger i {
-  flex-basis: 32px;
-  width: 32px;
-  height: 32px;
-  font-size: 0.84rem;
+  --tag-button-height: 48px;
+  --tag-button-font-size: 16px;
+  --tag-button-icon-size: 18px;
+  padding-inline: var(--efu-space-5);
 }
 
 .article-container a.solitude-tag.tag-link {

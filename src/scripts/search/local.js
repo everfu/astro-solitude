@@ -1,390 +1,417 @@
-/** Browser behavior preserved from Solitude Hugo; typed boundary: core/api.ts. */
-import { Solitude } from "../core/api";
-(() => {
-    class LocalSearch {
-        constructor() {
-            this.store = [];
-            this.currentQuery = '';
-            this.currentPage = 0;
-            this.resultsPerPage = 10;
-            this.currentResults = [];
-            this.lastSearchTime = null;
-            this.isLoading = false;
-            this.searchTimeout = null;
-            this.boundElements = new WeakSet();
-            this.keyboardBound = false;
-            this.pjaxBound = false;
-            this.fixSafariHeight = this.fixSafariHeight.bind(this);
-            this.handleKeydown = this.handleKeydown.bind(this);
-            this.handlePjaxComplete = this.handlePjaxComplete.bind(this);
-            this.handleSearchInputDebounced = this.debounce((event) => {
-                this.handleSearchInput(event.target.value.trim());
-            }, 300);
-            this.elements = this.cacheElements();
-            this.init();
+import { Solitude } from '../core/api';
+import { lifecycle } from '../core/lifecycle';
+import { modalSession } from '../core/modal';
+import { pageRange } from '../../lib/pagination';
+
+const indexes = new Map();
+function loadIndex(path) {
+  if (indexes.has(path)) return indexes.get(path);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  const request = fetch(path, { signal: controller.signal })
+    .then(async (response) => {
+      if (!response.ok)
+        throw new Error(`Search index: HTTP ${response.status}`);
+      const xml = new DOMParser().parseFromString(
+        await response.text(),
+        'text/xml',
+      );
+      if (xml.querySelector('parsererror') || !xml.querySelector('search'))
+        throw new Error('Invalid search index');
+      return Array.from(xml.querySelectorAll('entry')).flatMap((entry) => {
+        const read = (name) =>
+          entry.querySelector(name)?.textContent?.trim() || '';
+        const title = read('title');
+        const link = read('url');
+        try {
+          if (
+            !title ||
+            !link ||
+            !['http:', 'https:'].includes(
+              new URL(link, document.baseURI).protocol,
+            )
+          )
+            return [];
+        } catch {
+          return [];
         }
-        cacheElements() {
-            return {
-                searchMask: document.getElementById('search-mask'),
-                searchDialog: document.querySelector('#local-search .search-dialog'),
-                searchInput: document.getElementById('search-input'),
-                searchSuggestions: document.getElementById('search-suggestions'),
-                searchResults: document.getElementById('search-results'),
-                searchPagination: document.getElementById('search-pagination'),
-                searchTips: document.getElementById('search-tips'),
-                searchButton: document.querySelector('#search-button > .search'),
-                closeButton: document.querySelector('#local-search .search-close-button'),
-                menuSearch: document.getElementById('menu-search')
-            };
-        }
-        async init() {
-            this.bindEvents();
-            this.bindKeyboardShortcuts();
-            this.bindPjaxEvents();
-            this.syncSearchState();
-            Solitude.openSearch = () => this.openSearch();
-            try {
-                await this.loadSearchData();
-                const query = this.elements.searchInput?.value.trim();
-                if (query)
-                    this.handleSearchInput(query);
-            }
-            catch (error) {
-                console.error('Search initialization failed:', error);
-            }
-        }
-        async loadSearchData() {
-            if (!Solitude.config?.localsearch?.path) {
-                throw new Error('Search data path not configured');
-            }
-            this.isLoading = true;
-            try {
-                const response = await fetch(Solitude.config.localsearch.path);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                const data = await response.text();
-                this.parseSearchData(data);
-            }
-            catch (error) {
-                throw new Error(`Failed to load search data: ${error.message}`);
-            }
-            finally {
-                this.isLoading = false;
-            }
-        }
-        parseSearchData(xmlData) {
-            try {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(xmlData, 'text/xml');
-                const entries = xmlDoc.getElementsByTagName('entry');
-                this.store = Array.from(entries).map(entry => {
-                    const getTextContent = (tagName) => {
-                        const element = entry.getElementsByTagName(tagName)[0];
-                        return element ? element.textContent.trim() : '';
-                    };
-                    return {
-                        title: getTextContent('title'),
-                        link: getTextContent('url'),
-                        content: getTextContent('content')
-                    };
-                }).filter(item => item.title && item.link);
-            }
-            catch (error) {
-                throw new Error(`Failed to parse search data: ${error.message}`);
-            }
-        }
-        bindOnce(element, eventName, handler) {
-            if (!element || this.boundElements.has(element))
-                return;
-            element.addEventListener(eventName, handler);
-            this.boundElements.add(element);
-        }
-        bindEvents() {
-            this.bindOnce(this.elements.searchInput, 'input', this.handleSearchInputDebounced);
-            this.bindOnce(this.elements.searchButton, 'click', (event) => {event.preventDefault();this.openSearch();});
-            this.bindOnce(this.elements.closeButton, 'click', () => this.closeSearch());
-            this.bindOnce(this.elements.searchMask, 'click', () => this.closeSearch());
-            document.querySelectorAll('#local-search .tag-list').forEach(button => {
-                this.bindOnce(button, 'click', () => {
-                    const query = button.dataset.query?.trim();
-                    if (!query || !this.elements.searchInput)
-                        return;
-                    this.elements.searchInput.value = query;
-                    this.handleSearchInput(query);
-                    this.elements.searchInput.focus();
-                });
-            });
-            if (Solitude.config.right_menu && this.elements.menuSearch) {
-                this.bindOnce(this.elements.menuSearch, 'click', () => {
-                    Solitude.hideRightMenu?.();
-                    this.openSearch();
-                    if (Solitude.selectedText && this.elements.searchInput) {
-                        this.elements.searchInput.value = Solitude.selectedText;
-                        this.handleSearchInput(Solitude.selectedText.trim());
-                    }
-                });
-            }
-        }
-        bindKeyboardShortcuts() {
-            if (this.keyboardBound)
-                return;
-            document.addEventListener('keydown', this.handleKeydown);
-            this.keyboardBound = true;
-        }
-        bindPjaxEvents() {
-            if (this.pjaxBound)
-                return;
-            window.addEventListener('solitude:afterNavigate', this.handlePjaxComplete);
-            this.pjaxBound = true;
-        }
-        handleKeydown(event) {
-            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
-                event.preventDefault();
-                this.openSearch();
-                return;
-            }
-            if (event.code === 'Escape' && this.isSearchOpen()) {
-                this.closeSearch();
-            }
-        }
-        handlePjaxComplete() {
-            this.elements = this.cacheElements();
-            this.bindEvents();
-            this.syncSearchState();
-        }
-        openSearch() {
-            if (!this.elements.searchMask || !this.elements.searchDialog)
-                return;
-            Solitude.animateIn(this.elements.searchMask, 'to_show 0.5s');
-            this.elements.searchDialog.style.display = 'flex';
-            document.documentElement.classList.add('search-open');
-            this.syncSearchState();
-            this.fixSafariHeight();
-            window.addEventListener('resize', this.fixSafariHeight);
-            setTimeout(() => this.elements.searchInput?.focus(), 100);
-        }
-        closeSearch() {
-            if (!this.elements.searchMask || !this.elements.searchDialog)
-                return;
-            Solitude.animateOut(this.elements.searchDialog, 'search_close .5s');
-            Solitude.animateOut(this.elements.searchMask, 'to_hide 0.5s');
-            document.documentElement.classList.remove('search-open');
-            window.removeEventListener('resize', this.fixSafariHeight);
-        }
-        isSearchOpen() {
-            return this.elements.searchDialog?.style.display === 'flex';
-        }
-        fixSafariHeight() {
-            if (!this.elements.searchDialog)
-                return;
-            if (window.innerWidth < 768) {
-                this.elements.searchDialog.style.setProperty('--search-height', `${window.innerHeight}px`);
-            }
-            else {
-                this.elements.searchDialog.style.removeProperty('--search-height');
-            }
-        }
-        syncSearchState() {
-            const query = this.elements.searchInput?.value.trim() || '';
-            this.setQueryState(Boolean(query));
-        }
-        setQueryState(hasQuery) {
-            if (this.elements.searchSuggestions) {
-                this.elements.searchSuggestions.hidden = hasQuery;
-            }
-            if (this.elements.searchResults) {
-                this.elements.searchResults.hidden = !hasQuery;
-            }
-        }
-        handleSearchInput(query) {
-            this.currentQuery = query;
-            this.currentPage = 0;
-            if (!query) {
-                this.clearSearchResults();
-                return;
-            }
-            this.setQueryState(true);
-            if (this.isLoading) {
-                this.showStatusMessage(Solitude.config.lang?.search?.loading || 'Searching...', 'search-result-loading');
-                return;
-            }
-            try {
-                const startTime = performance.now();
-                this.currentResults = this.performSearch(query);
-                this.lastSearchTime = (performance.now() - startTime).toFixed(2);
-                this.renderResults(this.currentResults, this.currentPage, this.lastSearchTime);
-                this.renderPagination(this.currentResults.length);
-            }
-            catch (error) {
-                console.error('Search error:', error);
-                this.showErrorMessage('Search failed, please try again');
-            }
-        }
-        performSearch(query) {
-            if (!query || !this.store.length)
-                return [];
-            const keywords = query.toLowerCase().split(/\s+/).filter(Boolean);
-            if (!keywords.length)
-                return [];
-            return this.store.filter(item => {
-                const titleLower = item.title.toLowerCase();
-                const contentLower = item.content.toLowerCase();
-                return keywords.every(keyword => titleLower.includes(keyword) || contentLower.includes(keyword));
-            }).sort((a, b) => this.calculateRelevanceScore(b, keywords) - this.calculateRelevanceScore(a, keywords));
-        }
-        calculateRelevanceScore(item, keywords) {
-            const titleLower = item.title.toLowerCase();
-            const contentLower = item.content.toLowerCase();
-            return keywords.reduce((score, keyword) => {
-                if (titleLower === keyword)
-                    return score + 10;
-                if (titleLower.includes(keyword))
-                    return score + 5;
-                if (contentLower.includes(keyword))
-                    return score + 1;
-                return score;
-            }, 0);
-        }
-        renderResults(results, page, searchTime = this.lastSearchTime) {
-            if (!this.elements.searchResults || !this.elements.searchTips)
-                return;
-            this.elements.searchResults.innerHTML = '';
-            this.elements.searchTips.innerHTML = '';
-            this.setQueryState(true);
-            const start = page * this.resultsPerPage;
-            const end = start + this.resultsPerPage;
-            if (!results.length) {
-                this.showEmptyMessage();
-                return;
-            }
-            const fragment = document.createDocumentFragment();
-            results.slice(start, end).forEach(result => {
-                fragment.appendChild(this.createResultElement(result));
-            });
-            this.elements.searchResults.appendChild(fragment);
-            this.showResultCount(results.length, searchTime);
-        }
-        createResultElement(result) {
-            const resultItem = document.createElement('li');
-            resultItem.className = 'search-result-item';
-            const link = document.createElement('a');
-            link.className = 'search-result-title';
-            link.href = result.link;
-            link.innerHTML = this.highlightKeywords(result.title, this.currentQuery);
-            link.addEventListener('click', () => this.closeSearch());
-            resultItem.appendChild(link);
-            return resultItem;
-        }
-        highlightKeywords(text, query) {
-            if (!query)
-                return text;
-            return query.split(/\s+/).filter(Boolean).reduce((highlightedText, keyword) => {
-                const regex = new RegExp(`(${this.escapeRegExp(keyword)})`, 'gi');
-                return highlightedText.replace(regex, '<em>$1</em>');
-            }, text);
-        }
-        escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        }
-        renderPagination(totalResults) {
-            if (!this.elements.searchPagination)
-                return;
-            const totalPages = Math.ceil(totalResults / this.resultsPerPage);
-            this.elements.searchPagination.innerHTML = '';
-            if (totalPages <= 1)
-                return;
-            const paginationList = document.createElement('ul');
-            paginationList.className = 'pagination-list';
-            for (let page = 0; page < totalPages; page++) {
-                paginationList.appendChild(this.createPaginationItem(page));
-            }
-            this.elements.searchPagination.appendChild(paginationList);
-        }
-        createPaginationItem(page) {
-            const item = document.createElement('li');
-            item.className = 'pagination-item';
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'pagination-button';
-            button.textContent = page + 1;
-            button.setAttribute('aria-label', `${page + 1}`);
-            if (page === this.currentPage) {
-                button.classList.add('select');
-                button.setAttribute('aria-current', 'page');
-            }
-            else {
-                button.addEventListener('click', () => this.goToPage(page));
-            }
-            item.appendChild(button);
-            return item;
-        }
-        goToPage(page) {
-            this.currentPage = page;
-            this.renderResults(this.currentResults, page, this.lastSearchTime);
-            this.renderPagination(this.currentResults.length);
-            if (this.elements.searchResults)
-                this.elements.searchResults.scrollTop = 0;
-        }
-        showEmptyMessage() {
-            const empty = document.createElement('span');
-            empty.className = 'search-result-empty';
-            empty.textContent = Solitude.config.lang?.search?.empty?.replace(/\$\{query}/g, this.currentQuery) ||
-                `没有找到与 "${this.currentQuery}" 相关的内容`;
-            this.elements.searchResults.appendChild(empty);
-        }
-        showResultCount(count, time) {
-            const countElement = document.createElement('span');
-            countElement.className = 'search-result-count';
-            const template = Solitude.config.lang?.search?.hit || 'Found ${hits} results in ${time} ms';
-            countElement.innerHTML = template
-                .replace(/\$\{hits}/g, count)
-                .replace(/\$\{query}/g, count)
-                .replace(/\$\{time}/g, time || '0.00');
-            this.elements.searchTips.appendChild(countElement);
-        }
-        showStatusMessage(message, className) {
-            if (!this.elements.searchResults)
-                return;
-            this.elements.searchResults.innerHTML = '';
-            this.elements.searchTips.innerHTML = '';
-            this.elements.searchPagination.innerHTML = '';
-            this.setQueryState(true);
-            const status = document.createElement('span');
-            status.className = className;
-            status.textContent = message;
-            this.elements.searchResults.appendChild(status);
-        }
-        showErrorMessage(message) {
-            this.showStatusMessage(message, 'search-result-error');
-        }
-        clearSearchResults() {
-            if (this.elements.searchResults)
-                this.elements.searchResults.innerHTML = '';
-            if (this.elements.searchPagination)
-                this.elements.searchPagination.innerHTML = '';
-            if (this.elements.searchTips)
-                this.elements.searchTips.innerHTML = '';
-            this.currentResults = [];
-            this.currentPage = 0;
-            this.lastSearchTime = null;
-            this.setQueryState(false);
-        }
-        debounce(func, wait) {
-            return (...args) => {
-                clearTimeout(this.searchTimeout);
-                this.searchTimeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
+        return [{ title, link, content: read('content').replace(/\s+/g, ' ') }];
+      });
+    })
+    .catch((error) => {
+      indexes.delete(path);
+      throw error;
+    })
+    .finally(() => clearTimeout(timeout));
+  indexes.set(path, request);
+  return request;
+}
+
+const keywordsOf = (query) => [
+  ...new Set(query.toLocaleLowerCase().split(/\s+/).filter(Boolean)),
+];
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+function highlighted(text, query) {
+  const fragment = document.createDocumentFragment();
+  const keywords = keywordsOf(query).sort((a, b) => b.length - a.length);
+  if (!keywords.length) {
+    fragment.append(text);
+    return fragment;
+  }
+  const regex = new RegExp(keywords.map(escapeRegex).join('|'), 'giu');
+  let offset = 0;
+  for (const match of text.matchAll(regex)) {
+    fragment.append(text.slice(offset, match.index));
+    const mark = document.createElement('mark');
+    mark.textContent = match[0];
+    fragment.append(mark);
+    offset = match.index + match[0].length;
+  }
+  fragment.append(text.slice(offset));
+  return fragment;
+}
+function excerpt(content, query) {
+  const positions = keywordsOf(query)
+    .map((key) => content.toLocaleLowerCase().indexOf(key))
+    .filter((index) => index >= 0);
+  const start = Math.max(
+    0,
+    (positions.length ? Math.min(...positions) : 0) - 35,
+  );
+  const end = Math.min(content.length, start + 160);
+  return `${start ? '…' : ''}${content.slice(start, end)}${end < content.length ? '…' : ''}`;
+}
+
+class LocalSearch {
+  constructor() {
+    this.resultsPerPage = 10;
+    this.generation = 0;
+    document.addEventListener('keydown', (event) => {
+      if (
+        !event.isComposing &&
+        (event.ctrlKey || event.metaKey) &&
+        event.key.toLowerCase() === 'k' &&
+        this.dialog?.isConnected
+      ) {
+        event.preventDefault();
+        this.openSearch();
+      }
+    });
+    Solitude.openSearch = () => this.openSearch();
+  }
+  get labels() {
+    return Solitude.config.lang.search;
+  }
+  mount() {
+    this.dialog = document.querySelector('#local-search .search-dialog');
+    if (!this.dialog) return;
+    this.input = this.dialog.querySelector('#search-input');
+    this.results = this.dialog.querySelector('#search-results');
+    this.suggestions = this.dialog.querySelector('#search-suggestions');
+    this.pagination = this.dialog.querySelector('#search-pagination');
+    this.tips = this.dialog.querySelector('#search-tips');
+    this.mask = document.getElementById('search-mask');
+    this.currentQuery = '';
+    this.currentPage = 1;
+    this.store = null;
+    this.error = false;
+    this.composing = false;
+    const version = ++this.generation;
+    const listen = (el, name, fn) => lifecycle.listen(el, name, fn);
+    listen(this.input, 'compositionstart', () => {
+      this.composing = true;
+      clearTimeout(this.timer);
+    });
+    listen(this.input, 'compositionend', () => {
+      this.composing = false;
+      this.schedule();
+    });
+    listen(this.input, 'input', (event) => {
+      if (!this.composing && !event.isComposing) this.schedule();
+    });
+    listen(
+      document.querySelector('#search-button > .search'),
+      'click',
+      (event) => {
+        event.preventDefault();
+        this.openSearch();
+      },
+    );
+    listen(this.dialog.querySelector('.search-close-button'), 'click', () =>
+      this.closeSearch(),
+    );
+    listen(this.mask, 'click', () => this.closeSearch());
+    listen(this.dialog, 'keydown', (event) => this.onKeydown(event));
+    this.suggestions.querySelectorAll('[data-query]').forEach((button) => {
+      listen(button, 'click', () => {
+        this.input.value = button.dataset.query;
+        this.search();
+        this.input.focus();
+      });
+    });
+    listen(document.getElementById('menu-search'), 'click', () => {
+      Solitude.hideRightMenu?.();
+      this.openSearch();
+      if (Solitude.selectedText) {
+        this.input.value = Solitude.selectedText;
+        this.search();
+      }
+    });
+    lifecycle.add(() => {
+      this.closeSearch(false);
+      clearTimeout(this.timer);
+      if (version === this.generation) this.generation++;
+    });
+    if (Solitude.config.localsearch.preload) void this.ensureData();
+  }
+  async ensureData() {
+    const version = this.generation;
+    if (this.store) return;
+    this.error = false;
+    if (this.open) this.status(this.labels.loading, 'loading');
+    try {
+      const data = await loadIndex(Solitude.config.localsearch.path);
+      if (version !== this.generation) return;
+      this.store = data;
+      if (this.open) this.search();
+    } catch {
+      if (version !== this.generation) return;
+      this.error = true;
+      if (this.open) this.status(this.labels.error, 'error');
     }
-    const initializeLocalSearch = () => {
-        if (!Solitude.localSearch)
-            Solitude.localSearch = new LocalSearch();
-    };
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeLocalSearch, { once: true });
+  }
+  schedule() {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.search(), 200);
+  }
+  openSearch() {
+    if (!this.dialog?.isConnected) return;
+    if (this.open) {
+      this.input.focus();
+      return;
     }
-    else {
-        initializeLocalSearch();
+    this.open = true;
+    this.dialog.style.display = 'flex';
+    this.mask.style.display = 'block';
+    document.documentElement.classList.add('search-open');
+    this.releaseModal = modalSession(this.dialog, () => this.closeSearch(), [
+      this.mask,
+    ]);
+    this.input.focus();
+    if (
+      this.store &&
+      this.currentResults?.length &&
+      this.currentQuery === this.input.value.trim()
+    )
+      this.render();
+    else this.search();
+    if (!this.store && !this.error) void this.ensureData();
+  }
+  closeSearch(restoreFocus = true) {
+    if (!this.open) return;
+    this.open = false;
+    clearTimeout(this.timer);
+    this.dialog.style.display = 'none';
+    this.mask.style.display = 'none';
+    document.documentElement.classList.remove('search-open');
+    this.releaseModal?.(restoreFocus);
+    this.releaseModal = null;
+  }
+  search() {
+    clearTimeout(this.timer);
+    this.timer = null;
+    if (this.composing) return;
+    this.currentQuery = this.input.value.trim();
+    this.currentPage = 1;
+    if (this.error) {
+      this.status(this.labels.error, 'error');
+      return;
     }
-})();
+    if (!this.store) {
+      this.status(this.labels.loading, 'loading');
+      return;
+    }
+    if (!this.currentQuery) {
+      this.results.replaceChildren();
+      this.pagination.replaceChildren();
+      this.tips.textContent = '';
+      this.tips.classList.remove('search-status-only');
+      this.results.hidden = true;
+      this.suggestions.hidden = false;
+      this.results.setAttribute('aria-busy', 'false');
+      return;
+    }
+    const keywords = keywordsOf(this.currentQuery);
+    const score = (item) =>
+      keywords.reduce(
+        (sum, word) =>
+          sum +
+          (item.title.toLocaleLowerCase() === word
+            ? 10
+            : item.title.toLocaleLowerCase().includes(word)
+              ? 5
+              : 1),
+        0,
+      );
+    this.currentResults = this.store
+      .filter((item) =>
+        keywords.every(
+          (word) =>
+            item.title.toLocaleLowerCase().includes(word) ||
+            item.content.toLocaleLowerCase().includes(word),
+        ),
+      )
+      .sort((a, b) => score(b) - score(a));
+    this.render();
+  }
+  render() {
+    this.results.replaceChildren();
+    this.pagination.replaceChildren();
+    this.results.hidden = false;
+    this.suggestions.hidden = true;
+    this.results.setAttribute('aria-busy', 'false');
+    if (!this.currentResults.length) {
+      this.status(
+        this.labels.empty.replace(/\$\{query}/g, this.currentQuery),
+        'empty',
+      );
+      return;
+    }
+    this.currentResults
+      .slice(
+        (this.currentPage - 1) * this.resultsPerPage,
+        this.currentPage * this.resultsPerPage,
+      )
+      .forEach((result) => {
+        const item = document.createElement('li');
+        item.className = 'search-result-item';
+        const link = document.createElement('a');
+        link.className = 'search-result-title';
+        link.href = result.link;
+        const title = document.createElement('span');
+        title.className = 'search-result-heading';
+        title.append(highlighted(result.title, this.currentQuery));
+        link.append(title);
+        if (result.content) {
+          const summary = document.createElement('span');
+          summary.className = 'search-result-summary';
+          summary.append(
+            highlighted(
+              excerpt(result.content, this.currentQuery),
+              this.currentQuery,
+            ),
+          );
+          link.append(summary);
+        }
+        link.addEventListener('click', () => this.closeSearch(false));
+        item.append(link);
+        this.results.append(item);
+      });
+    this.tips.classList.remove('search-status-only');
+    this.tips.textContent = this.labels.count.replace(
+      /\$\{(?:hits|count|query)}/g,
+      String(this.currentResults.length),
+    );
+    const total = Math.ceil(this.currentResults.length / this.resultsPerPage);
+    if (total > 1) {
+      const list = document.createElement('ul');
+      list.className = 'pagination-list';
+      const add = (page, text, disabled = false) => {
+        const li = document.createElement('li');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'pagination-button';
+        button.textContent = text;
+        button.disabled = disabled;
+        button.dataset.page = String(page);
+        button.setAttribute(
+          'aria-label',
+          page === this.currentPage - 1 && text === '‹'
+            ? this.labels.previous
+            : text === '›'
+              ? this.labels.next
+              : String(page),
+        );
+        if (text === String(this.currentPage)) {
+          button.classList.add('select');
+          button.setAttribute('aria-current', 'page');
+        }
+        button.addEventListener('click', () => {
+          this.currentPage = page;
+          this.render();
+          this.results.scrollTop = 0;
+          this.pagination.querySelector('[aria-current="page"]')?.focus();
+        });
+        li.append(button);
+        list.append(li);
+      };
+      add(this.currentPage - 1, '‹', this.currentPage === 1);
+      for (const page of pageRange(this.currentPage, total)) {
+        if (page === 'gap') {
+          const li = document.createElement('li');
+          li.className = 'page-gap';
+          li.textContent = '…';
+          li.setAttribute('aria-hidden', 'true');
+          list.append(li);
+        } else add(page, String(page));
+      }
+      add(this.currentPage + 1, '›', this.currentPage === total);
+      this.pagination.append(list);
+    }
+  }
+  status(message, kind) {
+    this.results.replaceChildren();
+    this.pagination.replaceChildren();
+    this.results.hidden = false;
+    this.suggestions.hidden = true;
+    this.results.setAttribute('aria-busy', String(kind === 'loading'));
+    const item = document.createElement('li');
+    item.className = `search-result-${kind}`;
+    item.textContent = message;
+    if (kind === 'error') {
+      const retry = document.createElement('button');
+      retry.type = 'button';
+      retry.className = 'search-retry';
+      retry.textContent = this.labels.retry;
+      retry.addEventListener('click', () => {
+        this.input.focus();
+        void this.ensureData();
+      });
+      item.append(retry);
+    }
+    this.results.append(item);
+    this.tips.classList.add('search-status-only');
+    this.tips.textContent = message;
+  }
+  onKeydown(event) {
+    if (event.isComposing || this.composing) return;
+    const links = Array.from(this.results.querySelectorAll('a'));
+    if (!links.length) return;
+    const index = links.indexOf(document.activeElement);
+    if (
+      ['ArrowDown', 'ArrowUp'].includes(event.key) &&
+      (index >= 0 || event.target === this.input)
+    ) {
+      event.preventDefault();
+      const next =
+        index < 0
+          ? event.key === 'ArrowDown'
+            ? 0
+            : links.length - 1
+          : (index + (event.key === 'ArrowDown' ? 1 : -1) + links.length) %
+            links.length;
+      links[next].focus({ preventScroll: true });
+      links[next].scrollIntoView({ block: 'nearest' });
+    } else if (event.key === 'Enter' && event.target === this.input) {
+      event.preventDefault();
+      if (this.timer || this.currentQuery !== this.input.value.trim()) {
+        this.search();
+        this.results.querySelector('a')?.click();
+      } else links[0].click();
+    }
+  }
+}
+export function initializeLocalSearch() {
+  if (!Solitude.localSearch) Solitude.localSearch = new LocalSearch();
+  Solitude.localSearch.mount();
+}

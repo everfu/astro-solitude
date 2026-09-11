@@ -1,13 +1,16 @@
 ---
-import { cfg, config, t, url } from '../lib/site';
-import { taxonomy, type Post } from '../lib/content';
+import { cfg, config, t, url, dateLabel, isoDate } from '../lib/site';
+import { taxonomy, wordCount, type Post } from '../lib/content';
 import Menu from './Menu.astro';
 interface Props {
   posts: Post[];
   comments?: boolean;
+  toc?: boolean;
 }
-const { posts, comments = false } = Astro.props;
+const { posts, comments = false, toc = false } = Astro.props;
 const tags = taxonomy(posts, 'tags');
+const categories = taxonomy(posts, 'categories');
+const updated = new Date();
 const actionLabels: Record<string, string> = {
   toggleKeyboard: 'keyboardDisable',
   showConsole: 'keyboardConsole',
@@ -62,69 +65,86 @@ const contextItems = [
                 <div class="author-content-item-tips">
                   {t('recentComments')}
                 </div>
-                <div class="author-content-item-title">{t('comments')}</div>
+                <div class="author-content-item-title">
+                  {t('comments')}
+                  {cfg.recent_comments.enable && (
+                    <a
+                      class="recent-comment-more"
+                      href={url(cfg.recent_comments.page)}
+                      title={t('more')}
+                      aria-label={t('more')}
+                    >
+                      <i class="solitude fas fa-circle-chevron-right" />
+                    </a>
+                  )}
+                </div>
               </div>
               <div
                 class="console_recentcomments"
                 data-comment-provider={cfg.comment.use}
+                aria-live="polite"
+                aria-busy="true"
               >
                 <div class="comment-loading">{t('commentsLoading')}</div>
               </div>
             </div>
           </div>
         )}
-        <div class="console-card-group-right">
-          {cfg.console.card.tags && (
-            <div class="console-card tags" data-solitude-action="hideConsole">
-              <div class="card-content">
-                <div class="author-content-item-tips">{t('tags')}</div>
-                <div class="author-content-item-title">探索</div>
+        {(cfg.console.card.tags || cfg.console.card.archive) && (
+          <div class="console-card-group-right">
+            {cfg.console.card.tags && (
+              <div class="console-card tags" data-solitude-action="hideConsole">
+                <div class="card-content">
+                  <div class="author-content-item-tips">{t('tags')}</div>
+                  <div class="author-content-item-title">探索</div>
+                </div>
+                <div class="card-tag-cloud">
+                  {tags.slice(0, 20).map((tag) => (
+                    <a href={url(tag.path)}>
+                      {tag.name}
+                      <sup>{tag.posts.length}</sup>
+                    </a>
+                  ))}
+                </div>
               </div>
-              <div class="card-tag-cloud">
-                {tags.slice(0, 20).map((tag) => (
-                  <a href={url(tag.path)}>
-                    {tag.name}
-                    <sup>{tag.posts.length}</sup>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-          {cfg.console.card.archive && (
-            <div
-              class="console-card history"
-              data-solitude-action="hideConsole"
-            >
-              <ul class="card-archive-list">
-                {months.map((month) => (
+            )}
+            {cfg.console.card.archive && (
+              <div
+                class="console-card history"
+                data-solitude-action="hideConsole"
+              >
+                <ul class="card-archive-list">
+                  {months.map((month) => (
+                    <li class="item">
+                      <a href={url('/archives/')}>
+                        <span class="date">{month}</span>
+                        <div class="count-group">
+                          <span class="count">
+                            {
+                              posts.filter((p) =>
+                                p.data.date.toISOString().startsWith(month),
+                              ).length
+                            }
+                          </span>
+                          <span class="unit">篇</span>
+                        </div>
+                      </a>
+                    </li>
+                  ))}
                   <li class="item">
                     <a href={url('/archives/')}>
-                      <span class="date">{month}</span>
+                      <span class="date">{t('allPosts')}</span>
                       <div class="count-group">
-                        <span class="count">
-                          {
-                            posts.filter((p) =>
-                              p.data.date.toISOString().startsWith(month),
-                            ).length
-                          }
-                        </span>
+                        <span class="count">{posts.length}</span>
                         <span class="unit">篇</span>
                       </div>
                     </a>
                   </li>
-                ))}
-                <li class="item">
-                  <a href={url('/archives/')}>
-                    <span class="date">{t('allPosts')}</span>
-                    <div class="count-group">
-                      <span class="count">{posts.length}</span>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          )}
-        </div>
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <div class="button-group">
         <div class="console-btn-item">
@@ -220,70 +240,168 @@ const contextItems = [
 <div id="sidebar">
   <div id="menu-mask" />
   <div id="sidebar-menus">
-    <div class="avatar-img">
-      <img src={url(cfg.aside.my_card.author.img)} alt={config.author.name} />
+    <div class="site-data">
+      {[
+        { name: 'archives', path: '/archives/', count: posts.length },
+        { name: 'categories', path: '/categories/', count: categories.length },
+        { name: 'tags', path: '/tags/', count: tags.length },
+      ].map((item) => (
+        <div class="data-item is-center">
+          <div class="data-item-link">
+            <a href={url(item.path)}>
+              <div class="headline">{t(item.name)}</div>
+              <div class="length-num">{item.count}</div>
+            </a>
+          </div>
+        </div>
+      ))}
+      {cfg.comment.sidebar &&
+        cfg.comment.use.toLowerCase().includes('valine') && (
+          <div class="data-item is-center">
+            <div class="data-item-link">
+              <a href={url(cfg.recent_comments.page)}>
+                <div class="headline">{t('comments')}</div>
+                <div class="length-num" id="valine_allcount">
+                  <i class="solitude fas fa-spinner fa-spin" />
+                </div>
+              </a>
+            </div>
+          </div>
+        )}
     </div>
-    <div class="sidebar-site-data site-data is-center">
-      <a href={url('/archives/')}>
-        <div class="headline">{t('posts')}</div>
-        <div class="length-num">{posts.length}</div>
-      </a>
-      <a href={url('/tags/')}>
-        <div class="headline">{t('tags')}</div>
-        <div class="length-num">{tags.length}</div>
-      </a>
+    <span class="sidebar-menu-item-title">{t('sidebarFeatures')}</span>
+    <div class="sidebar-menu-item">
+      <button
+        type="button"
+        class="darkmode_switchbutton menu-child"
+        data-solitude-action="toggleTheme"
+      >
+        <i class="solitude fas fa-circle-half-stroke" />
+        <span>{t('displayMode')}</span>
+      </button>
     </div>
     <Menu />
+    <span class="sidebar-menu-item-title">{t('tags')}</span>
+    <div class="card-tags">
+      <div class="card-tag-cloud">
+        {tags.slice(0, cfg.aside.tags.limit).map((tag) => (
+          <a
+            href={url(tag.path)}
+            class={
+              cfg.aside.tags.highlight_list.includes(tag.name)
+                ? 'highlight'
+                : undefined
+            }
+          >
+            {tag.name}
+            <sup>{tag.posts.length}</sup>
+          </a>
+        ))}
+      </div>
+      {tags.length >= cfg.aside.tags.limit && (
+        <a class="more-tags-btn" href={url('/tags/')}>
+          {t('moreTags')}
+        </a>
+      )}
+    </div>
+    <span class="sidebar-menu-item-title">{t('siteInformation')}</span>
+    <div class="webinfo">
+      {cfg.aside.siteinfo.postcount && (
+        <div class="webinfo-item">
+          <div class="item-name">{t('posts')}</div>
+          <div class="item-count">{posts.length}</div>
+        </div>
+      )}
+      {cfg.aside.siteinfo.runtimeenable && (
+        <div class="webinfo-item">
+          <div class="item-name">{t('uptime')}</div>
+          <div class="item-count runtimeshow" />
+        </div>
+      )}
+      {cfg.aside.siteinfo.updatetime && (
+        <div class="webinfo-item">
+          <div class="item-name">{t('lastUpdated')}</div>
+          <time class="item-count" datetime={isoDate(updated)}>
+            {dateLabel(updated)}
+          </time>
+        </div>
+      )}
+      {cfg.aside.siteinfo.wordcount && (
+        <div class="webinfo-item">
+          <div class="item-name">{t('totalWords')}</div>
+          <div class="item-count">
+            {posts.reduce((n, p) => n + wordCount(p.body ?? ''), 0)}
+          </div>
+        </div>
+      )}
+    </div>
   </div>
 </div>
 {cfg.rightside.enable && (
-  <div id="rightside">
-    <div id="rightside-config-hide">
+  <div id="rightside" class="needEndHide">
+    <div id="rightside-config-hide" class="rs_hide">
+      {cfg.translate.enable && cfg.rightside.hide.translate && (
+        <button id="translateLink" class="translate" type="button" aria-label="Translate">
+          繁
+        </button>
+      )}
       {cfg.rightside.hide.mode && (
         <button
-          class="darkmode_switchbutton"
+          class="mode darkmode_switchbutton"
+          type="button"
           data-solitude-action="toggleTheme"
           aria-label={t('toggleTheme')}
         >
           <i class="solitude fas fa-circle-half-stroke" />
         </button>
       )}
-      {cfg.rightside.hide.aside && (
+      {cfg.rightside.hide.aside && cfg.console.enable && (
         <button
+          class="aside pc"
+          type="button"
           data-solitude-action="switchHideAside"
           aria-label={t('toggleAside')}
         >
           <i class="solitude fas fa-arrows-left-right-to-line" />
         </button>
       )}
-      {cfg.translate.enable && cfg.rightside.hide.translate && (
-        <button id="translateLink" aria-label="Translate">
-          繁
-        </button>
-      )}
     </div>
-    <div id="rightside-config-show">
+    <div id="rightside-config-show" class="rs_show">
       {cfg.rightside.hide.enable && (
         <button
           id="rightside-config"
-          data-solitude-action="showRightside"
-          aria-label={t('more')}
+          class="config"
+          type="button"
+          data-solitude-action="toggleTargetClass"
+          data-solitude-target="#rightside-config-hide"
+          aria-label={t('settings')}
         >
           <i class="solitude fas fa-gear" />
         </button>
       )}
+      {toc && (
+        <button
+          class="mobile toc"
+          type="button"
+          data-solitude-toc-toggle
+          aria-controls="card-toc"
+          aria-expanded="false"
+          aria-label={t('toc')}
+        >
+          <i class="solitude fas fa-list" />
+        </button>
+      )}
       {comments && (
-        <a
-          class="rightside-comment"
-          href="#post-comment"
+        <button
+          class="comment rightside-comment"
+          type="button"
+          data-solitude-action="scrollTo"
+          data-solitude-target="post-comment"
           aria-label={t('comments')}
         >
           <i class="solitude fas fa-comment" />
-        </a>
+        </button>
       )}
-      <button id="go-up" data-solitude-action="toTop" aria-label={t('backTop')}>
-        <i class="solitude fas fa-arrow-up" />
-      </button>
     </div>
   </div>
 )}

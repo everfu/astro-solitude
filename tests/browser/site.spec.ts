@@ -177,9 +177,12 @@ test('home metadata, category tags and hover menus retain source behavior', asyn
     'data-solitude-runtime',
     'ready',
   );
-  const update = page.locator('.webinfo-item time');
-  await expect(update).toHaveAttribute('datetime', /\d{4}-\d{2}-\d{2}T/);
-  await expect(update).not.toContainText('1970');
+  const updates = page.locator('.webinfo-item time');
+  await expect(updates).toHaveCount(2);
+  for (const update of await updates.all()) {
+    await expect(update).toHaveAttribute('datetime', /\d{4}-\d{2}-\d{2}T/);
+    await expect(update).not.toContainText('1970');
+  }
   const group = page.locator('#menus > .menus_items > .menus_item > a').first();
   await group.focus();
   await page.keyboard.press('Enter');

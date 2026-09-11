@@ -1,5 +1,6 @@
 {
   "home": "首頁",
+  "settings": "設定",
   "startReading": "開始閱讀",
   "backHome": "返回首頁",
   "pageNotFound": "找不到頁面",
@@ -67,6 +68,8 @@
   "nextPost": "下一篇",
   "previousPage": "上一頁",
   "nextPage": "下一頁",
+  "previousPageShort": "上頁",
+  "nextPageShort": "下頁",
   "paginationNavigation": "分頁導覽",
   "postNavigation": "文章導覽",
   "author": "作者",
@@ -96,7 +99,7 @@
   "searchPlaceholder": "輸入關鍵字快速尋找",
   "searchEmpty": "找不到你查詢的內容：${query}",
   "searchHit": "找到 ${hits} 筆結果，用時 ${time} 毫秒",
-  "searchCount": "共 ${count} 筆結果",
+  "searchCount": "找到 ${count} 筆結果",
   "searchLoading": "搜尋中…",
   "more": "更多",
   "explore": "探索感興趣的內容",
@@ -107,6 +110,7 @@
   "copySuccess": "複製成功",
   "copyError": "複製失敗",
   "codeCopy": "複製",
+  "codeCopied": "已複製",
   "codeExpand": "展開全部",
   "timeDay": "天前",
   "timeHour": "小時前",
@@ -149,5 +153,14 @@
   "musicSetup": "請在站點設定中填寫歌單並啟用音樂館。",
   "randomFriends": "隨機友鏈",
   "moreTags": "更多標籤",
-  "readingMinutes": "分鐘"
+  "readingMinutes": "分鐘",
+  "sidebarFeatures": "功能",
+  "displayMode": "顯示模式",
+  "siteInformation": "站點資訊",
+  "brevityDescription": "分享生活的小確幸",
+  "brevityReadMore": "查看文章",
+  "brevityLink": "連結",
+  "brevityCount": "展示最近 {count} 則動態",
+  "brevityEmpty": "還沒有動態，靜待生活裡的下一份靈感。",
+  "searchError": "搜尋索引載入失敗，請重試。"
 }

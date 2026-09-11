@@ -1,5 +1,6 @@
 ---
 import { url, t } from '../lib/site';
+import { pageRange } from '../lib/pagination';
 interface Props {
   current: number;
   total: number;
@@ -18,11 +19,16 @@ const href = (n: number) => url(n === 1 ? `${base}/` : `${base}/page/${n}/`);
           href={href(current - 1)}
           aria-label={t('previousPage')}
         >
-          <i class="fas fa-chevron-left" />
+          <i class="fas fa-chevron-left" aria-hidden="true" />
+          <span class="pagination_tips_prev">{t('previousPageShort')}</span>
         </a>
       )}
-      {Array.from({ length: total }, (_, i) => i + 1).map((n) =>
-        n === current ? (
+      {pageRange(current, total).map((n) =>
+        n === 'gap' ? (
+          <span class="page-gap" aria-hidden="true">
+            …
+          </span>
+        ) : n === current ? (
           <span class="page-number current" aria-current="page">
             {n}
           </span>
@@ -38,7 +44,8 @@ const href = (n: number) => url(n === 1 ? `${base}/` : `${base}/page/${n}/`);
           href={href(current + 1)}
           aria-label={t('nextPage')}
         >
-          <i class="fas fa-chevron-right" />
+          <span class="pagination_tips_next">{t('nextPageShort')}</span>
+          <i class="fas fa-chevron-right" aria-hidden="true" />
         </a>
       )}
     </div>

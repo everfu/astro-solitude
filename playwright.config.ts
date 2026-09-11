@@ -18,6 +18,18 @@ export default defineConfig({
       env: { ASTRO_PREVIEW_BACKGROUND: '1' },
       reuseExistingServer: !process.env.CI,
     },
+    {
+      command: `pnpm exec astro preview --root ${path.resolve('.astro/comments-fixture')} --host 127.0.0.1 --port 4335`,
+      url: 'http://127.0.0.1:4335',
+      env: { ASTRO_PREVIEW_BACKGROUND: '1' },
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: `pnpm exec astro preview --root ${path.resolve('.astro/music-fixture')} --host 127.0.0.1 --port 4336`,
+      url: 'http://127.0.0.1:4336',
+      env: { ASTRO_PREVIEW_BACKGROUND: '1' },
+      reuseExistingServer: !process.env.CI,
+    },
     ...['algolia', 'docsearch'].map((variant, i) => ({
       command: `pnpm exec astro preview --root ${path.resolve(`.astro/${variant}-fixture`)} --host 127.0.0.1 --port ${4333 + i}`,
       url: `http://127.0.0.1:${4333 + i}${i === 0 ? '/sub/' : '/'}`,

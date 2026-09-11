@@ -27,6 +27,8 @@ import Links from '../components/pages/Links.astro';
 import Equipment from '../components/pages/Equipment.astro';
 import Brevity from '../components/pages/Brevity.astro';
 import Archive from '../components/pages/Archive.astro';
+import RecentComments from '../components/pages/RecentComments.astro';
+import MessageBarrage from '../components/pages/MessageBarrage.astro';
 interface Props {
   route: Route;
 }
@@ -43,7 +45,7 @@ const type = route.kind === 'home' ? 'solitude' : (route.type ?? route.kind);
 const post = route.kind === 'post' ? (route.entry as Post) : undefined;
 const hideAside =
   p.aside === false ||
-  ['about', 'music', 'tags', 'categories', 'links', 'kit'].includes(type) ||
+  ['about', 'music', 'tags', 'categories', 'links', 'kit', 'brevity', 'recentcomment', 'message'].includes(type) ||
   route.kind === 'taxonomy';
 const index = post ? posts.findIndex((item) => item.id === post.id) : -1;
 const previous = posts[index + 1],
@@ -95,6 +97,12 @@ const commentsEnabled =
     type={type}
     post={post}
     page={p}
+    toc={
+      !hideAside &&
+      p.toc !== false &&
+      headings.length > 0 &&
+      (post ? cfg.aside.toc.post : cfg.aside.toc.page)
+    }
   >
     {route.kind === 'home' ? (
       <div class="home-main-flow">
@@ -311,7 +319,7 @@ const commentsEnabled =
             <>
               <div id="Music-bg" />
               <div id="Music-page">
-                <meting-js
+                <solitude-meting
                   id={cfg.music.id}
                   server={cfg.music.server}
                   type={cfg.music.type}
@@ -327,19 +335,7 @@ const commentsEnabled =
               </div>
             </>
           ) : type === 'recentcomment' ? (
-            <>
-              <h1 class="page-title">{route.title}</h1>
-              {cfg.recent_comments.enable && cfg.comment.use ? (
-                <div
-                  class="console_recentcomments recent-comments-list"
-                  data-comment-provider={cfg.comment.use}
-                >
-                  {t('commentsLoading')}
-                </div>
-              ) : (
-                <p>{t('commentsEmpty')}</p>
-              )}
-            </>
+            <RecentComments title={route.title} page={p} />
           ) : (
             <>
               <header class="page-title-wrap">
@@ -352,33 +348,7 @@ const commentsEnabled =
               {type === 'music' && !cfg.music.enable && (
                 <p>{t('musicSetup')}</p>
               )}
-              {type === 'message' && cfg.envelope.enable && (
-                <>
-                  <div class="switch_message">
-                    {[
-                      [t('showBarrage'), 'false'],
-                      [t('hideBarrage'), 'true'],
-                    ].map(([name, value]) => (
-                      <button
-                        type="button"
-                        data-solitude-action="setTargetClass"
-                        data-solitude-target="#barrage"
-                        data-solitude-class="hide"
-                        data-solitude-enabled={value}
-                      >
-                        <span>{name}</span>
-                      </button>
-                    ))}
-                  </div>
-                  <div
-                    id="barrage"
-                    data-line={cfg.envelope.line}
-                    data-speed={cfg.envelope.speed}
-                    data-hover={String(cfg.envelope.hover)}
-                    data-loop={String(cfg.envelope.loop)}
-                  />
-                </>
-              )}
+              {type === 'message' && cfg.envelope.enable && <MessageBarrage />}
             </>
           )}
           <Comments enabled={commentsEnabled} />

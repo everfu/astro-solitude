@@ -20,7 +20,16 @@
   }
 }
 
+.message-barrage-region {
+  --message-barrage-height: 320px;
+  margin: var(--efu-space-5) 0 var(--efu-space-6);
+  padding-bottom: var(--efu-space-5);
+  border-bottom: var(--style-border-always);
+}
+
 .switch_message {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: center;
   margin: 1rem 0;
@@ -28,71 +37,90 @@
 }
 
 .switch_message button {
+  min-height: 44px;
   background-color: var(--efu-main);
   border: var(--style-border-always);
-  border-radius: 50px;
+  border-radius: var(--efu-radius-pill);
   color: var(--efu-card-bg);
   padding: 0.5rem 1rem;
   transition: background-color 0.3s;
+  cursor: pointer;
 }
+
+.switch_message button[aria-pressed="false"] {
+  background: var(--efu-card-bg);
+  color: var(--efu-fontcolor);
+}
+.switch_message button:disabled { opacity: 0.5; cursor: default; }
+.switch_message button:focus-visible { outline: 2px solid var(--efu-main); outline-offset: 3px; }
+
+#message-barrage-status {
+  text-align: center;
+  color: var(--efu-secondtext);
+  font-size: 14px;
+}
+#message-barrage-status:empty { display: none; }
 
 #barrage {
-  display: flex;
-  justify-content: center;
+  --danmaku-avatar: 30px;
+  --danmaku-inset: 6px;
+  --danmaku-text-width: 300px;
+  position: relative;
   width: 100%;
-  height: calc(100% - 60px);
-  position: fixed;
-  left: 0;
-  top: 60px;
-  z-index: 1;
+  height: var(--message-barrage-height);
+  margin-top: var(--efu-space-5);
+  overflow: hidden;
   pointer-events: none;
 }
 
-#barrage .default-style {
-  pointer-events: all;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 100px;
-  overflow: hidden;
-}
-
-#barrage .default-style a {
-  background-color: rgba(0,0,0,0.5);
-  transition: 0.3s;
-  color: #eee;
+#barrage .message-danmaku {
+  position: absolute;
+  left: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 6px 16px 6px 6px;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  gap: var(--danmaku-inset);
+  padding: var(--danmaku-inset) 16px var(--danmaku-inset) var(--danmaku-inset);
+  border-radius: var(--efu-radius-pill);
+  background: color-mix(in srgb, var(--efu-black) 50%, transparent);
+  color: var(--efu-white);
+  font-size: 16px;
+  line-height: 1.5;
   text-decoration: none;
-  border-bottom: none;
+  pointer-events: auto;
+  will-change: transform;
+  transition: background-color 0.2s;
 }
-
-#barrage .default-style a:hover {
-  background-color: rgba(0,0,0,0.7);
+#barrage .message-danmaku:hover,
+#barrage .message-danmaku:focus-visible {
+  background: color-mix(in srgb, var(--efu-black) 70%, transparent);
+  color: var(--efu-white);
 }
-
-#barrage .default-style img {
+#barrage .message-danmaku:focus-visible { outline: 2px solid var(--efu-main); outline-offset: -2px; }
+#barrage .message-danmaku img {
+  flex: none;
+  width: var(--danmaku-avatar);
+  height: var(--danmaku-avatar);
+  margin: 0;
+  border-radius: 50%;
+  object-fit: cover;
   pointer-events: none;
-  height: 30px;
-  width: 30px;
-  margin: 0 5px 0 0 !important;
-  border-radius: 50% !important;
 }
-
-#barrage .default-style p {
-  line-height: 1;
-  pointer-events: none;
-  margin: 0 !important;
-  max-width: 300px;
-  white-space: nowrap;
+#barrage .message-danmaku span {
+  max-width: var(--danmaku-text-width);
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
 }
+#barrage.hide { visibility: hidden; pointer-events: none; }
+#barrage.hide .message-danmaku { pointer-events: none; }
 
-#barrage.hide {
-  z-index: -1;
-  opacity: 0;
+@media (max-width: 768px) {
+  .message-barrage-region { --message-barrage-height: 240px; }
+  #barrage { --danmaku-text-width: 240px; }
+  #barrage .message-danmaku { font-size: 14px; }
 }
 
 #page h1.page-title {
@@ -120,14 +148,14 @@
 }
 
 @media screen and (min-width: 768px) {
-  .needEndHide.hide {
+  .needEndHide.hide:not(#rightside) {
     bottom: -200px !important;
     opacity: 0;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .needEndHide {
+  .needEndHide:not(#rightside) {
     display: none !important;
   }
 }

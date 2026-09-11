@@ -3,7 +3,13 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import config from '../src/site.config';
 import { mergeConfig } from '../src/lib/config';
-for (const variant of ['integration', 'algolia', 'docsearch']) {
+for (const variant of [
+  'integration',
+  'algolia',
+  'docsearch',
+  'comments',
+  'music',
+]) {
   const target = path.resolve(`.astro/${variant}-fixture`);
   await fs.rm(target, { recursive: true, force: true });
   await fs.mkdir(target, { recursive: true });
@@ -48,7 +54,7 @@ for (const variant of ['integration', 'algolia', 'docsearch']) {
       },
     },
   });
-  if (variant !== 'integration')
+  if (variant === 'algolia' || variant === 'docsearch')
     fixture = mergeConfig(config, {
       locale: variant === 'algolia' ? 'en' : 'es',
       base: variant === 'algolia' ? '/sub/' : '/',
@@ -67,6 +73,44 @@ for (const variant of ['integration', 'algolia', 'docsearch']) {
           },
         },
         pwa: { manifest: '/app.webmanifest' },
+      },
+    });
+  if (variant === 'music')
+    fixture = mergeConfig(config, {
+      theme: {
+        capsule: { enable: true, id: 'fixture', server: 'qishui' },
+        music: { enable: true, id: 'fixture', server: 'qishui' },
+      },
+    });
+  if (variant === 'comments')
+    fixture = mergeConfig(config, {
+      theme: {
+        aside: {
+          home: { Sticky: 'newest_comment,allInfo' },
+          post: { Sticky: 'newestPost,newest_comment,allInfo' },
+          page: { Sticky: 'newestPost,newest_comment,allInfo' },
+        },
+        comment: {
+          use: 'valine',
+          count: true,
+          sidebar: true,
+          pv: true,
+          commentBarrage: true,
+          lazyload: false,
+          newest_comment: { enable: true, storage: 0.5, limit: 5 },
+        },
+        console: { recentComment: { enable: true, storage: 0.2 } },
+        envelope: { enable: true },
+        recent_comments: { enable: true, limit: 50, cache: 0.2 },
+        right_menu: { commentBarrage: true },
+        valine: {
+          appId: 'fixture',
+          appKey: 'fixture',
+          serverURLs: 'https://comments.invalid',
+          avatar: 'https://weavatar.com/avatar/',
+          visitor: true,
+          style: true,
+        },
       },
     });
   await fs.writeFile(

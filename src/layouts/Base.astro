@@ -19,6 +19,7 @@ interface Props {
   type?: string;
   post?: Post;
   page?: Record<string, any>;
+  toc?: boolean;
 }
 const {
   title = config.title,
@@ -26,6 +27,7 @@ const {
   type = 'page',
   post,
   page = {},
+  toc = false,
 } = Astro.props;
 const posts = await getPosts(),
   pages = await getPages();
@@ -186,6 +188,7 @@ const inlineVars = Object.entries(vars)
     </a>
     <Overlays
       posts={posts}
+      toc={toc}
       comments={
         Boolean(cfg.comment.use) &&
         page.comment !== false &&

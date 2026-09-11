@@ -1,21 +1,57 @@
 {
-  "views": 72,
-  "overflows": [],
-  "viewports": [
-    390,
-    768,
-    1440
-  ],
-  "themes": [
-    "light",
-    "dark"
-  ],
-  "routes": [
-    "/",
-    "/p/writing/",
-    "/about/",
-    "/links/",
-    "/equipment/",
-    "/archives/"
+  "capturedAt": "2026-09-11T09:27:30.814Z",
+  "browser": "Chromium",
+  "mode": "production preview; live optional resources",
+  "results": [
+    {
+      "file": "screenshots/home-desktop.png",
+      "route": "/",
+      "width": 1440,
+      "height": 1000,
+      "theme": "light",
+      "title": "Solitude",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "file": "screenshots/home-desktop-dark.png",
+      "route": "/",
+      "width": 1440,
+      "height": 1000,
+      "theme": "dark",
+      "title": "Solitude",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "file": "screenshots/post-mobile-dark.png",
+      "route": "/p/writing/",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "title": "用 Markdown 和 MDX 写作 | Solitude",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "file": "screenshots/about-desktop.png",
+      "route": "/about/",
+      "width": 1440,
+      "height": 1000,
+      "theme": "light",
+      "title": "关于 | Solitude",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "file": "screenshots/about-tablet-dark.png",
+      "route": "/about/",
+      "width": 768,
+      "height": 1000,
+      "theme": "dark",
+      "title": "关于 | Solitude",
+      "overflow": false,
+      "errors": []
+    }
   ]
 }

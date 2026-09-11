@@ -1,54 +1,13 @@
-# 迁移对照与验收 / Migration parity
+# 开发与验收
 
-来源：`everfu/hugo-solitude`，提交 `30ae31c6cb9627407529370dbd578f5e052b1946`，包含迁移时 `assets/css/solitude/pages/about.css` 与 `assets/ts/main.ts` 的本地 About 光效修改。逐文件 SHA-256 见 [source-manifest.json](source-manifest.json)。原博客和源主题没有被迁移工具改写。
+[文档首页](README.md) · [项目说明](../README.md)
 
-## 架构
-
-- Astro 7.3.2 静态输出，Content Collections + MDX；无服务端运行时。
-- `src/layouts` 管理公共文档与页面分发，`src/components` 管理结构，`src/styles` 保留源模块样式，`src/scripts` 负责按需交互。
-- `src/lib/config.ts` 与 `src/site.config.ts` 提供 TypeScript 配置；`src/lib/content.ts/routes.ts` 管理筛选、分页、URL 和冲突。
-- `scripts` 提供导入、输出兼容、对照站和测试站工具；`tests` 覆盖内容、迁移、产物与真实浏览器操作。
-- 从源主题移植的部分无类型注解脚本保留为 JavaScript，通过新的 TypeScript 入口、配置和生命周期 API 调用。`pnpm check` 检查 Astro 与 TypeScript 边界，不能视为这些遗留 JavaScript 内部的完整静态类型证明。
-
-## 功能清单
-
-| 源能力 | Astro 实现 | 验证证据 |
-| --- | --- | --- |
-| 首页推荐、卡片与分页 | HomeTop、PostCard、Pagination、routes | 内容筛选测试；首页 10 张卡片；桌面/平板/手机截图 |
-| 手动推荐、首页隐藏 | HomeTop + homePosts | `home: false` 从列表/推荐/首页最近文章排除；归档、搜索、RSS 保留 |
-| 作者卡片、最新文章、标签、站点信息 | Aside | 对照截图、生产构建；侧栏范围配置 |
-| 文章头部、元信息、目录 | Header、PostMeta、Aside、main | 正文产物断言、浏览器目录滚动与重复导航 |
-| 上下篇、相关文章、版权、赞赏 | EntryPage、Copyright | 生产构建；独立测试站启用赞赏 |
-| 归档、分类、标签、系列 | Archive、routes | 归档与术语页输出；分页单测；响应式检查 |
-| About 各内容区、卡片光效 | pages/About、about.css、main | 保留源光效；三种宽度、两种模式对照 |
-| Links 卡片、随机友链、JSON | pages/Links、friend_links、links.json | 页面输出、响应式检查；服务脚本复用 |
-| Equipment、通用页面 | pages/Equipment、EntryPage | 页面输出、三种宽度检查 |
-| Music、持久胶囊 | Capsule、music、ClientRouter | 真实音频元素保持身份与播放状态；歌单服务未做真实联调 |
-| Message、Brevity、Recent Comments | EntryPage、pages/Brevity、comments | 页面构建、布局检查；聚合评论增强沿用 Valine 数据适配 |
-| 四种界面语言 | i18n JSON + site.t | 完整键集合测试；英语/西班牙语独立站构建与浏览器检查 |
-| 明暗模式 | Base、main、tokens.css | 切换及跨导航状态测试；两种模式截图 |
-| 三种搜索 | search/local、algolia、docsearch | 本地搜索真实索引；Algolia/DocSearch 模拟响应与切页重建 |
-| 五种评论挂载 | Comments、comments.ts | Twikoo/Waline/Valine/Artalk/Giscus 模拟脚本；路径传递、每页一次挂载、销毁与返回 |
-| 灯箱、复制、快捷键、右键菜单、翻译 | assets、utils、keyboard、right_menu、tw_cn | 源行为保留；快捷键/复制/搜索/手机菜单浏览器操作 |
-| 加载进度、纪念日、过期提示 | Base、preloader、main | 配置与构建；加载页在初始化完成后退出 |
-| 构建时双主题代码高亮、公式 | astro.config、markdown-plugin、code-highlight | Shiki/KaTeX HTML 断言；长代码展开和完整复制 |
-| 41 个短代码对应组件 | components/mdx、tag-runtime | 41 项转换映射和输出标记；标签页/隐藏/折叠实际交互 |
-| SEO、RSS、Sitemap、robots、PWA | Base、pages 端点 | 产物断言；子目录与自定义 webmanifest 测试站构建 |
-| `.html`、别名、重复路径 | content、routes、output-layout | 真实 `.html` 文件断言；路径冲突单测 |
-| 自定义样式、扩展方法、生命周期 | custom.css、core/api/lifecycle | CSS 最后加载；连续导航/后退/前进/清理测试 |
-| Hugo 导入 | migrate-hugo、hugo-converter | 干跑、字段、嵌套、转义、参数、页面包图片、冲突、符号链接、源不变测试 |
-
-完整字段映射另见 [configuration-inventory.md](configuration-inventory.md)，41 个短代码逐项列表见 [components.md](components.md)。
-
-## 源版本中的兼容字段
-
-源版本中的 `hometop.banner/group`、`page.error/tags/categories/archives`、`brevity.home_mini` 等历史字段没有被当前源模板消费。它们作为兼容配置保留，不把“存在配置字段”当成新增功能验收。首页使用当前源版本的推荐轮播；归档使用当前的年份筛选与分页组件。`index_post_list.column` 在 Astro 侧补充为桌面列数设置。
-
-## 本地验证
-
-命令顺序：
+## 本地检查
 
 ```sh
+pnpm install --frozen-lockfile
+pnpm docs:generate
+pnpm docs:check
 pnpm check
 pnpm build
 pnpm test
@@ -57,30 +16,53 @@ pnpm exec playwright install chromium
 pnpm test:e2e
 ```
 
-类型检查无错误；生产站生成 37 个页面及 RSS、搜索、Sitemap 等静态端点。19 项单元/产物测试通过，覆盖内容、转换与输出；11 项浏览器测试通过，覆盖核心交互、三种宽度和服务适配器。可复现命令与断言在仓库内，CI 在 Node.js 22、24 上执行同一套验收。
+`docs:generate` 只写配置字段清单和组件参数索引，不覆盖手写指南，也不需要外部 Hugo 目录。`docs:check` 检查文档本地链接、锚点和参考清单是否过期；外部链接不纳入该自动检查。
 
-视觉对照使用统一的演示文章元数据和特殊页面 JSON。Hugo 对照站由脚本生成；MDX 示例仅共享元数据用于首页比较，组件本体由 Astro 单独验收。检查首页、文章、About、Links、Equipment、归档 × 390/768/1440 px × light/dark × 两个引擎，共 72 个视图。没有发现横向溢出。保留选定截图于 `docs/screenshots`；完整本地截图在忽略提交的 `artifacts/visual`。
+`pnpm test` 中的输出测试依赖已生成的 `dist/`，因此先构建。浏览器测试依赖独立测试站构建，并由 Playwright 启动预览服务。
 
-```sh
-pnpm exec tsx scripts/compare-hugo.ts /path/to/hugo-theme
-# 分别启动 Astro 预览（4321）和 .astro/hugo-reference/public 静态服务（4323）
-pnpm exec tsx scripts/visual-check.ts
-```
+## 测试站与覆盖
 
-字数统计保留 Hugo 的默认分词口径与代码工具栏文本，`hasCJKLanguage: true` 可启用中日韩文字统计。代码与公式由 Astro 构建，导航使用 ClientRouter。About 的卡片尺寸和光效遵循源样式。
+| 测试站 | 地址 | 用途 |
+| --- | --- | --- |
+| 默认模板 | `http://127.0.0.1:4321` | 首页、文章、路由、搜索、明暗主题与响应式布局 |
+| 集成配置 | `http://127.0.0.1:4332` | 评论挂载、音乐、资源生命周期 |
+| Algolia | `http://127.0.0.1:4333/sub/` | 子目录与第三方搜索适配 |
+| DocSearch | `http://127.0.0.1:4334` | DocSearch 与英文以外的界面语言 |
+| 在线音乐 | `http://127.0.0.1:4336` | 汽水播放器、封面取色与移动端目录遮罩 |
+| Valine 聚合 | `http://127.0.0.1:4335` | 最新评论、留言弹幕、文章参与者头像及样式恢复 |
 
-## 外部验证边界
+第三方服务在测试中使用模拟响应或本地测试资源，测试标识不是线上账号。生产模板保持评论与在线音乐关闭，不以启用真实服务作为回归测试前提。
 
-没有使用个人评论配置、访问令牌或个人歌单完成线上联调。五种评论服务、Algolia、DocSearch 的测试都是模拟响应；音乐验证是本地媒体跨导航持续播放。CDN、真实仓库 API、远端视频、评论权限和外部歌单的服务可用性不由模拟结果担保。PWA 范围为图标和清单，不提供离线缓存。
+## 来源与保留内容
 
-English: this report maps inherited features to implementations and reproducible evidence. It distinguishes compilation, browser checks, visual review, mocks, and live services. The original source is preserved. Some inherited JavaScript remains behind typed APIs; third-party service tests do not establish production connectivity. No domain migration, production deployment, npm publication, or formal release is performed by this repository setup.
+项目来自 Hugo Solitude 的 Astro 迁移。原始来源快照、提交和文件哈希保留在 [source-manifest.json](source-manifest.json)，版权和改动说明见 [NOTICE](../NOTICE) 与 [LICENSE](../LICENSE)。这些哈希描述迁移时的来源，不代表当前 Astro 文件内容。
 
-## 实际博客对照复核（2026-09-11）
+本次发布保留现有功能成果。历史截图和旧比较统计不作为当前版本验收证据；新截图记录当前模板，见下节。
 
-以正在运行的 Hugo 博客为参考，使用不提交的本地导入副本复核。修复无标签文章日期位置、侧栏更新时间与额外包装产生的移动端间距、页脚分组排序与文案、普通内容页目录、嵌套目录、原主题代码块结构、字数与阅读时间，以及推荐图点击绕过 ClientRouter 的问题。保留 About 光效与原始 CSS。
+## 当前发布验证
 
-覆盖 13 个路由（首页、两篇文章、About、Links、Equipment、归档、分类、标签、相册、普通内容页、音乐和 404），390/768/1440 px、明暗模式、Hugo 与 Astro 共 156 个视图。图片加载完成后，25 类主要区域的可见位置和尺寸没有超过 1 px 的差异；无横向溢出和未捕获脚本错误。人工检查首页、文章、About 的桌面与移动截图。动态 GIF、随机友链、远端音乐返回和相对更新时间会随运行变化，不作为像素一致性断言。
+2026-09-11 在 macOS、Node.js 24.16.0、pnpm 11.24.0、Chromium 下完成本地验证。Browser 插件未提供，使用项目现有 Playwright 流程。测试结果仅对应本次模板整理，不代表未来改动自动通过。
 
-冷启动 12 次均进入 ready；曾出现一次未复现的初始化等待超时，后续两轮完整矩阵与冷启动复查未再发生，保留为外部资源加载的观察项。当前第三方依赖在不可用时有超时回退。新增实际推荐图点击的持续播放验证，以及标签链接、菜单键盘操作、更新时间的回归验证。源博客和主题工作目录未改动，个人数据只用于本地副本，未加入公开仓库。
+| 检查 | 结果 |
+| --- | --- |
+| 干净副本安装、启动首页与静态构建 | 通过，生成 37 个页面 |
+| Astro 类型检查 | 0 errors、0 warnings；4 个非阻断 hints |
+| 单元测试 | 21 / 21 通过 |
+| 浏览器回归 | 51 / 51 通过 |
+| 文档配置示例 | 10 段通过 TypeScript 检查 |
+| 本地文档链接、锚点、参考清单 | 通过 `pnpm docs:check` |
+| 默认服务配置 | 评论与在线音乐关闭；没有请求原评论服务或歌单 |
+| 页面身份、可见内容、错误遮罩、页面脚本 | 截图页面标题正确，内容正常，无错误遮罩；无 pageerror |
+| 截图布局 | 390、768、1440 像素，5 个视图无横向溢出 |
 
-English: a private, uncommitted import was compared with the running Hugo reference in 156 views. The measured visible layout regions agree within 1 px after images load. Animated and remote data are excluded from pixel identity claims. Code highlighting remains generated at build time; an unavailable source-side highlighter can therefore show uncolored fallback text. Twelve cold starts passed after one non-reproduced initialization timeout. No private content was published.
+交互覆盖包括：首页 → 打开搜索 → 显示结果；进入文章 → 返回 → 恢复页面；切换主题；移动端目录的打开、焦点、关闭与定位；独立测试配置中的评论和音乐生命周期。
+
+截图使用生产预览，尺寸与标题记录在 [截图数据](visual-results.json)。
+
+- [桌面首页](screenshots/home-desktop.png)
+- [深色首页](screenshots/home-desktop-dark.png)
+- [移动端深色文章](screenshots/post-mobile-dark.png)
+- [桌面关于页面](screenshots/about-desktop.png)
+- [平板深色关于页面](screenshots/about-tablet-dark.png)
+
+未验证真实评论账号、在线音乐服务可用性、Safari/Firefox 或用户自己的托管平台。公开模板无需部署在线演示站即可使用，仓库检查工作流不执行部署。GitHub 的持续检查覆盖 Node.js 22 与 24，最新状态以仓库 Actions 为准。

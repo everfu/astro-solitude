@@ -1,5 +1,6 @@
 {
   "home": "Home",
+  "settings": "Settings",
   "startReading": "Start reading",
   "backHome": "Back home",
   "pageNotFound": "Page not found",
@@ -67,6 +68,8 @@
   "nextPost": "Next",
   "previousPage": "Previous page",
   "nextPage": "Next page",
+  "previousPageShort": "Prev",
+  "nextPageShort": "Next",
   "paginationNavigation": "Pagination",
   "postNavigation": "Post navigation",
   "author": "Author",
@@ -96,7 +99,7 @@
   "searchPlaceholder": "Search posts",
   "searchEmpty": "No result for ${query}",
   "searchHit": "Found ${hits} results in ${time} ms",
-  "searchCount": "${count} results",
+  "searchCount": "${count} results found",
   "searchLoading": "Searching…",
   "more": "More",
   "explore": "Explore topics",
@@ -107,6 +110,7 @@
   "copySuccess": "Copied",
   "copyError": "Copy failed",
   "codeCopy": "Copy",
+  "codeCopied": "Copied",
   "codeExpand": "Expand all",
   "timeDay": "days ago",
   "timeHour": "hours ago",
@@ -149,5 +153,14 @@
   "musicSetup": "Add a playlist and enable the music page in site settings.",
   "randomFriends": "Random friends",
   "moreTags": "More tags",
-  "readingMinutes": "min"
+  "readingMinutes": "min",
+  "sidebarFeatures": "Features",
+  "displayMode": "Display mode",
+  "siteInformation": "Site information",
+  "brevityDescription": "The little joys of everyday life",
+  "brevityReadMore": "Read posts",
+  "brevityLink": "Link",
+  "brevityCount": "Showing the latest {count} updates",
+  "brevityEmpty": "No updates yet. A new moment is on its way.",
+  "searchError": "Unable to load the search index. Please retry."
 }

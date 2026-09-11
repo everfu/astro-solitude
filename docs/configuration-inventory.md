@@ -1,6 +1,6 @@
-# 配置字段清单 / Configuration inventory
+# 配置字段清单
 
-原 Hugo `params.solitude.*` 对应 Astro `theme.*`。本表逐项列出完整默认配置，定位实现分组；自动检查只验证配置形状与构建，不代表每个外部服务已完成真实联调。功能验收证据与局限见 [parity.md](parity.md)。
+[文档首页](README.md) · [配置指南](configuration.md) · [开发与验收](parity.md)。由 `pnpm docs:generate` 根据 `src/lib/defaults.json` 生成；表中是基础默认值，模板覆盖值见 `src/site.config.ts`。顶层站点字段和未在当前布局使用的兼容字段见配置指南；字段存在不等于每项都有可见效果。
 
 | 字段 | 默认值 | 实现定位 |
 | --- | --- | --- |
@@ -70,7 +70,7 @@
 | `theme.post.award.list` | `[]` | PostCard, PostMeta, Copyright |
 | `theme.post.share.enable` | `false` | PostCard, PostMeta, Copyright |
 | `theme.post.share.list` | `[]` | PostCard, PostMeta, Copyright |
-| `theme.post.rss` | `"/index.xml"` | 兼容字段；订阅使用 RSS 端点与 footer.links |
+| `theme.post.rss` | `"/index.xml"` | PostCard, PostMeta, Copyright |
 | `theme.post.covercolor.enable` | `false` | PostCard, PostMeta, Copyright |
 | `theme.post.covercolor.mode` | `"local"` | PostCard, PostMeta, Copyright |
 | `theme.post.covercolor.api` | `"https://api.qjqq.cn/api/Imgcolor?img="` | PostCard, PostMeta, Copyright |
@@ -153,7 +153,7 @@
 | `theme.music.volume` | `0.8` | EntryPage, music |
 | `theme.music.mutex` | `true` | EntryPage, music |
 | `theme.music.order` | `"list"` | EntryPage, music |
-| `theme.meting_api` | `"https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r"` | assets |
+| `theme.meting_api` | `"https://meting.efu.me/?server=:server&type=:type&id=:id&r=:r"` | assets |
 | `theme.keyboard.enable` | `false` | keyboard |
 | `theme.keyboard.list` | `[]` | keyboard |
 | `theme.lazyload.enable` | `true` | assets, utils |

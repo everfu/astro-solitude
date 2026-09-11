@@ -50,8 +50,12 @@ const normalizeHex = (value) => {
 };
 export const applyMusicColor = (value) => {
     const color = normalizeHex(value);
-    if (color)
-        document.getElementById("nav-music")?.style.setProperty("--efu-music", color);
+    if (color) {
+        const capsule = document.getElementById("nav-music");
+        capsule?.style.removeProperty("--capsule-cover-background");
+        capsule?.removeAttribute("data-cover-color-fallback");
+        capsule?.style.setProperty("--efu-music", color);
+    }
 };
 export const applyThemeColor = (value) => {
     const color = normalizeHex(value);
@@ -77,12 +81,20 @@ export const applyDefaultColor = () => {
     root.style.setProperty("--efu-main-none", "var(--efu-theme-none)");
     Solitude.initThemeColor?.();
 };
+const applyDefaultMusicColor = () => {
+    const capsule = document.getElementById("nav-music");
+    capsule?.style.removeProperty("--efu-music");
+    capsule?.style.removeProperty("--capsule-cover-background");
+    capsule?.removeAttribute("data-cover-color-fallback");
+};
 export const resolveColor = async (source, fetchColor, music = false) => {
+    const applyDefault = music ? applyDefaultMusicColor : applyDefaultColor;
     if (!source)
-        return applyDefaultColor();
+        return applyDefault();
     const cached = getCachedColor(source);
     if (cached)
         return music ? applyMusicColor(cached) : applyThemeColor(cached);
+    applyDefault();
     try {
         const color = await fetchColor(source);
         if (!color)
@@ -93,8 +105,14 @@ export const resolveColor = async (source, fetchColor, music = false) => {
         return music ? applyMusicColor(color) : applyThemeColor(color);
     }
     catch (error) {
-        console.error("Unable to resolve cover color:", error);
-        if (!music)
-            applyDefaultColor();
+        if (source !== getCoverSource(music))
+            return;
+        // CSS can display artwork from hosts that deny canvas access.
+        applyDefault();
+        if (music) {
+            const capsule = document.getElementById("nav-music");
+            capsule?.style.setProperty("--capsule-cover-background", `url(${JSON.stringify(source)})`);
+            capsule?.setAttribute("data-cover-color-fallback", "");
+        }
     }
 };

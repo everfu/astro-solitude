@@ -1,6 +1,7 @@
 import { lifecycle } from './core/lifecycle';
 import { Solitude } from './core/api';
 import type { CommentProvider } from './types';
+import { initializeMessageBarrage } from './message-barrage';
 
 interface ValineRecord {
   objectId?: string;
@@ -12,7 +13,7 @@ interface ValineRecord {
   updatedAt?: string;
 }
 
-interface NormalizedComment {
+export interface NormalizedComment {
   id: string;
   nick: string;
   participantKey: string;
@@ -27,7 +28,6 @@ interface CommentRuntimeConfiguration {
   routes?: Record<string, string>;
   default_avatar?: string;
   barrage_script?: string;
-  envelope_script?: string;
 }
 
 const routeChunkSize = 40;
@@ -35,9 +35,21 @@ const postCardPageSize = 1000;
 const postCardAvatarLimit = 5;
 const aggregateCacheVersion = 3;
 let aggregateRequest: Promise<NormalizedComment[]> | null = null;
+let siteCommentsRequest: Promise<NormalizedComment[]> | null = null;
 let countRequest: Promise<number> | null = null;
 let md5Request: Promise<((value: string) => string) | undefined> | null = null;
 const postCardRequests = new Map<string, Promise<NormalizedComment[]>>();
+const valineStyles = new Set<HTMLStyleElement>();
+
+const restoreValineStyles = () => {
+  for (const style of valineStyles) {
+    if (!style.isConnected) document.head.append(style);
+  }
+};
+
+// Valine injects its CSS once when its script executes. Astro replaces the
+// head on navigation, while the cached script (and its CSS loader) stays alive.
+document.addEventListener('astro:after-swap', restoreValineStyles);
 
 const providers = () =>
   String(Solitude.config.comment?.use || '')
@@ -264,6 +276,53 @@ const fetchAggregateComments = () => {
     throw error;
   });
   return aggregateRequest;
+};
+
+// The message barrage includes every comment on this site's routes, independently of the
+// small recent-comment limits used by the sidebar and console.
+const fetchSiteComments = () => {
+  if (siteCommentsRequest) return siteCommentsRequest;
+  const cacheKey = `${aggregateCacheKey()}:all`;
+  let cached: NormalizedComment[] | undefined;
+  try {
+    cached = Solitude.saveToLocal.get(cacheKey);
+  } catch {
+    // Private browsing may disable storage; the feed still works without it.
+  }
+  const allowed = new Set(routeEntries().map(([path]) => path));
+  if (Array.isArray(cached)) {
+    return Promise.resolve(
+      cached.filter((comment: NormalizedComment) => allowed.has(comment.url)),
+    );
+  }
+  siteCommentsRequest = (async () => {
+    const records: ValineRecord[] = [];
+    for (const paths of chunks([...allowed], routeChunkSize)) {
+      let skip = 0;
+      while (true) {
+        const response = await requestValine({
+          where: JSON.stringify({ url: { $in: paths } }),
+          order: '-createdAt,objectId',
+          limit: postCardPageSize,
+          skip,
+        });
+        const page = (response.results || []) as ValineRecord[];
+        records.push(...page);
+        if (page.length < postCardPageSize) break;
+        skip += page.length;
+      }
+    }
+    const normalized = await normalizeRecords(records);
+    const comments = [...new Map(normalized.map((item) => [item.id, item])).values()]
+      .sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+    try {
+      Solitude.saveToLocal.set(cacheKey, comments, cacheTtl());
+    } catch {
+      // A complete site feed may exceed the browser's cache quota.
+    }
+    return comments;
+  })().finally(() => { siteCommentsRequest = null; });
+  return siteCommentsRequest;
 };
 
 const fetchPostCardComments = (paths: string[]) => {
@@ -580,6 +639,7 @@ const renderCards = (
   limit: number,
 ) => {
   const items = comments.slice(0, limit);
+  container.setAttribute('aria-busy', 'false');
   if (!items.length) {
     container.textContent = commentText('empty', 'No comments yet');
     return;
@@ -594,22 +654,14 @@ const renderAggregateSurfaces = async () => {
   const aside = [
     ...document.querySelectorAll('.card-recent-comment .aside-list'),
   ];
-  const consoleList = document.querySelector('.console_recentcomments');
-  const recentPage = document.querySelector(
-    '#page .console_recentcomments.recent-comments-list',
-  );
+  const consoleList = document.querySelector('#console .console_recentcomments');
+  const recentPage = document.querySelector('#page .console_recentcomments.recent-comments-list');
   if (!aside.length && !consoleList && !recentPage) return;
   try {
     const comments = await fetchAggregateComments();
     aside.forEach((container) => renderAside(container, comments));
     if (consoleList) renderCards(consoleList, comments, 6);
-    if (recentPage) {
-      renderCards(
-        recentPage,
-        comments,
-        Number(Solitude.config.recent_comments?.limit || 50),
-      );
-    }
+    if (recentPage) renderCards(recentPage, comments, Number(Solitude.config.recent_comments?.limit || 50));
   } catch {
     aside.forEach((container) => {
       container.setAttribute('aria-busy', 'false');
@@ -622,8 +674,27 @@ const renderAggregateSurfaces = async () => {
     [consoleList, recentPage]
       .filter((container): container is Element => Boolean(container))
       .forEach((container) => {
+        container.setAttribute('aria-busy', 'false');
         container.textContent = commentText('error', 'Unable to load comments');
       });
+  }
+};
+
+const renderMessageBarrage = async () => {
+  const container = document.querySelector<HTMLElement>('#barrage[data-native-barrage]');
+  const status = document.getElementById('message-barrage-status');
+  if (!container || !status) return;
+  const signal = lifecycle.signal;
+  try {
+    const comments = await fetchSiteComments();
+    if (signal.aborted || !container.isConnected) return;
+    status.textContent = comments.length ? '' : commentText('empty', 'No comments yet');
+    status.setAttribute('aria-busy', 'false');
+    initializeMessageBarrage(container, comments, createAvatar);
+  } catch {
+    if (signal.aborted || !container.isConnected) return;
+    status.setAttribute('aria-busy', 'false');
+    status.textContent = commentText('error', 'Unable to load comments');
   }
 };
 
@@ -656,59 +727,14 @@ const initializePageBarrage = async (comments: NormalizedComment[]) => {
   );
 };
 
-const escapeHtml = (source: string) =>
-  source.replace(/[&<>'"]/g, (character) => {
-    const entities: Record<string, string> = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;',
-    };
-    return entities[character];
-  });
-
-const initializeEnvelope = async (comments: NormalizedComment[]) => {
-  const container = document.getElementById('barrage');
-  if (!container) return;
-  container.replaceChildren();
-  if (!comments.length) return;
-  const script = runtimeConfig().envelope_script;
-  if (!script) return;
-  await Solitude.loadScript(script);
-  const EasyDanmaku = (window as any).EasyDanmaku;
-  if (typeof EasyDanmaku !== 'function') return;
-  const instance = new EasyDanmaku({
-    page: location.pathname,
-    el: '#barrage',
-    line: Number(container.dataset.line || 10),
-    speed: Number(container.dataset.speed || 20),
-    hover: container.dataset.hover === 'true',
-    loop: container.dataset.loop === 'true',
-  });
-  instance.batchSend(
-    comments.map((comment) => ({
-      content: escapeHtml(`${comment.nick}: ${comment.content}`),
-      avatar: comment.avatar,
-      url: comment.url,
-    })),
-    true,
-  );
-  Solitude.onPageCleanup?.(() => container.replaceChildren());
-};
-
 const initializeValineEffects = async () => {
+  if (document.querySelector('#barrage[data-native-barrage]')) return;
   try {
     const comments = await fetchPageComments(location.pathname);
-    await Promise.all([
-      initializePageBarrage(comments),
-      initializeEnvelope(comments),
-    ]);
+    await initializePageBarrage(comments);
   } catch {
     const barrage = document.querySelector('.comment-barrage');
     if (barrage) barrage.replaceChildren();
-    const envelope = document.getElementById('barrage');
-    if (envelope) envelope.replaceChildren();
   }
 };
 
@@ -718,6 +744,10 @@ const mountValine = async (mount: HTMLElement) => {
   try {
     const signal = lifecycle.signal;
     await Solitude.loadScript(Solitude.config.cdn.valine);
+    document.head.querySelectorAll('style').forEach((style) => {
+      if (style.textContent?.includes('.v[data-class=v]')) valineStyles.add(style);
+    });
+    restoreValineStyles();
     if (signal.aborted || !mount.isConnected) return;
     const Valine = (window as any).Valine;
     if (typeof Valine !== 'function') throw new Error('Valine is unavailable');
@@ -876,12 +906,13 @@ const initializeComments = () => {
     if (valineReady()) {
       void renderPostCardParticipants();
       void renderAggregateSurfaces();
+      void renderMessageBarrage();
       void renderAggregateCount();
       initializeValine();
     } else {
       document
         .querySelectorAll(
-          '#vcomment, .recent-comments-list, .card-recent-comment .aside-list, .console_recentcomments',
+          '#vcomment, .recent-comments-list, .card-recent-comment .aside-list, .console_recentcomments, #message-barrage-status',
         )
         .forEach((container) => {
           setStatus(
@@ -889,10 +920,15 @@ const initializeComments = () => {
             commentText('error', 'Unable to load comments'),
             'error',
           );
-          if (container.matches('.card-recent-comment .aside-list')) {
-            container.setAttribute('aria-busy', 'false');
-          }
+          container.setAttribute('aria-busy', 'false');
         });
+    }
+  }
+  if (!enabled.includes('valine')) {
+    const wall = document.querySelector('#message-barrage-status');
+    if (wall) {
+      wall.setAttribute('aria-busy', 'false');
+      setStatus(wall, commentText('error', 'Unable to load comments'), 'error');
     }
   }
   void initializeOtherProviders(enabled);

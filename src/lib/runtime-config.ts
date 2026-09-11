@@ -62,7 +62,7 @@ export function runtimeConfig(
     lang: {
       theme: labels({ dark: 'themeDark', light: 'themeLight' }),
       copy: labels({ success: 'copySuccess', error: 'copyError' }),
-      code: labels({ copy: 'codeCopy', expand: 'codeExpand' }),
+      code: labels({ copy: 'codeCopy', copied: 'codeCopied', expand: 'codeExpand' }),
       ...labels({
         backtop: 'backTop',
         day: 'dayUnit',
@@ -82,6 +82,10 @@ export function runtimeConfig(
         placeholder: 'searchPlaceholder',
         count: 'searchCount',
         loading: 'searchLoading',
+        error: 'searchError',
+        retry: 'retry',
+        previous: 'previousPage',
+        next: 'nextPage',
       }),
       comments: labels({
         loading: 'commentsLoading',
@@ -124,7 +128,6 @@ export function runtimeConfig(
       ),
       default_avatar: url('/img/default_avatar.avif'),
       barrage_script: url('/js/third_party/barrage.min.js'),
-      envelope_script: url('/js/third_party/envelope.min.js'),
     },
     right_menu: right
       ? {

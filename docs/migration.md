@@ -1,40 +1,48 @@
-# 从 Hugo 导入 / Import from Hugo
+# 从 Hugo 导入内容
 
-先创建 Astro 模板副本并安装依赖。导入工具读取源站的 `hugo.yaml`、`content/`、`data/` 和 `static/`，写入单独的导出目录。不会改写源目录，也不会覆盖现有文件。
+[文档首页](README.md) · [写作指南](writing.md)
+
+导入器面向 Hugo Solitude 的配置与内容，正常使用 Astro 模板不需要 Hugo。源目录需要包含 `hugo.yaml`；自定义模板和构建管线需要单独迁移。
+
+## 1. 预检
+
+在 Astro 仓库根目录执行，替换路径：
 
 ```sh
 pnpm migrate:hugo --source /path/to/hugo --dry-run
+```
+
+预检读取配置、内容和资源，输出预计文件数与问题列表，不修改源站。先解决报告中的问题，例如未知短代码、缺少文章日期和自定义模板。
+
+## 2. 导出
+
+```sh
 pnpm migrate:hugo --source /path/to/hugo --out /path/to/export
 ```
 
-先处理 dry-run 报告，再生成导出目录。将审核过的导出文件合并进自己的模板副本；主动替换演示文章和默认配置，避免演示内容混入。导出目录不是完整主题仓库，需要模板的组件与工具。
+输出必须与源目录分离，父目录必须存在。建议使用全新输出目录；工具遇到同名文件、符号链接或未解决问题时拒绝写入。不要直接把正在使用的 Astro 项目作为输出目录。
 
-## 转换规则
+## 3. 合并到 Astro 模板
 
-- `params.solitude` → `theme`；站点地址、语言、时区、作者、菜单与分页转为类型化站点配置；移除 Hugo `_merge`。
-- `updated` → `lastmod`，标量分类、标签、系列、别名转数组；未知字段保留在计划中并报告，实际写入前需要处理。
-- 普通文章保持 `.md`；使用扩展短代码的内容转为 `.mdx`。41 个组件由页面渲染器统一注入，无需每篇重复导入；独立使用时可从 `src/components/mdx` 导入。
-- 代码围栏和行内代码里的短代码示例保持原样；嵌套组件按栈转换，文本大括号转义，原始 Chart.js、Mermaid、ABC、友链 YAML 和视频列表转为组件属性。
-- 标准 `posts/` 文章目录、常规 `:slug` / `:filename` 永久链接和 `.html` 地址可转换。特殊页面 `_index.md` 转为页面集合条目；数据 YAML 转 JSON。
-- 页面包媒体复制到 `public/hugo-content/` 并更新相对引用；`index.md` 保留页面包目录名作为 slug。静态文件复制到 `public/`，`assets/css/custom.css` 复制到最后加载的自定义样式文件。
+| 来源 | 导出结果 |
+| --- | --- |
+| `hugo.yaml` | `src/site.config.ts` |
+| `content/` | `src/content/posts/`、`src/content/pages/` |
+| 内容内媒体 | `public/hugo-content/`，同时改写识别到的引用 |
+| `data/*.yaml`、JSON | `src/data/*.json` |
+| `static/` | `public/` |
+| `assets/css/custom.css` | `src/styles/custom.css` |
 
-## 需要人工审核的情况
+导出不是完整可运行的 Astro 项目。检查 `migration-report.json` 后，将结果合并到模板副本，逐项处理与示例内容的重名文件。
 
-未知短代码、未配对标签、未知自定义字段、非标准永久链接、自定义模板、TOML/JSON front matter、非 Markdown 内容与不支持的数据格式会报告文件和行号。工具不会执行自定义模板，不会静默吞掉无法转换的短代码。自定义 Hugo 模板需要改写为 Astro 组件。
+Hugo 短代码转换成对应 MDX 组件；普通文章保持 Markdown。地址优先使用原有显式 URL，导入器也处理可识别的 permalink 与 `.html` 地址。复杂模板表达式、未识别参数和自定义资产管线会进入问题报告。
 
-目标文件已有内容、目标目录包含符号链接、源与目标相互包含时会停止。冲突检查在写入前完成。生成的 `migration-report.json` 记录文件清单；不要把导出命令直接指向源站或已有模板目录。
-
-转换完成后执行：
+## 4. 验证
 
 ```sh
 pnpm check
 pnpm build
-pnpm test
 pnpm preview
 ```
 
-逐篇检查自定义内容，尤其是复杂原生 HTML、MDX 中的 JavaScript 表达式、嵌套组件和图片路径。构建阶段检查重复 URL；老地址应通过 `url` 保留，新地址的跳转可用 `aliases`。切换域名属于单独操作，此模板不会自动部署。
-
-## English
-
-Run the dry check first, review every issue, then export to a new directory. Merge the reviewed files into a template copy manually. The importer is conservative: it stops on unsupported syntax and output conflicts, preserves source files, converts only supported YAML-based Hugo sites, and never evaluates Hugo templates. Ordinary Markdown remains Markdown; extended content becomes MDX with components supplied by the shared renderer. Live comment and music services require separate configuration and verification.
+逐页抽查原站链接、图片、分类、系列、组件、公式和别名跳转；重新配置第三方服务。目录映射测试和组件示例构建不能替代你自己内容的验收。

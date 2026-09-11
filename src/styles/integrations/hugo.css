@@ -99,7 +99,8 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding: 0.2em 1em;
+  min-width: 5em;
+  padding: 0.35em 1em;
   appearance: none;
   border: 0;
   border-radius: 0 0 0 0.5em;
@@ -107,6 +108,7 @@
   color: inherit;
   cursor: pointer;
   font: inherit;
+  font-size: 12px;
   line-height: 1.4;
   opacity: 0;
   pointer-events: auto;
@@ -139,6 +141,7 @@
 
 .code-block__copy[data-copy-state='success'] {
   color: var(--efu-green);
+  opacity: 1;
 }
 
 .code-block__copy[data-copy-state='error'] {

@@ -1,14 +1,31 @@
 /** Browser behavior preserved from Solitude Hugo; typed boundary: core/api.ts. */
+import { Solitude } from "../core/api";
 import { applyThemeColor, getCoverSource, resolveColor, rgbToHex } from "./shared";
+// Keep local images usable when the optional Color Thief CDN is unavailable.
+const getAverageColor = (image) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 32;
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (!context) throw new Error("Canvas is unavailable");
+    context.drawImage(image, 0, 0, 32, 32);
+    const pixels = context.getImageData(0, 0, 32, 32).data;
+    const channels = [0, 0, 0];
+    let count = 0;
+    for (let index = 0; index < pixels.length; index += 4) {
+        if (pixels[index + 3] < 128) continue;
+        channels.forEach((_, channel) => channels[channel] += pixels[index + channel]);
+        count++;
+    }
+    if (!count) throw new Error("Image has no visible pixels");
+    return channels.map((value) => Math.round(value / count));
+};
 const extractLocalColor = (source) => new Promise((resolve, reject) => {
     const image = new Image();
     image.crossOrigin = "anonymous";
     image.addEventListener("load", () => {
         try {
             const color = window.ColorThief?.getColorSync(image);
-            if (!color)
-                throw new Error("Color Thief is unavailable");
-            resolve(rgbToHex(color.array(), 0.8));
+            resolve(rgbToHex(color ? color.array() : getAverageColor(image), 0.8));
         }
         catch (error) {
             reject(error);

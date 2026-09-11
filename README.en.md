@@ -1,36 +1,160 @@
+English 丨 [简体中文](README.md)
+
+<div align="center">
+
 # Astro Solitude
 
-A static Astro blog template ported from Solitude Hugo, preserving its card layout, reading experience, About page effects, styles, and content components. The repository root is a working demo site.
+A clean, elegant, feature-rich blog theme for Astro.
 
-[简体中文](README.md) · [Configuration](docs/configuration.md) · [MDX components](docs/components.md) · [Migration](docs/migration.md) · [Deployment](docs/deployment.md) · [Parity and validation](docs/parity.md)
+Build your personal blog with static pages, Markdown / MDX, light and dark modes, and a rich collection of content components.
 
-![Solitude](docs/screenshots/home-desktop.png)
+[![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)](https://astro.build/)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22.12.0-5FA04E?logo=node.js&logoColor=white)](package.json)
+[![License](https://img.shields.io/badge/license-Apache--2.0-FF5531)](LICENSE)
+[![Checks](https://github.com/everfu/astro-solitude/actions/workflows/check.yml/badge.svg)](https://github.com/everfu/astro-solitude/actions/workflows/check.yml)
+[![Stars](https://img.shields.io/github/stars/everfu/astro-solitude)](https://github.com/everfu/astro-solitude/stargazers)
+
+[Use this template](https://github.com/everfu/astro-solitude/generate) · [Documentation (Chinese)](docs/README.md) · [Quick start](#quick-start) · [Configuration](docs/configuration.md) · [Components](docs/components.md) · [Deployment](docs/deployment.md) · [Report an issue](https://github.com/everfu/astro-solitude/issues)
+
+</div>
+
+![Astro Solitude desktop homepage preview](docs/screenshots/home-desktop.png)
+
+## Features
+
+- **Layout and reading**: responsive post cards, recommendations, sidebar, table of contents, related posts, copyright notices, and donation links.
+- **Writing**: Markdown / MDX, 41 content components, Shiki syntax highlighting, and KaTeX math rendering.
+- **Post management**: categories, tags, series, archives, pagination, pinned posts, drafts, custom URLs, and aliases.
+- **Special pages**: About, Links, Equipment, Music, Message Board, short posts, Recent Comments, and 404.
+- **Interactions**: light and dark modes, image lightbox, keyboard shortcuts, context menu, and a music capsule that persists across page navigation.
+- **Search and feeds**: local search, Algolia, DocSearch, RSS, and sitemap.
+- **Comments**: Twikoo, Waline, Valine, Artalk, and Giscus, loaded according to configuration.
+- **Interface languages**: Simplified Chinese, Traditional Chinese, English, and Spanish.
+- **Static deployment**: generate static files for a hosting platform or your own server.
 
 ## Quick start
 
-Use **Use this template** on GitHub, clone your new repository, and install Node.js **22.12.0+** and pnpm (Node.js 24 LTS recommended).
+### 1. Get the project
+
+Install Node.js **22.12.0+** and pnpm. Use the pnpm version specified in the `packageManager` field of [package.json](package.json).
+
+Click [Use this template](https://github.com/everfu/astro-solitude/generate) to create an independent repository, then clone your copy (replace `YOUR_NAME` and `my-blog`):
 
 ```sh
-pnpm install
+git clone https://github.com/YOUR_NAME/my-blog.git
+cd my-blog
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Set your public URL and theme settings in `src/site.config.ts`. Write Markdown or MDX in `src/content/posts/`, pages in `src/content/pages/`, and store static assets in `public/`.
+Open the local URL shown in your terminal to preview the theme and sample content.
+
+### 2. Configure your site
+
+Edit [`src/site.config.ts`](src/site.config.ts) to set your site URL, title, author, navigation, and theme options. Here is a minimal configuration:
+
+```ts
+import { defineSolitudeConfig } from './lib/config';
+
+export default defineSolitudeConfig({
+  site: 'https://example.com',
+  title: 'My blog',
+  description: 'Notes, stories, and discoveries.',
+  locale: 'en',
+  author: { name: 'Your name' },
+});
+```
+
+For a site hosted under a subdirectory, also set `base`, for example `base: '/blog/'`. See [Configuration](docs/configuration.md) for all options.
+
+The template includes sample posts and pages with local search enabled. Comments, comment aggregation, and online music are disabled with empty service identifiers. Follow the [integration guide (Chinese)](docs/integrations.md) to connect your own services. Replace sample content, images, and site identity before publishing. Changing the interface locale does not translate posts or custom navigation.
+
+### 3. Start writing
+
+Create a Markdown or MDX file in `src/content/posts/`, such as `hello-world.md`:
+
+```md
+---
+title: Hello, world
+date: 2026-09-11
+description: My first post.
+tags: [Life]
+---
+
+Start your story here.
+```
+
+The default URL is `/p/hello-world/`. Use `slug`, `url`, and `aliases` to customize addresses. Set `draft: true` for drafts, or `home: false` to hide a post from homepage areas while keeping it in archives, search, RSS, and direct links.
+
+See [Front matter](docs/configuration.md#内容字段--front-matter) and [MDX components](docs/components.md) for more writing options.
+
+### 4. Build and deploy
 
 ```sh
-pnpm check
 pnpm build
-pnpm test
 pnpm preview
 ```
 
-The template includes post cards, recommendations, sidebar, TOC, taxonomies, series, archives, special pages, RSS, sitemap, search, dark mode, keyboard shortcuts, context menus, lightbox, music, and 41 MDX components. It supports Chinese (Simplified and Traditional), English, and Spanish UI labels. Demo content and navigation are editable content, not automatically translated.
+Publish the generated `dist/` directory to your hosting platform. Set the build command to `pnpm build` and the output directory to `dist`. Use `pnpm install --frozen-lockfile` during dependency installation.
 
-Posts use `/p/:slug/` by default. Set `url` for an existing `.html` address. `home: false` hides a post from all homepage areas while retaining archives, search, RSS, and direct access. Production excludes drafts. Content stays static; interactive features load only when needed.
+See [Deployment](docs/deployment.md) for hosting instructions and path configuration.
 
-Comments and online playlists are disabled in the starter. Configure your own public client identifiers to use Twikoo, Waline, Valine, Artalk, Giscus, Algolia, DocSearch, or Meting. Never put server credentials in the public site configuration.
+## Documentation
 
-## Validation
+Detailed guides are currently written in **Simplified Chinese**. Start with the [documentation index](docs/README.md).
+
+| Guide                                      | Contents                                                  |
+| ------------------------------------------ | --------------------------------------------------------- |
+| [Getting started](docs/getting-started.md) | Create a template copy, install, write your first post    |
+| [Configuration](docs/configuration.md)     | Site identity, appearance, navigation, defaults           |
+| [Writing](docs/writing.md)                 | Front matter, drafts, categories, URLs, feeds             |
+| [Pages](docs/pages.md)                     | About, links, equipment, short updates                    |
+| [Components](docs/components.md)           | Usage, parameters, and examples for all 41 MDX components |
+| [Integrations](docs/integrations.md)       | Comments, music, external search                          |
+| [Deployment](docs/deployment.md)           | GitHub Pages, static hosts, subpaths                      |
+| [Hugo import](docs/migration.md)           | Preview, export, verify migrated content                  |
+| [FAQ](docs/faq.md)                         | Troubleshooting and theme updates                         |
+
+<details>
+<summary>More previews: dark mode and mobile reading</summary>
+
+![Dark homepage](docs/screenshots/home-desktop-dark.png)
+![Mobile article](docs/screenshots/post-mobile-dark.png)
+
+</details>
+
+## Project structure
+
+```text
+astro-solitude/
+├── public/                # Images, fonts, and other static assets
+├── src/
+│   ├── components/        # Theme and MDX components
+│   ├── content/
+│   │   ├── posts/         # Blog posts
+│   │   └── pages/         # Custom pages
+│   ├── data/              # About, links, equipment, and short-post data
+│   ├── layouts/           # Page layouts
+│   ├── pages/             # Astro routes
+│   ├── styles/custom.css  # Custom styles
+│   └── site.config.ts     # Site configuration
+├── docs/                  # Documentation
+└── astro.config.mjs       # Astro configuration
+```
+
+## Contributing
+
+Use [Issues](https://github.com/everfu/astro-solitude/issues) for bug reports and suggestions. [Pull requests](https://github.com/everfu/astro-solitude/pulls) improving the theme, documentation, and translations are welcome. Include reproduction steps, your environment, and relevant configuration when reporting a problem.
+
+Run these checks before submitting changes:
+
+```sh
+pnpm check
+pnpm test
+pnpm build
+```
+
+For changes to page interactions, also run the browser tests:
 
 ```sh
 pnpm build:fixture
@@ -38,6 +162,8 @@ pnpm exec playwright install chromium
 pnpm test:e2e
 ```
 
-Provider tests use mocks. Audio persistence uses a real HTML audio element and checks identity and playback through client navigation; it is not a live music provider test. See the parity report for evidence and limits.
+Browser tests use an isolated fixture site. Mocked third-party tests do not establish that live services work. See the [development validation report](docs/parity.md) for test coverage and source comparisons.
 
-Licensed under Apache-2.0. Attribution is retained in `NOTICE` and the source snapshot manifest. The migration does not deploy or alter the original blog.
+## License
+
+[Apache-2.0](LICENSE) License © 2026–present [everfu](https://github.com/everfu). Retain the applicable license and copyright notices when modifying or redistributing the project.

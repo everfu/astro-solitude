@@ -2,6 +2,20 @@ export const initActionDelegation = (api: Record<string, any>) => {
   if (document.documentElement.dataset.solitudeActions === 'true') return;
   document.documentElement.dataset.solitudeActions = 'true';
 
+  // ClientRouter handles links on document before the deferred theme runtime.
+  // Cancel action-only links during capture, before it can start a page swap.
+  // Keep action dispatch in the bubble phase so ordinary nested links still
+  // reach ClientRouter (for example, a tag link inside a clickable post card).
+  document.addEventListener(
+    'click',
+    (event) => {
+      if (!(event.target instanceof Element)) return;
+      if (event.target.closest('[data-solitude-prevent="true"]'))
+        event.preventDefault();
+    },
+    true,
+  );
+
   const dispatch = (event: Event) => {
     if (!(event.target instanceof Element)) return;
     const element = event.target.closest<HTMLElement>('[data-solitude-action]');

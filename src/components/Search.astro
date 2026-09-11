@@ -71,7 +71,12 @@ import { cfg, t, url, termPath } from '../lib/site';
               </div>
               <ul class="local-hits" id="search-results" hidden />
               <nav id="search-pagination" aria-label={t('search')} />
-              <div id="search-tips" />
+              <div
+                id="search-tips"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              />
             </div>
           )}
         </div>

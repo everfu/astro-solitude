@@ -448,11 +448,11 @@ span.tagsPageCount {
   right: 0;
 }
 
-.archive-page-section-pagination .archive-page-extend:hover:not(:disabled) {
+.archive-page-section-pagination .archive-page-extend:is(:hover, :focus-visible):not(:disabled) {
   color: var(--efu-theme);
   background: var(--efu-card-bg);
   border-color: var(--efu-theme);
-  box-shadow: var(--efu-shadow-main);
+  box-shadow: none;
 }
 
 .archive-page-section-pagination .archive-page-extend:disabled {
@@ -468,13 +468,13 @@ span.tagsPageCount {
   transition: 0.3s;
 }
 
-.archive-page-section-pagination .archive-page-extend.prev:hover span {
+.archive-page-section-pagination .archive-page-extend.prev:is(:hover, :focus-visible) span {
   max-width: 48px;
   margin-left: 4px;
   opacity: 1;
 }
 
-.archive-page-section-pagination .archive-page-extend.next:hover span {
+.archive-page-section-pagination .archive-page-extend.next:is(:hover, :focus-visible) span {
   max-width: 48px;
   margin-right: 4px;
   opacity: 1;
@@ -590,7 +590,7 @@ span.tagsPageCount {
     border-radius: 12px;
     box-shadow: var(--efu-shadow-border);
   }
-  .archive-page-section-pagination .archive-page-extend:hover:not(:disabled) {
+  .archive-page-section-pagination .archive-page-extend:is(:hover, :focus-visible):not(:disabled) {
     color: var(--efu-nav-hover-text);
     background: var(--efu-theme);
     border-color: var(--efu-theme);

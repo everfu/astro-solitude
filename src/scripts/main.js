@@ -3,13 +3,14 @@ import { Solitude } from "./core/api";
 import { initActionDelegation } from "./core/actions";
 import { lifecycle } from "./core/lifecycle";
 import { initPreloader } from "./core/preloader";
+import { initToc } from "./toc";
 let coverColor = () => { };
 let initializeMusicPlayer = () => { };
 const loadFeatureModules = async () => {
     const features = Solitude.config.feature_modules || {};
     const requests = [];
     if (features.search === "local")
-        requests.push(import("./search/local"));
+        requests.push(import("./search/local").then(module => module.initializeLocalSearch()));
     if (features.search === "algolia")
         requests.push(import("./search/algolia"));
     if (features.search === "docsearch")
@@ -116,15 +117,13 @@ const scrollFn = () => {
             $header.classList.toggle("nav-visible", !isDown);
             $header.classList.add("nav-fixed");
             if ($rightside) {
-                $rightside.style.opacity = "1";
-                $rightside.style.transform = "translateX(-58px)";
+                $rightside.classList.add("is-visible");
             }
         }
         else {
             $header.classList.remove("nav-fixed", "nav-visible");
             if ($rightside) {
-                $rightside.style.opacity = "";
-                $rightside.style.transform = "";
+                $rightside.classList.remove("is-visible");
             }
         }
     };
@@ -656,7 +655,7 @@ const actions = {
         let isScrubbing = false;
         let suppressClick = false;
         let feedbackTimer = 0;
-        const getAPlayer = () => $music.querySelector("meting-js")?.aplayer || null;
+        const getAPlayer = () => $music.querySelector("solitude-meting")?.aplayer || null;
         const getDuration = (aplayer) => {
             const duration = Number(aplayer?.audio?.duration);
             return Number.isFinite(duration) && duration > 0 ? duration : 0;
@@ -820,7 +819,7 @@ const actions = {
         document.addEventListener("solitude:beforeNavigate", cancelScrub);
     },
     musicBind() {
-        const $meting = document.querySelector("#nav-music meting-js");
+        const $meting = document.querySelector("#nav-music solitude-meting");
         const aplayer = $meting?.aplayer;
         if (!aplayer) {
             this.isMusicBind = false;
@@ -831,13 +830,14 @@ const actions = {
             aplayer.on("play", () => this.syncMusicState(true));
             aplayer.on("pause", () => this.syncMusicState(false));
             aplayer.on("ended", () => this.syncMusicState(false));
+            // APlayer emits listswitch before updating the cover background.
+            aplayer.on("listswitch", () => queueMicrotask(() => coverColor(true)));
             aplayer.on("loadeddata", () => {
-                if (typeof coverColor === "function")
-                    coverColor(true);
                 this.syncMusicState(Boolean(aplayer.audio && !aplayer.audio.paused));
             });
             aplayer.solitudeCapsuleBound = true;
         }
+        coverColor(true);
         this.syncMusicState(Boolean(aplayer.audio && !aplayer.audio.paused));
         return aplayer;
     },
@@ -859,10 +859,10 @@ const actions = {
         shouldPlay ? aplayer.play() : aplayer.pause();
     },
     musicSkipBack() {
-        document.querySelector("#nav-music meting-js")?.aplayer?.skipBack();
+        document.querySelector("#nav-music solitude-meting")?.aplayer?.skipBack();
     },
     musicSkipForward() {
-        document.querySelector("#nav-music meting-js")?.aplayer?.skipForward();
+        document.querySelector("#nav-music solitude-meting")?.aplayer?.skipForward();
     },
     switchCommentBarrage() {
         const commentBarrageElement = document.querySelector(".comment-barrage");
@@ -1301,76 +1301,6 @@ const actions = {
 };
 Object.assign(Solitude, actions);
 Solitude.toggleTheme = () => Solitude.switchDarkMode();
-class toc {
-    static init() {
-        const tocContainer = document.getElementById("card-toc");
-        if (!tocContainer)
-            return;
-        const el = tocContainer.querySelectorAll("#TableOfContents a, .toc a");
-        if (!el.length) {
-            tocContainer.style.display = "none";
-            return;
-        }
-        el.forEach((e) => {
-            e.addEventListener("click", (event) => {
-                event.preventDefault();
-                Solitude.scrollToDest(Solitude.getEleTop(document.getElementById(decodeURI((event.target.className === "toc-text"
-                    ? event.target.parentNode.hash
-                    : event.target.hash).replace("#", "")))), 300);
-            });
-        });
-        this.active(el);
-    }
-    static active(toc) {
-        const $article = document.querySelector(".article-container");
-        const $tocContent = document.getElementById("toc-content");
-        const list = $article.querySelectorAll("h1,h2,h3,h4,h5,h6");
-        let detectItem = "";
-        const autoScroll = (el) => {
-            const activePosition = el.getBoundingClientRect().top;
-            const sidebarScrollTop = $tocContent.scrollTop;
-            if (activePosition > document.documentElement.clientHeight - 100) {
-                $tocContent.scrollTop = sidebarScrollTop + 150;
-            }
-            if (activePosition < 100) {
-                $tocContent.scrollTop = sidebarScrollTop - 150;
-            }
-        };
-        const findHeadPosition = (top) => {
-            if (top === 0)
-                return false;
-            let currentIndex = "";
-            list.forEach((ele, index) => {
-                if (top > Solitude.getEleTop(ele) - 80) {
-                    currentIndex = index;
-                }
-            });
-            if (detectItem === currentIndex)
-                return;
-            detectItem = currentIndex;
-            document
-                .querySelectorAll("#TableOfContents .active, .toc .active")
-                .forEach((i) => {
-                i.classList.remove("active");
-            });
-            const activeitem = toc[detectItem];
-            if (activeitem) {
-                let parent = toc[detectItem].parentNode;
-                activeitem.classList.add("active");
-                autoScroll(activeitem);
-                for (; parent && !parent.matches("#TableOfContents, .toc"); parent = parent.parentNode) {
-                    if (parent.matches("li"))
-                        parent.classList.add("active");
-                }
-            }
-        };
-        const tocScrollFn = Solitude.throttle(() => {
-            const currentTop = window.scrollY || document.documentElement.scrollTop;
-            findHeadPosition(currentTop);
-        }, 100);
-        lifecycle.listen(window, "scroll", tocScrollFn, { passive: true });
-    }
-}
 class tabs {
     static init() {
         this.clickFnOfTabs();
@@ -1419,27 +1349,6 @@ class tabs {
         articleContainer.insertAdjacentElement(expire.position === "top" ? "afterbegin" : "beforeend", ele);
     }
 }
-const scrollFnToDo = () => {
-    const { toc } = Solitude.page;
-    if (toc) {
-        const $cardTocLayout = document.getElementById("card-toc");
-        const $cardToc = $cardTocLayout.querySelector(".toc-content");
-        const tocItemClickFn = (e) => {
-            const target = e.target.closest(".toc-link");
-            if (!target)
-                return;
-            e.preventDefault();
-            Solitude.scrollToDest(Solitude.getEleTop(document.getElementById(decodeURI(target.getAttribute("href")).replace("#", ""))), 300);
-            if (window.innerWidth < 900) {
-                $cardTocLayout.classList.remove("open");
-            }
-        };
-        Solitude.addEventListenerPjax($cardToc, "click", tocItemClickFn);
-    }
-};
-const forPostFn = () => {
-    scrollFnToDo();
-};
 const initPostCoverTilt = () => {
     const cover = document.querySelector(".post-cover-aside");
     const canTilt = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -1663,7 +1572,7 @@ Solitude.refresh = async () => {
     ].forEach((fn) => fn());
     lazyload.enable && Solitude.lazyloadImg();
     lightbox &&
-        Solitude.lightbox(document.querySelectorAll(".article-container img:not(.flink-avatar,.gallery-group img, .no-lightbox)"));
+        Solitude.lightbox(document.querySelectorAll(".article-container img:not(.flink-avatar,.gallery-group img, .no-lightbox), #bber .bber-content-img img"));
     randomlink && Solitude.randomLinksList?.();
     Solitude.config.friend_links.async && Solitude.friendLinks?.init();
     if (is_post) {
@@ -1691,7 +1600,7 @@ Solitude.refresh = async () => {
     if (covercolor.enable)
         coverColor();
     if (Solitude.page.toc)
-        toc.init();
+        initToc();
     if (page === "music") {
         initializeMusicPlayer();
         lifecycle.add(() => Solitude.musicPlayer?.destroy?.());
@@ -1702,7 +1611,6 @@ Solitude.refresh = async () => {
         lifecycle.add(() => archivePageController.destroy());
     }
     initAboutPage();
-    forPostFn();
 };
 export const initializeApp = async () => {
     initActionDelegation(Solitude);

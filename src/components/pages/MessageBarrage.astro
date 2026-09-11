@@ -1,0 +1,41 @@
+---
+import { cfg, t } from '../../lib/site';
+---
+
+<section class="message-barrage-region" aria-label={t('comments')}>
+  <p
+    id="message-barrage-status"
+    role="status"
+    aria-live="polite"
+    aria-busy="true"
+  >
+    {t('commentsLoading')}
+  </p>
+  <div
+    id="barrage"
+    data-native-barrage
+    aria-label={t('comments')}
+    data-line={cfg.envelope.line}
+    data-speed={cfg.envelope.speed}
+    data-hover={String(cfg.envelope.hover)}
+    data-loop={String(cfg.envelope.loop)}
+  />
+  <div class="switch_message" aria-controls="barrage">
+    <button
+      type="button"
+      data-message-barrage="show"
+      aria-pressed="true"
+      disabled
+    >
+      <span>{t('showBarrage')}</span>
+    </button>
+    <button
+      type="button"
+      data-message-barrage="hide"
+      aria-pressed="false"
+      disabled
+    >
+      <span>{t('hideBarrage')}</span>
+    </button>
+  </div>
+</section>

@@ -1439,22 +1439,25 @@ span.tags-punctuation {
   #pagination:not(.pagination-post) a.extend.prev i {
     transition: 0.3s;
   }
-  #pagination:not(.pagination-post) a.extend:hover {
+  #pagination:not(.pagination-post) a.extend:is(:hover, :focus-visible) {
     color: var(--efu-theme);
     background: var(--efu-card-bg);
     border-color: var(--efu-theme);
-    box-shadow: var(--efu-shadow-main);
+    box-shadow: none;
   }
   #pagination:not(.pagination-post) a.extend.prev {
     left: 0;
   }
   #pagination:not(.pagination-post) a.extend.prev .pagination_tips_prev {
-    margin-right: -32px;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
     opacity: 0;
     transition: 0.3s ease-out;
   }
-  #pagination:not(.pagination-post) a.extend.prev:hover .pagination_tips_prev {
-    margin-right: 2px;
+  #pagination:not(.pagination-post) a.extend.prev:is(:hover, :focus-visible) .pagination_tips_prev {
+    max-width: 48px;
+    margin-left: var(--efu-space-1);
     opacity: 1;
     white-space: nowrap;
   }
@@ -1462,12 +1465,15 @@ span.tags-punctuation {
     right: 0;
   }
   #pagination:not(.pagination-post) a.extend.next .pagination_tips_next {
-    margin-left: -32px;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
     opacity: 0;
     transition: 0.3s ease-out;
   }
-  #pagination:not(.pagination-post) a.extend.next:hover .pagination_tips_next {
-    margin-left: 2px;
+  #pagination:not(.pagination-post) a.extend.next:is(:hover, :focus-visible) .pagination_tips_next {
+    max-width: 48px;
+    margin-right: var(--efu-space-1);
     opacity: 1;
     white-space: nowrap;
   }

@@ -110,6 +110,7 @@
   display: none;
 }
 
+/* Avoid an opacity backdrop root around the glass layer during hover. */
 #nav-music #nav-music-hoverTips {
   position: absolute;
   inset: 0;
@@ -121,15 +122,31 @@
   height: 100%;
   gap: 4px;
   color: var(--efu-white);
-  background: color-mix(in srgb, var(--efu-music) 50%, transparent);
+  --capsule-controls-bg: color-mix(in srgb, var(--efu-music) 50%, transparent);
   border-radius: 40px;
-  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transition:
-    opacity 0.22s ease,
-    background 0.3s ease,
     width 0.34s cubic-bezier(0.4, 0, 0.2, 1),
     padding 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#nav-music #nav-music-hoverTips::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background: var(--capsule-controls-bg);
+  border-radius: inherit;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+
+#nav-music:is(.stretch, .collapsing) #nav-music-hoverTips::before {
+  border-radius: 0 40px 40px 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 48px);
+  mask-image: linear-gradient(to right, transparent, #000 48px);
 }
 
 #nav-music #nav-music-hoverTips .music-control-btn {
@@ -165,12 +182,12 @@
   border-radius: 20px;
 }
 
-#nav-music:is(:hover, :focus-within) #nav-music-hoverTips {
-  opacity: 1;
+#nav-music:is(:hover, :has(:focus-visible)) #nav-music-hoverTips {
+  visibility: visible;
 }
 
 #nav-music.scrubbing #nav-music-hoverTips {
-  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
@@ -178,12 +195,7 @@
   pointer-events: none;
 }
 
-#nav-music:not(.playing):is(:hover, :focus-within) #nav-music-hoverTips {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-#nav-music:not(.playing):is(:hover, :focus-within) #music-play {
+#nav-music:not(.playing):is(:hover, :has(:focus-visible)) #music-play {
   display: flex;
 }
 
@@ -197,12 +209,12 @@
   width: 180px;
   padding-right: 20px;
   justify-content: flex-end;
-  background: linear-gradient(to left, var(--efu-music) 60%, transparent);
+  --capsule-controls-bg: linear-gradient(to left, var(--efu-music) 60%, transparent);
 }
 
-#nav-music.playing:is(:hover, :focus-within) #music-prev,
-#nav-music.playing:is(:hover, :focus-within) #music-pause,
-#nav-music.playing:is(:hover, :focus-within) #music-next {
+#nav-music.playing:is(:hover, :has(:focus-visible)) #music-prev,
+#nav-music.playing:is(:hover, :has(:focus-visible)) #music-pause,
+#nav-music.playing:is(:hover, :has(:focus-visible)) #music-next {
   display: flex;
 }
 
@@ -212,8 +224,8 @@
   width: 180px;
   padding-right: 20px;
   justify-content: flex-end;
-  background: linear-gradient(to left, var(--efu-music) 60%, transparent);
-  opacity: 0;
+  --capsule-controls-bg: linear-gradient(to left, var(--efu-music) 60%, transparent);
+  visibility: hidden;
   pointer-events: none;
 }
 
@@ -222,9 +234,9 @@
   animation-play-state: paused;
 }
 
-#nav-music.collapsing:is(:hover, :focus-within) #music-prev,
-#nav-music.collapsing:is(:hover, :focus-within) #music-pause,
-#nav-music.collapsing:is(:hover, :focus-within) #music-next {
+#nav-music.collapsing:is(:hover, :has(:focus-visible)) #music-prev,
+#nav-music.collapsing:is(:hover, :has(:focus-visible)) #music-pause,
+#nav-music.collapsing:is(:hover, :has(:focus-visible)) #music-next {
   display: flex;
   opacity: 0;
   transform: scale(0.9);
@@ -559,25 +571,6 @@
   }
 }
 
-@media (hover: none) {
-  #nav-music.playing #nav-music-hoverTips {
-    opacity: 1;
-  }
-  #nav-music.playing #nav-music-hoverTips #music-prev,
-  #nav-music.playing #nav-music-hoverTips #music-pause,
-  #nav-music.playing #nav-music-hoverTips #music-next {
-    display: flex;
-  }
-
-  #nav-music.collapsing #nav-music-hoverTips #music-prev,
-  #nav-music.collapsing #nav-music-hoverTips #music-pause,
-  #nav-music.collapsing #nav-music-hoverTips #music-next {
-    display: flex;
-    opacity: 0;
-    transform: scale(0.9);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   #nav-music.needEndHide {
     transition-duration: 0.01ms;
@@ -594,4 +587,25 @@
   #nav-music .aplayer .aplayer-played::after {
     transition: none;
   }
+}
+
+/* Album-colored fallback for image hosts that do not permit canvas sampling. */
+#nav-music[data-cover-color-fallback]:is(.playing, :hover, :focus-within) .aplayer::before {
+  position: absolute;
+  inset: -30px;
+  z-index: -1;
+  content: "";
+  background: var(--capsule-cover-background) center / cover;
+  filter: blur(30px) brightness(0.65);
+  pointer-events: none;
+}
+
+#nav-music[data-cover-color-fallback]:is(.playing, :hover, :focus-within) .aplayer {
+  background: var(--efu-black);
+  border-color: var(--efu-card-bg);
+  box-shadow: var(--efu-shadow-glass-inset);
+}
+
+#nav-music[data-cover-color-fallback] #nav-music-hoverTips {
+  --capsule-controls-bg: linear-gradient(to left, rgb(0 0 0 / 35%), transparent);
 }

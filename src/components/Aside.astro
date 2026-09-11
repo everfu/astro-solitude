@@ -53,7 +53,10 @@ for (const heading of headings) {
             <div class="card-widget" id="card-toc">
               <div class="item-headline">
                 <i class="solitude fas fa-bars" />
-                <span>{t('toc')}</span>
+                <span id="toc-title">{t('toc')}</span>
+                <button class="toc-close" type="button" aria-label={t('close')}>
+                  <i class="fas fa-xmark" aria-hidden="true" />
+                </button>
               </div>
               <div class="toc-content" id="toc-content">
                 <ol class="toc">
@@ -208,10 +211,12 @@ for (const heading of headings) {
                   <a
                     class="recent-comment-more"
                     href={url(cfg.recent_comments.page)}
+                    title={t('more')}
+                    aria-label={t('more')}
                   >
                     <i
                       class="solitude fas fa-circle-chevron-right"
-                      aria-label={t('more')}
+                      aria-hidden="true"
                     />
                   </a>
                 )}

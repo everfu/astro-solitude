@@ -252,7 +252,7 @@
     "mutex": true,
     "order": "list"
   },
-  "meting_api": "https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r",
+  "meting_api": "https://meting.efu.me/?server=:server&type=:type&id=:id&r=:r",
   "keyboard": {
     "enable": false,
     "list": []

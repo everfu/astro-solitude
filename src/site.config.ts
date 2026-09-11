@@ -20,9 +20,7 @@ export default defineSolitudeConfig({
       children: [
         { name: '关于主题', url: '/about/' },
         { name: '我的装备', url: '/equipment/' },
-        { name: '音乐馆', url: '/music/' },
         { name: '即刻短文', url: '/brevity/' },
-        { name: '留言板', url: '/message/' },
       ],
     },
   ],
@@ -45,7 +43,9 @@ export default defineSolitudeConfig({
       },
     },
     aside: {
-      home: { noSticky: 'about', Sticky: 'newestPost,allInfo' },
+      home: { noSticky: 'about', Sticky: 'allInfo' },
+      post: { noSticky: 'about', Sticky: 'newestPost,allInfo' },
+      page: { noSticky: 'about', Sticky: 'newestPost,allInfo' },
       my_card: {
         description: '简洁、优雅、功能丰富的 Astro 主题。',
         content: '让内容自然成为主角。',
@@ -77,10 +77,12 @@ export default defineSolitudeConfig({
         ],
         关于: [
           { name: '主题', url: '/about/' },
-          { name: '留言', url: '/message/' },
+          { name: '友链', url: '/links/' },
         ],
       },
     },
+    // 评论和在线音乐默认关闭。启用步骤见 docs/integrations.md。
+    post: { covercolor: { enable: true, mode: 'local' } },
     brevity: { enable: true },
     keyboard: {
       enable: true,

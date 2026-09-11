@@ -45,7 +45,7 @@ class MusicPlayer {
         const backgroundElement = document.getElementById("Music-bg");
         clearInterval(this.loadingTimer);
         this.loadingTimer = window.setInterval(() => {
-            const meting = document.querySelector("#Music-page meting-js");
+            const meting = document.querySelector("#Music-page solitude-meting");
             const aplayer = meting?.aplayer;
             const root = document.querySelector("#Music-page .aplayer");
             const body = root?.querySelector(".aplayer-body");

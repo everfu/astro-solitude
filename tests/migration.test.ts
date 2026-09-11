@@ -70,6 +70,9 @@ test('site settings and nested menus convert without carrying Hugo-only fields',
       main: [
         { identifier: 'read', name: 'Read' },
         { name: 'Archive', parent: 'read', pageRef: '/archives' },
+        { name: 'Friends', pageRef: '/links' },
+        { name: 'Explore' },
+        { name: 'About', parent: 'Explore', pageRef: '/about' },
       ],
     },
     pagination: { pagerSize: 8 },
@@ -77,6 +80,10 @@ test('site settings and nested menus convert without carrying Hugo-only fields',
   });
   assert.equal(config.base, '/blog/');
   assert.equal(config.menus[0].children[0].url, '/archives/');
+  assert.deepEqual(config.menus[1], { name: 'Friends', url: '/links/' });
+  assert.deepEqual(config.menus[2].children, [
+    { name: 'About', url: '/about/' },
+  ]);
   assert.equal(config.pagination, 8);
   assert.equal(config.theme.search.enable, false);
 });

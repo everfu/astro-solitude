@@ -1,65 +1,35 @@
 import fs from 'node:fs/promises';
-import path from 'node:path';
 import map from '../src/lib/shortcode-map.json';
+import params from '../src/lib/shortcode-params.json';
 import defaults from '../src/lib/defaults.json';
-const source = process.argv[2];
+
+async function output(file: string, contents: string) {
+  if (process.argv.includes('--check')) {
+    if ((await fs.readFile(file, 'utf8')) !== contents)
+      throw new Error(`${file} is stale; run pnpm docs:generate`);
+  } else await fs.writeFile(file, contents);
+}
+
+// Only generated reference files belong here; never overwrite authored guides.
+await fs.mkdir('docs', { recursive: true });
 const lines = [
-  '# MDX 组件 / Components',
+  '# 组件参数索引',
   '',
-  '`src/content/posts/components.mdx` 是可运行的 41 组件示例，访问 `/p/components/`。组件由主题自动注入；在其他布局中可显式导入。扩展内容必须使用 `.mdx`，普通 `.md` 不解析组件或 Hugo 短代码。',
+  '[文档首页](README.md) · [用法与可复制示例](components.md)',
   '',
-  '```mdx',
-  "import { Note, Tabs, Tab } from '../../components/mdx';",
+  '由 `pnpm docs:generate` 使用仓库内映射生成，无需 Hugo 源目录。下表是迁移参数摘要，不表示每个参数都必填；当前 MDX 扩展属性见组件指南。',
   '',
-  '<Note type="info">',
-  '',
-  '支持 **Markdown** 的提示框。',
-  '',
-  '</Note>',
-  '',
-  '<Tabs id="example">',
-  '  <Tab title="One">第一项</Tab>',
-  '  <Tab title="Two">第二项</Tab>',
-  '</Tabs>',
-  '```',
-  '',
-  '嵌套块内部建议用空行包围 Markdown。布尔值使用 `{true}` / `{false}`；图表与配置对象使用 JSX 表达式。组件属性保持源短代码含义。',
-  '',
-  '| Hugo 名称 | MDX 组件 | 源参数 | 验证 |',
-  '| --- | --- | --- | --- |',
+  '| Hugo 名称 | MDX 组件 | 参数摘要 |',
+  '| --- | --- | --- |',
 ];
 for (const [name, component] of Object.entries(map)) {
-  let params = '';
-  if (source) {
-    const body = await fs.readFile(
-      path.join(source, 'layouts/_shortcodes', `${name}.html`),
-      'utf8',
-    );
-    params = [
-      ...new Set([...body.matchAll(/\.Get "([^"]+)"/g)].map((m) => m[1])),
-    ].join(', ');
-  }
+  const names = params[name as keyof typeof params];
   lines.push(
-    `| ${name} | [${component}](../src/components/mdx/${component}.astro) | ${params || 'children'} | 示例构建、转换映射测试 |`,
+    `| ${name} | [${component}](components.md#${component.toLowerCase()}) | ${names.length ? names.map((p) => `\`${p}\``).join(', ') : '无映射参数；见用法说明'} |`,
   );
 }
-lines.push(
-  '',
-  '## 原始文本与数据属性',
-  '',
-  '| 组件 | 扩展属性 |',
-  '| --- | --- |',
-  '| ChartJS | `config={{type, data, options}}` 或 `code={JSON文本}` |',
-  '| Mermaid | `code={图表文本}` |',
-  '| Score | `score={ABC文本}`、`params={{}}` |',
-  '| Flink | `groups={[{class_name, class_desc, link_list: []}]}` |',
-  '| Videos | `sources={["/video.mp4"]}`、`col={2}` |',
-  '',
-  '图库、时间线和标签页使用子组件嵌套。仓库卡片只在浏览器请求公开仓库 API，失败时显示回退状态。Chart.js、ABCJS、Mermaid、TypeIt、视频嵌入依赖相应脚本或网络服务，使用自己的 CDN 或本地资源时修改 `theme.cdn`。',
-  '',
-  'English: all 41 source shortcodes have named MDX counterparts. The live showcase includes every component. Use JSX props for raw diagram text and structured data; ordinary Markdown stays free of Hugo parsing. Component mappings are tested separately from live third-party APIs.',
-);
-await fs.writeFile('docs/components.md', lines.join('\n') + '\n');
+await output('docs/component-inventory.md', lines.join('\n') + '\n');
+
 const modules: Record<string, string> = {
   site: 'Header, Base',
   nav: 'Header',
@@ -109,9 +79,9 @@ const modules: Record<string, string> = {
   cdn: 'assets, resources',
 };
 const rows = [
-  '# 配置字段清单 / Configuration inventory',
+  '# 配置字段清单',
   '',
-  '原 Hugo `params.solitude.*` 对应 Astro `theme.*`。本表逐项列出完整默认配置，定位实现分组；自动检查只验证配置形状与构建，不代表每个外部服务已完成真实联调。功能验收证据与局限见 [parity.md](parity.md)。',
+  '[文档首页](README.md) · [配置指南](configuration.md) · [开发与验收](parity.md)。由 `pnpm docs:generate` 根据 `src/lib/defaults.json` 生成；表中是基础默认值，模板覆盖值见 `src/site.config.ts`。顶层站点字段和未在当前布局使用的兼容字段见配置指南；字段存在不等于每项都有可见效果。',
   '',
   '| 字段 | 默认值 | 实现定位 |',
   '| --- | --- | --- |',
@@ -133,4 +103,4 @@ function walk(value: any, keys: string[] = []) {
   }
 }
 walk(defaults);
-await fs.writeFile('docs/configuration-inventory.md', rows.join('\n') + '\n');
+await output('docs/configuration-inventory.md', rows.join('\n') + '\n');

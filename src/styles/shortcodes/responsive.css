@@ -147,19 +147,6 @@
     height: 28px;
   }
 
-  .article-container a.solitude-tag.tag-button {
-    display: flex;
-    width: 100%;
-    min-height: 48px;
-    margin-right: 0;
-  }
-
-  .article-container a.solitude-tag.tag-button i {
-    flex-basis: 32px;
-    width: 32px;
-    height: 32px;
-  }
-
   .article-container .solitude-tag.tag-flink .flink-list {
     grid-template-columns: 1fr;
   }
@@ -192,32 +179,22 @@
   }
 
   .article-container .solitude-tag.card_box {
-    grid-template-columns: minmax(116px, 38%) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     width: 100% !important;
-    min-height: 176px;
+    gap: var(--efu-space-3);
   }
 
   .article-container .solitude-tag.card_box .card_cover {
-    margin: 10px;
-    margin-right: 0;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
   }
 
   .article-container .solitude-tag.card_box .card_body {
-    padding: var(--efu-space-4);
+    padding: var(--efu-space-2);
   }
 
   .article-container .solitude-tag.card_box.no-cover {
-    min-height: 140px;
-  }
-
-  .article-container .solitude-tag.card_box.no-cover::before {
-    top: var(--efu-space-4);
-    bottom: var(--efu-space-4);
-    left: var(--efu-space-4);
-  }
-
-  .article-container .solitude-tag.card_box.no-cover .card_body {
-    padding-left: 34px;
+    padding: var(--efu-space-4);
   }
 
   .article-container .solitude-tag.tag-tabs .nav-tabs {

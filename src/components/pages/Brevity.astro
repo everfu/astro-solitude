@@ -1,105 +1,173 @@
 ---
 import brevity from '../../data/brevity.json';
-import { cfg, config, url } from '../../lib/site';
+import { cfg, config, dateLabel, t, url } from '../../lib/site';
+import '../../styles/pages/brevity.css';
 interface Props {
-  data?: typeof brevity;
+  data?: typeof brevity & {
+    header?: {
+      description?: string;
+      cover?: string;
+      button?: { text: string; link: string };
+    };
+  };
 }
-const { data = brevity } = Astro.props;
+const data: NonNullable<Props['data']> = Astro.props.data ?? brevity;
 const c = cfg.brevity;
+const header = data.header;
+const items = data.items.slice(0, c.strip);
 ---
 
 {c.enable && (
-  <div id="bber">
-    <section class="timeline page-1">
-      <ul class="list waterfall">
-        {data.items.slice(0, c.strip).map((item: any) => (
-          <li class="item">
-            {c.style === 2 && (
-              <div class="meta">
-                <img
-                  class="avatar"
-                  src={url(cfg.aside.my_card.author.img)}
-                  alt=""
-                />
-                <div class="info">
-                  <span class="bber_nick">{config.author.name}</span>
-                  <time class="datetime bber_date" datetime={item.date}>
-                    {item.date}
-                  </time>
-                </div>
-              </div>
-            )}
-            <div class="bber-content">
-              <p class="datacont">{item.content}</p>
-              {item.image && (
-                <div class="bber-content-img">
-                  {(Array.isArray(item.image) ? item.image : [item.image]).map(
-                    (img: any) => (
-                      <img
-                        src={url(typeof img === 'string' ? img : img.url)}
-                        alt={img.alt ?? ''}
-                      />
-                    ),
-                  )}
-                </div>
-              )}
-            </div>
-            {c.music && item.aplayer && (
-              <div class="bber-music">
-                <meting-js
-                  server={item.aplayer.server}
-                  type="song"
-                  id={item.aplayer.id}
-                  mutex="true"
-                  preload="none"
-                  theme="var(--efu-main)"
-                  data-lrctype="0"
-                />
-              </div>
-            )}
-            {item.video && (
-              <div class="bber-video">
-                {item.video.player && (
-                  <video src={url(item.video.player)} controls />
-                )}
-                {item.video.bilibili && <iframe
-                  src={`https://player.bilibili.com/player.html?autoplay=0&bvid=${encodeURIComponent(item.video.bilibili)}`}
-                  title="Bilibili video"
-                  allowfullscreen
-                ></iframe>}
-              </div>
-            )}
-            {c.style === 1 && (
-              <>
-                <hr />
-                <div class="bber-bottom">
-                  <div class="bber-info">
-                    <div class="bber-info-time">
-                      <i class="solitude fas fa-calendar-day" />
-                      <time class="datetime" datetime={item.date}>
-                        {item.date}
-                      </time>
-                    </div>
-                    {item.location && (
-                      <div class="bber-info-location">
-                        <i class="solitude fas fa-location-dot" />
-                        {item.location}
-                      </div>
-                    )}
-                    {item.link && (
-                      <a class="bber-content-link" href={url(item.link)}>
-                        <i class="solitude fas fa-link" />
-                        链接
-                      </a>
-                    )}
+  <>
+    <header class="author-content author-content-item single sharePage brevity-header">
+      <img
+        class="brevity-header-cover"
+        src={url(header?.cover || '/img/demo/cover-legacy-url-v2.webp')}
+        alt=""
+        fetchpriority="high"
+      />
+      <div class="card-content">
+        <div class="author-content-item-tips">
+          {header?.description || t('brevityDescription')}
+        </div>
+        <h1 class="author-content-item-title">{t('brevity')}</h1>
+        <div class="content-bottom">
+          <div class="tips">{config.author.name}</div>
+        </div>
+        <div class="banner-button-group">
+        <a
+          class="banner-button"
+          href={url(header?.button?.link || '/archives/')}
+          aria-label={header?.button?.text || t('brevityReadMore')}
+          >
+            <i
+              class="solitude fas fa-circle-chevron-right"
+              aria-hidden="true"
+            />
+            <span class="banner-button-text">
+              {header?.button?.text || t('brevityReadMore')}
+            </span>
+          </a>
+        </div>
+      </div>
+    </header>
+    <solitude-brevity id="bber" data-style={c.style}>
+      <section class="timeline page-1">
+        <ul class="list waterfall">
+          {items.map((item: any) => (
+            <li class="item">
+              {c.style === 2 && (
+                <div class="meta">
+                  <img
+                    class="avatar"
+                    src={url(cfg.aside.my_card.author.img)}
+                    alt=""
+                  />
+                  <div class="info">
+                    <span class="bber_nick">{config.author.name}</span>
+                    <time
+                      class="bber_date"
+                      datetime={item.date.replace(' ', 'T')}
+                      title={item.date}
+                    >
+                      {dateLabel(item.date.replace(' ', 'T'))}
+                    </time>
                   </div>
                 </div>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-      <div id="bber-tips">展示最近 {c.strip} 条动态</div>
-    </section>
-  </div>
+              )}
+              <div class="bber-content">
+                <p class="datacont">{item.content}</p>
+                {item.image && (
+                  <div class="bber-content-img">
+                    {(Array.isArray(item.image)
+                      ? item.image
+                      : [item.image]
+                    ).map((img: any) => (
+                      <img
+                        src={url(typeof img === 'string' ? img : img.url)}
+                        alt={img.alt ?? item.content}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+              {c.music && item.aplayer && (
+                <div class="bber-music">
+                  <solitude-meting
+                    server={item.aplayer.server}
+                    type="song"
+                    id={item.aplayer.id}
+                    mutex="true"
+                    preload="none"
+                    theme="var(--efu-main)"
+                    data-lrctype="0"
+                  />
+                </div>
+              )}
+              {item.video && (
+                <div class="bber-video">
+                  {item.video.player && (
+                    <video
+                      src={url(item.video.player)}
+                      controls
+                      preload="metadata"
+                    />
+                  )}
+                  {item.video.bilibili && <iframe
+                    src={`https://player.bilibili.com/player.html?autoplay=0&bvid=${encodeURIComponent(item.video.bilibili)}`}
+                    title="Bilibili video"
+                    loading="lazy"
+                    allowfullscreen
+                  ></iframe>}
+                </div>
+              )}
+              {(c.style === 1 || item.location || item.link) && (
+                <>
+                  <hr />
+                  <div class="bber-bottom">
+                    <div class="bber-info">
+                      {c.style === 1 && (
+                        <div class="bber-info-time">
+                          <i class="solitude fas fa-calendar-day" />
+                          <time
+                            datetime={item.date.replace(' ', 'T')}
+                            title={item.date}
+                          >
+                            {dateLabel(item.date.replace(' ', 'T'))}
+                          </time>
+                        </div>
+                      )}
+                      {item.location && (
+                        <div class="bber-info-location">
+                          <i class="solitude fas fa-location-dot" />
+                          {item.location}
+                        </div>
+                      )}
+                      {item.link && (
+                        <a class="bber-content-link" href={url(item.link)}>
+                          <i class="solitude fas fa-link" />
+                          {t('brevityLink')}
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+        <div id="bber-tips">
+          {items.length
+            ? t('brevityCount').replace('{count}', String(items.length))
+            : t('brevityEmpty')}
+        </div>
+      </section>
+    </solitude-brevity>
+  </>
 )}
+
+<script>
+  import '../../scripts/brevity';
+</script>
