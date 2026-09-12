@@ -84,7 +84,8 @@ export default defineSolitudeConfig({
         ],
       },
     },
-    // Comments and online music are disabled. See docs/integrations.md to enable them.
+    capsule: { enable: true, id: '7298728834454061071', type: 'playlist', server: 'qishui' },
+    // See docs/integrations.md to configure a playlist or enable comments.
     post: {
       meta: { locate: false },
       covercolor: { enable: true, mode: 'local' },
