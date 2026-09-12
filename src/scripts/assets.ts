@@ -15,7 +15,7 @@ export async function prepareAssets() {
     c.capsule.enable ||
     (c.music.enable && Solitude.page.page === 'music') ||
     (c.brevity.music &&
-      Boolean(document.querySelector('#bber solitude-meting')))
+      Boolean(document.querySelector<HTMLElement>('#bber solitude-meting')))
   ) {
     styles.push(cdn.aplayer_css);
     await Solitude.loadScript(cdn.aplayer_js).catch(() => {});
@@ -28,13 +28,17 @@ export async function prepareAssets() {
     scripts.push(cdn.instantsearch);
     styles.push(cdn.instantsearch_css);
   }
-  if (c.mermaid && document.querySelector('.mermaid'))
+  if (c.mermaid && document.querySelector<HTMLElement>('.mermaid'))
     scripts.push(cdn.mermaid);
-  if (c.typeit && document.querySelector('[data-typeit]'))
+  if (c.typeit && document.querySelector<HTMLElement>('[data-typeit]'))
     scripts.push(cdn.typeit);
-  if (c.katex.enable && c.katex.copytex && document.querySelector('.katex'))
+  if (
+    c.katex.enable &&
+    c.katex.copytex &&
+    document.querySelector<HTMLElement>('.katex')
+  )
     scripts.push(cdn.katex_copytex);
-  if (document.querySelector('.waterfall'))
+  if (document.querySelector<HTMLElement>('.waterfall'))
     scripts.push(`${c.root}js/third_party/waterfall.min.js`);
   const outcomes = await Promise.allSettled([
     ...styles.filter(Boolean).map((s) => Solitude.loadStyle(s)),

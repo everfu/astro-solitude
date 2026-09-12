@@ -1,5 +1,5 @@
-import { lifecycle } from '../core/lifecycle';
 import { Solitude } from '../core/api';
+import { lifecycle } from '../core/lifecycle';
 
 const initializeDocSearch = async () => {
   const container = document.getElementById('docsearch');
@@ -17,7 +17,7 @@ const initializeDocSearch = async () => {
     }
     await Solitude.loadScript(Solitude.config.cdn?.docsearch_js);
     if (signal.aborted || !container.isConnected) return;
-    const docsearch = (window as any).docsearch;
+    const docsearch = window.docsearch;
     if (
       typeof docsearch !== 'function' ||
       !options.appId ||
@@ -28,9 +28,9 @@ const initializeDocSearch = async () => {
     }
     docsearch({
       container: '#docsearch',
+      ...options,
       placeholder:
         options.placeholder || Solitude.config.lang?.search?.placeholder,
-      ...options,
       ...(options.option || {}),
     });
     const trigger = document.querySelector<HTMLElement>(

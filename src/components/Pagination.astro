@@ -11,7 +11,11 @@ const href = (n: number) => url(n === 1 ? `${base}/` : `${base}/page/${n}/`);
 ---
 
 {total > 1 && (
-  <nav id="pagination" aria-label={t('paginationNavigation')}>
+  <nav
+    id="pagination"
+    aria-label={t('paginationNavigation')}
+    class="tw:[#post_&]:overflow-hidden"
+  >
     <div class="pagination">
       {current > 1 && (
         <a

@@ -17,8 +17,8 @@ async function walk(root: string): Promise<string[]> {
   let entries;
   try {
     entries = await fs.readdir(root, { withFileTypes: true });
-  } catch (e: any) {
-    if (e.code === 'ENOENT') return [];
+  } catch (e) {
+    if (e instanceof Error && 'code' in e && e.code === 'ENOENT') return [];
     throw e;
   }
   const paths: string[] = [];
@@ -187,8 +187,8 @@ export async function planMigration(source: string): Promise<MigrationPlan> {
   const custom = path.join(source, 'assets/css/custom.css');
   try {
     add('src/styles/custom.css', await fs.readFile(custom));
-  } catch (e: any) {
-    if (e.code !== 'ENOENT') throw e;
+  } catch (e) {
+    if (!(e instanceof Error && 'code' in e && e.code === 'ENOENT')) throw e;
   }
   for (const file of await walk(path.join(source, 'assets')))
     if (file !== 'css/custom.css')
@@ -218,8 +218,8 @@ export async function writeMigration(
   try {
     const stat = await fs.lstat(target);
     if (stat.isSymbolicLink()) throw new Error('Output may not be a symlink');
-  } catch (e: any) {
-    if (e.code !== 'ENOENT') throw e;
+  } catch (e) {
+    if (!(e instanceof Error && 'code' in e && e.code === 'ENOENT')) throw e;
   }
   const outputNames = [...plan.files.keys(), 'migration-report.json'];
   for (const name of outputNames) {
@@ -229,8 +229,9 @@ export async function writeMigration(
       try {
         if ((await fs.lstat(parent)).isSymbolicLink())
           throw new Error(`Output contains a symlink: ${parent}`);
-      } catch (e: any) {
-        if (e.code !== 'ENOENT') throw e;
+      } catch (e) {
+        if (!(e instanceof Error && 'code' in e && e.code === 'ENOENT'))
+          throw e;
       }
       if (parent === target) break;
       parent = path.dirname(parent);
@@ -238,8 +239,8 @@ export async function writeMigration(
     try {
       await fs.lstat(dest);
       throw new Error(`Output conflict: ${name}`);
-    } catch (e: any) {
-      if (e.code !== 'ENOENT') throw e;
+    } catch (e) {
+      if (!(e instanceof Error && 'code' in e && e.code === 'ENOENT')) throw e;
     }
   }
   // Nothing is written until every target has passed the conflict check.

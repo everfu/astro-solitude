@@ -1,11 +1,17 @@
+import { pageRange } from '../../lib/pagination';
 import { Solitude } from '../core/api';
+import { requiredElement } from '../core/dom';
 import { lifecycle } from '../core/lifecycle';
 import { modalSession } from '../core/modal';
-import { pageRange } from '../../lib/pagination';
 
-const indexes = new Map();
-function loadIndex(path) {
-  if (indexes.has(path)) return indexes.get(path);
+interface SearchEntry {
+  title: string;
+  link: string;
+  content: string;
+}
+const indexes = new Map<string, Promise<SearchEntry[]>>();
+function loadIndex(path: string) {
+  if (indexes.has(path)) return indexes.get(path)!;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 10000);
   const request = fetch(path, { signal: controller.signal })
@@ -19,7 +25,7 @@ function loadIndex(path) {
       if (xml.querySelector('parsererror') || !xml.querySelector('search'))
         throw new Error('Invalid search index');
       return Array.from(xml.querySelectorAll('entry')).flatMap((entry) => {
-        const read = (name) =>
+        const read = (name: string) =>
           entry.querySelector(name)?.textContent?.trim() || '';
         const title = read('title');
         const link = read('url');
@@ -47,11 +53,12 @@ function loadIndex(path) {
   return request;
 }
 
-const keywordsOf = (query) => [
+const keywordsOf = (query: string) => [
   ...new Set(query.toLocaleLowerCase().split(/\s+/).filter(Boolean)),
 ];
-const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-function highlighted(text, query) {
+const escapeRegex = (text: string) =>
+  text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+function highlighted(text: string, query: string) {
   const fragment = document.createDocumentFragment();
   const keywords = keywordsOf(query).sort((a, b) => b.length - a.length);
   if (!keywords.length) {
@@ -70,7 +77,7 @@ function highlighted(text, query) {
   fragment.append(text.slice(offset));
   return fragment;
 }
-function excerpt(content, query) {
+function excerpt(content: string, query: string) {
   const positions = keywordsOf(query)
     .map((key) => content.toLocaleLowerCase().indexOf(key))
     .filter((index) => index >= 0);
@@ -82,7 +89,25 @@ function excerpt(content, query) {
   return `${start ? '…' : ''}${content.slice(start, end)}${end < content.length ? '…' : ''}`;
 }
 
-class LocalSearch {
+export class LocalSearch {
+  resultsPerPage: number;
+  generation: number;
+  dialog!: HTMLElement;
+  input!: HTMLInputElement;
+  results!: HTMLElement;
+  suggestions!: HTMLElement;
+  pagination!: HTMLElement;
+  tips!: HTMLElement;
+  mask!: HTMLElement;
+  currentQuery = '';
+  currentPage = 1;
+  store: SearchEntry[] | null = null;
+  currentResults: SearchEntry[] = [];
+  error = false;
+  composing = false;
+  open = false;
+  timer: ReturnType<typeof setTimeout> | undefined;
+  releaseModal: ((restoreFocus?: boolean) => void) | null = null;
   constructor() {
     this.resultsPerPage = 10;
     this.generation = 0;
@@ -103,21 +128,27 @@ class LocalSearch {
     return Solitude.config.lang.search;
   }
   mount() {
-    this.dialog = document.querySelector('#local-search .search-dialog');
-    if (!this.dialog) return;
-    this.input = this.dialog.querySelector('#search-input');
-    this.results = this.dialog.querySelector('#search-results');
-    this.suggestions = this.dialog.querySelector('#search-suggestions');
-    this.pagination = this.dialog.querySelector('#search-pagination');
-    this.tips = this.dialog.querySelector('#search-tips');
-    this.mask = document.getElementById('search-mask');
+    const dialog = document.querySelector<HTMLElement>(
+      '#local-search .search-dialog',
+    );
+    if (!dialog) return;
+    this.dialog = dialog;
+    this.input = requiredElement<HTMLInputElement>(
+      '#search-input',
+      this.dialog,
+    );
+    this.results = requiredElement('#search-results', this.dialog);
+    this.suggestions = requiredElement('#search-suggestions', this.dialog);
+    this.pagination = requiredElement('#search-pagination', this.dialog);
+    this.tips = requiredElement('#search-tips', this.dialog);
+    this.mask = requiredElement('#search-mask');
     this.currentQuery = '';
     this.currentPage = 1;
     this.store = null;
     this.error = false;
     this.composing = false;
     const version = ++this.generation;
-    const listen = (el, name, fn) => lifecycle.listen(el, name, fn);
+    const listen = lifecycle.listen.bind(lifecycle);
     listen(this.input, 'compositionstart', () => {
       this.composing = true;
       clearTimeout(this.timer);
@@ -130,25 +161,29 @@ class LocalSearch {
       if (!this.composing && !event.isComposing) this.schedule();
     });
     listen(
-      document.querySelector('#search-button > .search'),
+      document.querySelector<HTMLElement>('#search-button > .search'),
       'click',
       (event) => {
         event.preventDefault();
         this.openSearch();
       },
     );
-    listen(this.dialog.querySelector('.search-close-button'), 'click', () =>
-      this.closeSearch(),
+    listen(
+      this.dialog.querySelector<HTMLElement>('.search-close-button'),
+      'click',
+      () => this.closeSearch(),
     );
     listen(this.mask, 'click', () => this.closeSearch());
     listen(this.dialog, 'keydown', (event) => this.onKeydown(event));
-    this.suggestions.querySelectorAll('[data-query]').forEach((button) => {
-      listen(button, 'click', () => {
-        this.input.value = button.dataset.query;
-        this.search();
-        this.input.focus();
+    this.suggestions
+      .querySelectorAll<HTMLElement>('[data-query]')
+      .forEach((button) => {
+        listen(button, 'click', () => {
+          this.input.value = button.dataset.query || '';
+          this.search();
+          this.input.focus();
+        });
       });
-    });
     listen(document.getElementById('menu-search'), 'click', () => {
       Solitude.hideRightMenu?.();
       this.openSearch();
@@ -219,7 +254,7 @@ class LocalSearch {
   }
   search() {
     clearTimeout(this.timer);
-    this.timer = null;
+    this.timer = undefined;
     if (this.composing) return;
     this.currentQuery = this.input.value.trim();
     this.currentPage = 1;
@@ -242,7 +277,7 @@ class LocalSearch {
       return;
     }
     const keywords = keywordsOf(this.currentQuery);
-    const score = (item) =>
+    const score = (item: SearchEntry) =>
       keywords.reduce(
         (sum, word) =>
           sum +
@@ -316,7 +351,7 @@ class LocalSearch {
     if (total > 1) {
       const list = document.createElement('ul');
       list.className = 'pagination-list';
-      const add = (page, text, disabled = false) => {
+      const add = (page: number, text: string, disabled = false) => {
         const li = document.createElement('li');
         const button = document.createElement('button');
         button.type = 'button';
@@ -340,7 +375,9 @@ class LocalSearch {
           this.currentPage = page;
           this.render();
           this.results.scrollTop = 0;
-          this.pagination.querySelector('[aria-current="page"]')?.focus();
+          this.pagination
+            .querySelector<HTMLElement>('[aria-current="page"]')
+            ?.focus();
         });
         li.append(button);
         list.append(li);
@@ -359,7 +396,7 @@ class LocalSearch {
       this.pagination.append(list);
     }
   }
-  status(message, kind) {
+  status(message: string, kind: 'loading' | 'error' | 'empty') {
     this.results.replaceChildren();
     this.pagination.replaceChildren();
     this.results.hidden = false;
@@ -383,11 +420,11 @@ class LocalSearch {
     this.tips.classList.add('search-status-only');
     this.tips.textContent = message;
   }
-  onKeydown(event) {
+  onKeydown(event: KeyboardEvent) {
     if (event.isComposing || this.composing) return;
     const links = Array.from(this.results.querySelectorAll('a'));
     if (!links.length) return;
-    const index = links.indexOf(document.activeElement);
+    const index = links.findIndex((link) => link === document.activeElement);
     if (
       ['ArrowDown', 'ArrowUp'].includes(event.key) &&
       (index >= 0 || event.target === this.input)

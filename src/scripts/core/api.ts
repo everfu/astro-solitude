@@ -1,4 +1,5 @@
 import { navigate } from 'astro:transitions/client';
+import type { SolitudeAPI } from '../api-types';
 import { getConfig, getPageConfig } from './config';
 import { lifecycle } from './lifecycle';
 import { loadScript, loadStyle, type ScriptOptions } from './resources';
@@ -6,7 +7,7 @@ import { saveToLocal } from './storage';
 
 document.documentElement.dataset.solitudeRuntime = 'booting';
 
-const api = window.Solitude || {};
+const api: SolitudeAPI = window.Solitude || ({} as SolitudeAPI);
 
 Object.defineProperties(api, {
   config: { configurable: true, get: getConfig },

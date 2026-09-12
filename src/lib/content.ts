@@ -40,13 +40,14 @@ export function homePosts(posts: Post[]): Post[] {
 }
 export async function getPosts() {
   const { getCollection } = await import('astro:content');
-  return published(await getCollection('posts'), import.meta.env.DEV).sort(
-    (a, b) => +b.data.date - +a.data.date || a.id.localeCompare(b.id),
-  );
+  return published<Post>(
+    await getCollection('posts'),
+    import.meta.env.DEV,
+  ).sort((a, b) => +b.data.date - +a.data.date || a.id.localeCompare(b.id));
 }
 export async function getPages() {
   const { getCollection } = await import('astro:content');
-  return published(await getCollection('pages'), import.meta.env.DEV);
+  return published<Page>(await getCollection('pages'), import.meta.env.DEV);
 }
 export function paginate<T>(items: T[], size: number) {
   if (size < 1 || !Number.isInteger(size)) throw new Error('Invalid page size');
@@ -61,7 +62,7 @@ export function taxonomy(
 ) {
   const groups = new Map<string, Post[]>();
   for (const p of posts)
-    for (const name of new Set(p.data[kind]))
+    for (const name of new Set<string>(p.data[kind]))
       groups.set(name, [...(groups.get(name) ?? []), p]);
   return [...groups]
     .map(([name, posts]) => ({ name, posts, path: termPath(kind, name) }))

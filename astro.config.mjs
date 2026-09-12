@@ -1,9 +1,10 @@
 import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
 import site from './src/site.config.ts';
 import mdx from '@astrojs/mdx';
 import { satteri } from '@astrojs/markdown-satteri';
-import outputLayout from './scripts/output-layout.mjs';
-import { solitudeMarkdown, solitudeMath } from './scripts/markdown-plugin.mjs';
+import outputLayout from './scripts/output-layout.ts';
+import { solitudeMarkdown, solitudeMath } from './scripts/markdown-plugin.ts';
 
 export default defineConfig({
   site: site.site,
@@ -11,6 +12,7 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'ignore',
   integrations: [mdx(), outputLayout()],
+  vite: { plugins: [tailwindcss()] },
   markdown: {
     processor: satteri({
       features: { math: site.theme.katex.enable, headingAttributes: true },

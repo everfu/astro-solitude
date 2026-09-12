@@ -44,14 +44,17 @@ for (const heading of headings) {
 ---
 
 {enabled && (
-  <div class="aside-content" id="aside-content">
+  <div class="aside-content tw:flex tw:flex-col" id="aside-content">
     {groups.map((names, index) => (
       <AsideGroup sticky={index === 1}>
         {index === 1 &&
           headings.length > 0 &&
           (post ? cfg.aside.toc.post : cfg.aside.toc.page) && (
-            <div class="card-widget" id="card-toc">
-              <div class="item-headline">
+            <div
+              class="card-widget tw:[#aside-content_&]:overflow-hidden"
+              id="card-toc"
+            >
+              <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">
                 <i class="solitude fas fa-bars" />
                 <span id="toc-title">{t('toc')}</span>
                 <button class="toc-close" type="button" aria-label={t('close')}>
@@ -67,8 +70,8 @@ for (const heading of headings) {
           )}
         {names.map((name) =>
           name.trim() === 'about' ? (
-            <div class="card-widget card-info">
-              <div class="card-content">
+            <div class="card-widget card-info tw:relative tw:[#aside-content_&]:overflow-hidden">
+              <div class="card-content tw:[#aside-content_.card-widget_&]:relative tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:flex-col tw:[.author-content-item_&]:absolute tw:[.author-content-item_&]:flex tw:[.author-content-item_&]:flex-col">
                 <div class="card-info-avatar is-center">
                   <div class="top-group">
                     <div
@@ -78,21 +81,24 @@ for (const heading of headings) {
                     />
                   </div>
                 </div>
-                <div class="avatar">
+                <div class="avatar tw:[.card-info_&]:absolute tw:[#bber_&]:object-cover">
                   <img
                     src={url(card.author.img)}
                     alt={config.author.name}
                     loading="lazy"
                   />
                   {card.author.emoji ? (
-                    <span class="sticker sticker-emoji" aria-hidden="true">
+                    <span
+                      class="sticker sticker-emoji tw:[.card-info_.avatar_&]:absolute tw:[.card-info_.avatar_&]:flex tw:[.card-info_.avatar_&]:items-center tw:[.card-info_.avatar_&]:justify-center"
+                      aria-hidden="true"
+                    >
                       {card.author.emoji}
                     </span>
                   ) : (
                     card.author.sticker && (
-                      <span class="sticker">
+                      <span class="sticker tw:[.card-info_.avatar_&]:absolute tw:[.card-info_.avatar_&]:flex tw:[.card-info_.avatar_&]:items-center tw:[.card-info_.avatar_&]:justify-center">
                         <img
-                          class="sticker-img"
+                          class="sticker-img tw:[.card-info_.avatar_&]:object-cover"
                           src={url(card.author.sticker)}
                           alt=""
                         />
@@ -100,15 +106,22 @@ for (const heading of headings) {
                     )
                   )}
                 </div>
-                <div class="description" set:html={card.content} />
-                <div class="bottom-group">
+                <div
+                  class="description tw:[.card-info_&]:flex tw:[.card-info_&]:flex-col"
+                  set:html={card.content}
+                />
+                <div class="bottom-group tw:[.card-info_&]:absolute tw:[.card-info_&]:flex tw:[.card-info_&]:justify-between">
                   <span class="left">
                     <div class="name">{config.author.name}</div>
                     <div class="desc" set:html={card.description} />
                   </span>
-                  <div class="social-icons is-center">
-                    {card.information.map((l: any) => (
-                      <a class="social-icon" href={url(l.url)} title={l.name}>
+                  <div class="social-icons is-center tw:[.card-info_.bottom-group_&]:flex tw:[.card-info_.bottom-group_&]:justify-end">
+                    {card.information.map((l) => (
+                      <a
+                        class="social-icon tw:[.card-info_.bottom-group_.social-icons_&]:cursor-pointer tw:[.card-info_.bottom-group_.social-icons_&]:flex"
+                        href={url(l.url)}
+                        title={l.name}
+                      >
                         <i class={`solitude ${l.icon}`} />
                       </a>
                     ))}
@@ -117,12 +130,12 @@ for (const heading of headings) {
               </div>
             </div>
           ) : name.trim() === 'newestPost' ? (
-            <div class="card-widget card-recent-post">
-              <div class="item-headline">
+            <div class="card-widget card-recent-post tw:[#aside-content_&]:overflow-hidden">
+              <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">
                 <i class="solitude fas fa-map" />
                 <span>{t('recentPosts')}</span>
               </div>
-              <div class="aside-list">
+              <div class="aside-list tw:[#console_&]:flex tw:[#console_&]:flex-wrap tw:[#console_&]:flex-row tw:[#console_&]:justify-between tw:[#body-wrap.error_&]:flex tw:[#body-wrap.error_&]:flex-row">
                 {recent.map((p) => (
                   <a
                     class="aside-list-item"
@@ -143,10 +156,10 @@ for (const heading of headings) {
               </div>
             </div>
           ) : name.trim() === 'allInfo' ? (
-            <div class="card-widget card-tags card-archives card-webinfo card-allinfo">
+            <div class="card-widget card-tags card-archives card-webinfo card-allinfo tw:[#aside-content_&]:overflow-hidden">
               {cfg.aside.tags.enable && (
                 <>
-                  <div class="card-tag-cloud">
+                  <div class="card-tag-cloud tw:overflow-hidden tw:relative tw:flex tw:flex-row tw:flex-wrap tw:[#console_.console-card.tags_&]:flex tw:[#console_.console-card.tags_&]:flex-wrap tw:[#sidebar_#sidebar-menus_&]:flex tw:[#sidebar_#sidebar-menus_&]:whitespace-nowrap tw:[#sidebar_#sidebar-menus_&]:flex-row tw:[#sidebar_#sidebar-menus_&]:flex-wrap">
                     {tags.slice(0, cfg.aside.tags.limit).map((tag) => (
                       <a
                         href={url(tag.path)}
@@ -169,21 +182,21 @@ for (const heading of headings) {
                   <hr />
                 </>
               )}
-              <div class="webinfo">
+              <div class="webinfo tw:[#sidebar_#sidebar-menus_&]:flex tw:[#sidebar_#sidebar-menus_&]:whitespace-nowrap tw:[#sidebar_#sidebar-menus_&]:flex-col">
                 {cfg.aside.siteinfo.postcount && (
-                  <div class="webinfo-item">
+                  <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
                     <div class="item-name">{t('posts')}</div>
                     <div class="item-count">{posts.length}</div>
                   </div>
                 )}
                 {cfg.aside.siteinfo.runtimeenable && (
-                  <div class="webinfo-item">
+                  <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
                     <div class="item-name">{t('uptime')}</div>
                     <div class="item-count runtimeshow" />
                   </div>
                 )}
                 {cfg.aside.siteinfo.updatetime && (
-                  <div class="webinfo-item">
+                  <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
                     <div class="item-name">{t('lastUpdated')}</div>
                     <time class="item-count" datetime={isoDate(updated)}>
                       {dateLabel(updated)}
@@ -191,7 +204,7 @@ for (const heading of headings) {
                   </div>
                 )}
                 {cfg.aside.siteinfo.wordcount && (
-                  <div class="webinfo-item">
+                  <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
                     <div class="item-name">{t('totalWords')}</div>
                     <div class="item-count">
                       {posts.reduce((n, p) => n + wordCount(p.body ?? ''), 0)}
@@ -203,13 +216,13 @@ for (const heading of headings) {
           ) : name.trim() === 'newest_comment' &&
             cfg.comment.use &&
             cfg.comment.sidebar ? (
-            <div class="card-widget card-recent-comment">
-              <div class="item-headline">
+            <div class="card-widget card-recent-comment tw:[#aside-content_&]:overflow-hidden">
+              <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">
                 <i class="solitude fas fa-comment" />
                 <span>{t('recentComments')}</span>
                 {cfg.recent_comments.enable && (
                   <a
-                    class="recent-comment-more"
+                    class="recent-comment-more tw:[.card-recent-comment_&]:inline-flex tw:[.card-recent-comment_&]:items-center tw:[.card-recent-comment_&]:justify-center tw:[#console_&]:flex tw:[#console_&]:items-center"
                     href={url(cfg.recent_comments.page)}
                     title={t('more')}
                     aria-label={t('more')}
@@ -222,12 +235,15 @@ for (const heading of headings) {
                 )}
               </div>
               <div
-                class="aside-list"
+                class="aside-list tw:[#console_&]:flex tw:[#console_&]:flex-wrap tw:[#console_&]:flex-row tw:[#console_&]:justify-between tw:[#body-wrap.error_&]:flex tw:[#body-wrap.error_&]:flex-row"
                 data-comment-provider={cfg.comment.use}
                 aria-live="polite"
                 aria-busy="true"
               >
-                <div class="comment-loading" role="status">
+                <div
+                  class="comment-loading tw:[.card-recent-comment_&]:inline-flex tw:[.card-recent-comment_&]:items-center"
+                  role="status"
+                >
                   {t('commentsLoading')}
                 </div>
               </div>

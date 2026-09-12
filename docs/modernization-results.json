@@ -1,0 +1,189 @@
+{
+  "date": "2026-09-12",
+  "baselineCommit": "69bbce2acf7b88d8774c5fbb00772860a850517a",
+  "environment": {
+    "node": "24.16.0",
+    "pnpm": "11.24.0",
+    "browser": "Playwright Chromium",
+    "platform": "macOS"
+  },
+  "toolchain": {
+    "astro": "7.3.2",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "typescriptCompatibilityPackage": "@typescript/typescript6@6.0.2",
+    "compatibilityCompilerReportedVersion": "6.0.3"
+  },
+  "checks": {
+    "typecheck": {
+      "files": 178,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 3
+    },
+    "unitTests": 22,
+    "browserTests": 52,
+    "pagesBuilt": 37
+  },
+  "visual": {
+    "normalViews": 128,
+    "boundaryViews": 384,
+    "differences": 0,
+    "newHorizontalOverflows": 0,
+    "pageErrors": 0,
+    "normalWidths": [
+      390,
+      768,
+      1280,
+      1440
+    ],
+    "boundaryWidths": [
+      479,
+      481,
+      599,
+      601,
+      766,
+      767,
+      768,
+      769,
+      770,
+      898,
+      899,
+      900,
+      901,
+      902,
+      1023,
+      1025,
+      1198,
+      1199,
+      1200,
+      1201,
+      1299,
+      1301,
+      1399,
+      1401
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "normalRoutes": [
+      "/",
+      "/404.html",
+      "/?search",
+      "/about/",
+      "/archives/",
+      "/brevity/",
+      "/categories/",
+      "/equipment/",
+      "/links/",
+      "/message/",
+      "/music/",
+      "/p/components/",
+      "/p/writing/",
+      "/recentcomments/",
+      "/series/",
+      "/tags/"
+    ],
+    "boundaryRoutes": [
+      "/",
+      "/about/",
+      "/archives/",
+      "/brevity/",
+      "/links/",
+      "/music/",
+      "/p/components/",
+      "/p/writing/"
+    ],
+    "comparison": {
+      "tool": "pixelmatch",
+      "threshold": 0.1,
+      "acceptedDifferentPixels": 0
+    },
+    "preExistingHorizontalOverflows": [
+      {
+        "route": "/p/components/",
+        "width": 1200,
+        "theme": "dark"
+      },
+      {
+        "route": "/p/components/",
+        "width": 1200,
+        "theme": "light"
+      }
+    ]
+  },
+  "initialResources": {
+    "before": {
+      "/": {
+        "total": 1083460,
+        "css": 82766,
+        "js": 45108,
+        "html": 11628,
+        "requests": 21
+      },
+      "/p/writing/": {
+        "total": 1133956,
+        "css": 82766,
+        "js": 46223,
+        "html": 13089,
+        "requests": 25
+      }
+    },
+    "after": {
+      "/": {
+        "total": 1079203,
+        "css": 81811,
+        "js": 40706,
+        "html": 12728,
+        "requests": 22
+      },
+      "/p/writing/": {
+        "total": 1127634,
+        "css": 81811,
+        "js": 39715,
+        "html": 14230,
+        "requests": 25
+      }
+    }
+  },
+  "timings": {
+    "source": "69bbce2acf7b88d8774c5fbb00772860a850517a",
+    "node": "v24.16.0",
+    "method": "One sequential warm-cache wall-clock run per command. Baseline source reconstructed from HEAD with the locally cached dependencies; not a statistical performance benchmark.",
+    "measurements": [
+      {
+        "phase": "before",
+        "command": "check",
+        "milliseconds": 7250,
+        "exitCode": 0
+      },
+      {
+        "phase": "before",
+        "command": "build",
+        "milliseconds": 1910,
+        "exitCode": 0
+      },
+      {
+        "phase": "after",
+        "command": "check",
+        "milliseconds": 8487,
+        "exitCode": 0
+      },
+      {
+        "phase": "after",
+        "command": "build",
+        "milliseconds": 1870,
+        "exitCode": 0
+      }
+    ]
+  },
+  "scopeNotes": [
+    "Visual comparisons fix date, randomness, typewriter text and external-service/image fixtures, wait for charts and diagrams, and hide native media controls. Interactive controls are tested separately.",
+    "Migration-only resource and screenshot comparisons use unchanged branding assets. Concurrent edits to logo, favicon and README files were preserved. The final dist build includes those external branding edits.",
+    "Preserved comparison builds are artifacts/modernization/baseline-dist and artifacts/modernization/after-dist. Set SOLITUDE_CURRENT_DIST=artifacts/modernization/after-dist to reproduce the migration-only comparison.",
+    "Five comment providers and online integrations were tested with mocks/local resources; no production account integration was run.",
+    "Safari, Firefox, hosted deployment and live Core Web Vitals were not measured. CI was updated but not run remotely.",
+    "No commit, release or deployment was performed. Existing output/ content was preserved."
+  ]
+}

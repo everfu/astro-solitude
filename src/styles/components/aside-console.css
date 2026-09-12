@@ -20,7 +20,6 @@
 #aside-content .card-widget {
   border-radius: var(--radius);
   transition: all 0.3s;
-  overflow: hidden;
   background: var(--efu-card-bg);
   box-shadow: var(--efu-shadow-black);
   border: var(--style-border);
@@ -32,8 +31,6 @@
   margin-left: 8px;
   font-size: 1em;
   font-weight: 700;
-  display: flex;
-  align-items: center;
   gap: 5px;
 }
 
@@ -45,15 +42,11 @@
   padding: 1rem 1.2rem;
   min-height: 320px;
   height: 320px;
-  position: relative;
   user-select: none;
-  display: flex;
-  flex-direction: column;
   gap: var(--gap);
 }
 
 .card-info {
-  position: relative;
   --profile-card-text-color: var(--efu-card-bg);
 }
 
@@ -116,7 +109,6 @@
   min-height: 118px;
   right: calc(50% - 59px);
   top: 90px;
-  position: absolute;
   transition: cubic-bezier(0.69, 0.39, 0, 1.21) 0.3s;
   transform-origin: bottom;
 }
@@ -131,16 +123,12 @@
 }
 
 .card-info .avatar .sticker {
-  position: absolute;
   bottom: 2px;
   right: 2px;
   width: 33px;
   height: 33px;
   line-height: 34px;
   z-index: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: 0.3s ease-out 0.2s;
   background: var(--efu-white);
   border-radius: 50%;
@@ -154,7 +142,6 @@
 .card-info .avatar .sticker-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   border-radius: 50%;
 }
 
@@ -163,20 +150,15 @@
   opacity: 0;
   transition: 0.3s;
   color: var(--profile-card-text-color);
-  display: flex;
-  flex-direction: column;
   line-height: 1.5;
   gap: var(--gap);
 }
 
 .card-info .bottom-group {
-  position: absolute;
   left: 0;
   bottom: 0;
   width: 100%;
   padding: 1rem;
-  display: flex;
-  justify-content: space-between;
 }
 
 .card-info .bottom-group .left {
@@ -203,15 +185,11 @@
 
 .card-info .bottom-group .social-icons {
   flex: 1;
-  display: flex;
-  justify-content: flex-end;
   gap: 5px;
 }
 
 .card-info .bottom-group .social-icons .social-icon {
   color: var(--efu-fontcolor);
-  cursor: pointer;
-  display: flex;
   flex: 0 0 40px;
   transition: all 0.3s;
 }
@@ -256,19 +234,11 @@
 }
 
 .webinfo-item {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   user-select: none;
   font-size: 14px;
 }
 
 .card-tag-cloud {
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   gap: 5px;
 }
 
@@ -381,10 +351,6 @@
   display: block;
 }
 
-#card-toc .toc-content .toc-item.active > .toc-child {
-  display: block;
-}
-
 #card-toc .toc-content .toc-item.active .toc-link {
   opacity: 1;
 }
@@ -395,8 +361,6 @@
   padding: 8px;
   color: var(--efu-secondtext);
   min-height: 40px;
-  display: flex;
-  align-items: center;
 }
 
 #card-toc .toc-content .toc-link.active {
@@ -417,8 +381,6 @@
   position: sticky;
   top: 60px;
   transition: top 0s;
-  display: flex;
-  flex-direction: column;
   gap: var(--gap);
 }
 
@@ -514,9 +476,6 @@
   margin-left: auto;
   border-radius: var(--efu-radius-pill);
   color: var(--efu-secondtext);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   transition:
     color var(--efu-motion-fast),
     background-color var(--efu-motion-fast),
@@ -554,8 +513,6 @@
 .card-recent-comment .comment-loading {
   color: var(--efu-secondtext);
   font-size: var(--recent-comment-meta-size);
-  display: inline-flex;
-  align-items: center;
   gap: var(--efu-space-2);
 }
 
@@ -733,16 +690,12 @@
 }
 
 #console {
-  display: flex;
   position: fixed;
   width: 100dvw;
   height: 100dvh;
   top: 0;
   left: 0;
   z-index: 9999;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
   opacity: 0;
   transition: 0.3s ease-out;
   pointer-events: none;
@@ -777,21 +730,14 @@
 }
 
 #console .console-content {
-  display: flex;
-  position: relative;
   width: 100%;
   max-width: calc(100% - 32px);
   max-height: 800px;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
   gap: 16px;
   pointer-events: none;
 }
 
 #console .recent-comment-more {
-  display: flex;
-  align-items: center;
   margin-left: auto;
 }
 
@@ -800,12 +746,9 @@
 }
 
 #console .console-card-group {
-  display: flex;
   width: 100%;
   height: 800px;
   max-height: calc(100dvh - 180px);
-  justify-content: center;
-  align-items: center;
   gap: 8px;
   opacity: 0;
   transform: translateY(20px);
@@ -831,12 +774,9 @@
 }
 
 #console .console-card-group-right {
-  display: flex;
   width: 60%;
   max-width: 899px;
   height: 100%;
-  flex-direction: column;
-  justify-content: center;
 }
 
 @media screen and (max-width: 900px) {
@@ -846,9 +786,7 @@
 }
 
 #console .console-card {
-  display: flex;
   padding: 32px 36px 36px;
-  flex-direction: column;
   gap: 24px;
   background: var(--efu-maskbgdeep);
   border-radius: 12px;
@@ -870,8 +808,6 @@
 }
 
 #console .console-card.tags .card-tag-cloud {
-  display: flex;
-  flex-wrap: wrap;
   align-content: flex-start;
   gap: 8px;
   overflow-y: auto;
@@ -903,7 +839,6 @@
 }
 
 #console .console-mask {
-  position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
@@ -927,26 +862,17 @@
 }
 
 #console .author-content-item-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   font-size: 28px;
   font-weight: 700;
   line-height: 1;
 }
 
 #console .aside-list {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
   margin-top: 24px;
 }
 
 #console .button-group {
-  display: flex;
   width: fit-content;
-  justify-content: center;
   gap: 8px;
   opacity: 0;
   transform: translateY(20px);
@@ -956,7 +882,6 @@
 #console .button-group .console-btn-item {
   width: 80px;
   height: 40px;
-  cursor: pointer;
   transition: 0.3s;
 }
 
@@ -1017,10 +942,7 @@
 }
 
 #console .console-card.history .card-archive-list {
-  display: flex;
   height: 154px;
-  flex-direction: row;
-  flex-wrap: wrap;
   align-content: space-between;
   gap: 8px;
 }
@@ -1055,15 +977,9 @@
   font-size: 14px;
 }
 
-#console .console-card.history .card-archive-list a .count-group {
-  display: flex;
-  flex-direction: row;
-}
-
 #console .console-card.history .card-archive-list a .count-group .count {
   width: auto;
   margin-right: 2px;
-  text-align: left;
   font-size: 18px;
   font-weight: 700;
   line-height: 0.9;
@@ -1071,7 +987,6 @@
 
 #console .console-card.history .card-archive-list a .count-group .unit {
   width: auto;
-  text-align: left;
   font-size: 14px;
   font-weight: 700;
 }
@@ -1101,10 +1016,7 @@
 }
 
 #footer {
-  position: relative;
   background: linear-gradient(180deg, var(--efu-card-bg-none) 0, var(--efu-card-bg) 25%);
-  display: flex;
-  flex-direction: column;
   margin-top: 0.5rem;
 }
 
@@ -1123,10 +1035,7 @@
 }
 
 #footer #footer_deal {
-  justify-content: center;
-  display: flex;
   padding-top: 2rem;
-  align-items: center;
 }
 
 @media screen and (max-width: 768px) {
@@ -1134,4 +1043,8 @@
     flex-wrap: wrap;
     flex-direction: row;
   }
+}
+
+#card-toc .toc-content .toc-item.active > .toc-child {
+  display: block;
 }

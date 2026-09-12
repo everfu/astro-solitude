@@ -8,6 +8,7 @@ import { cfg, t } from '../../lib/site';
     role="status"
     aria-live="polite"
     aria-busy="true"
+    class="tw:text-center"
   >
     {t('commentsLoading')}
   </p>
@@ -19,8 +20,12 @@ import { cfg, t } from '../../lib/site';
     data-speed={cfg.envelope.speed}
     data-hover={String(cfg.envelope.hover)}
     data-loop={String(cfg.envelope.loop)}
+    class="tw:relative tw:overflow-hidden"
   />
-  <div class="switch_message" aria-controls="barrage">
+  <div
+    class="switch_message tw:relative tw:flex tw:justify-center"
+    aria-controls="barrage"
+  >
     <button
       type="button"
       data-message-barrage="show"

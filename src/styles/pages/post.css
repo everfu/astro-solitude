@@ -14,7 +14,6 @@
 }
 
 .post #post-info #post-meta {
-  display: flex;
   color: var(--efu-white);
   font-size: 95%;
   user-select: none;
@@ -45,11 +44,6 @@
 }
 
 .post #post-info #post-meta .meta-secondline {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
   gap: 8px;
 }
 
@@ -108,10 +102,7 @@
 }
 
 .post #post-info #post-firstinfo {
-  display: flex;
   color: var(--efu-white);
-  text-align: left;
-  white-space: nowrap;
   user-select: none;
 }
 
@@ -128,8 +119,6 @@
 }
 
 .post #post-info #post-firstinfo .meta-firstline {
-  display: flex;
-  align-items: center;
   height: 32px;
 }
 
@@ -154,7 +143,6 @@
 }
 
 .post #post-info #post-firstinfo .meta-firstline .post-meta-original {
-  display: flex;
   width: auto;
   margin: 0;
   padding: 0 0.5rem;
@@ -181,7 +169,6 @@
 }
 
 .post #post-info #post-firstinfo .meta-firstline span.post-meta-categories a.post-meta-categories {
-  display: flex;
   width: 100%;
   height: 100%;
   padding: 0 0.5rem;
@@ -199,20 +186,11 @@
   }
 }
 
-.post #post-info #post-firstinfo .meta-firstline .tag_share .post-meta__tag-list {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .post #post-info #post-firstinfo .meta-firstline .tag_share .post-meta__tag-list::-webkit-scrollbar {
   display: none;
 }
 
 .post #post-info #post-firstinfo .meta-firstline .tag_share .post-meta__tag-list .post-meta__tags {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   margin-right: 8px;
   padding: 0 8px 0 4px;
   border-radius: 99px;
@@ -250,8 +228,6 @@
 }
 
 .relatedPosts .headline {
-  display: flex;
-  align-items: center;
   min-height: 32px;
   margin-bottom: 1rem;
   color: var(--efu-fontcolor);
@@ -272,10 +248,7 @@
 }
 
 .relatedPosts-random {
-  display: inline-flex;
   flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
   min-height: 32px;
   margin-left: 16px;
   padding: 2px 12px;
@@ -287,8 +260,6 @@
   font-size: 13px;
   font-weight: 400;
   line-height: 1.5;
-  white-space: nowrap;
-  cursor: pointer;
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -305,14 +276,10 @@
 }
 
 .relatedPosts-list {
-  display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 
 .relatedPosts .relatedPosts-item {
-  position: relative;
-  overflow: hidden;
   min-width: 0;
   border: var(--style-border);
   border-radius: 12px;
@@ -454,11 +421,8 @@
 }
 
 #post .post-tools {
-  display: flex;
   width: 100%;
-  justify-content: center;
   margin-top: 8px;
-  flex-wrap: wrap;
   user-select: none;
 }
 
@@ -616,11 +580,6 @@
 }
 
 #post .post-tools-right {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: wrap;
   padding: 0 2rem;
 }
 
@@ -631,11 +590,8 @@
 }
 
 #post .post-tools-right .tag_share .post-meta__tag-list {
-  display: flex;
   padding: 0;
   width: 100%;
-  flex-wrap: wrap;
-  flex-direction: row;
 }
 
 #post .post-tools-right .tag_share .post-meta__tag-list a {
@@ -648,9 +604,6 @@
   border: var(--style-border-always);
   color: var(--efu-fontcolor);
   border-radius: var(--efu-radius-pill);
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
   height: 32px;
   padding: 0 0.6rem;
   width: fit-content;
@@ -687,8 +640,6 @@
 #post .post-tools-right .tag_share .post-meta__tag-list .post-meta__tags span.tags-punctuation {
   font-size: 12px;
   margin-right: 1px;
-  display: flex;
-  align-items: center;
 }
 
 #post .post-tools-right .tag_share .post-meta__tag-list .post-meta__tags .tagsPageCount,
@@ -707,7 +658,6 @@
 
 #post #pagination {
   width: auto;
-  overflow: hidden;
   position: inherit;
   border: var(--style-border-always);
 }
@@ -886,10 +836,6 @@
   }
 }
 
-#post #pagination .prev-post .pagination-info {
-  text-align: left;
-}
-
 @media screen and (min-width: 768px) {
   #post #pagination .prev-post a {
     border-right: var(--efu-main-op);
@@ -936,7 +882,6 @@
 }
 
 #post #pagination .pagination-info {
-  position: absolute;
   top: 50%;
   padding: 1rem 2rem;
   width: 100%;

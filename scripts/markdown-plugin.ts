@@ -1,5 +1,11 @@
+import type { SiteConfig } from '../src/lib/config';
+import type {
+  HastPluginDefinition,
+  MdastPluginDefinition,
+  MdastVisitorContext,
+} from 'satteri';
 import katex from 'katex';
-export function solitudeMarkdown(config) {
+export function solitudeMarkdown(config: SiteConfig): HastPluginDefinition {
   return {
     name: 'solitude-content',
     element: {
@@ -27,9 +33,14 @@ export function solitudeMarkdown(config) {
           : [];
         const child =
           node.tagName === 'pre'
-            ? node.children?.find((n) => n.tagName === 'code')
+            ? node.children?.find(
+                (n) => n.type === 'element' && n.tagName === 'code',
+              )
             : undefined;
-        const childClasses = child?.properties?.className ?? [];
+        const childClasses =
+          child?.type === 'element' && Array.isArray(child.properties.className)
+            ? child.properties.className
+            : [];
         const math =
           classes.includes('math-inline') ||
           classes.includes('math-display') ||
@@ -38,9 +49,18 @@ export function solitudeMarkdown(config) {
         if (
           math &&
           config.theme.katex.enable &&
-          ctx.data.astro?.frontmatter?.katex !== false
+          (
+            ctx.data.astro as
+              import('@astrojs/markdown-satteri').SatteriAstroData | undefined
+          )?.frontmatter?.katex !== false
         ) {
-          if (node.tagName === 'code' && ctx.parent(node)?.tagName === 'pre')
+          if (
+            node.tagName === 'code' &&
+            (() => {
+              const parent = ctx.parent(node);
+              return parent?.type === 'element' && parent.tagName === 'pre';
+            })()
+          )
             return;
           return {
             type: 'raw',
@@ -56,11 +76,18 @@ export function solitudeMarkdown(config) {
     },
   };
 }
-export function solitudeMath(config) {
-  const render = (node, ctx, displayMode) => {
+export function solitudeMath(config: SiteConfig): MdastPluginDefinition {
+  const render = (
+    node: { value: string },
+    ctx: MdastVisitorContext,
+    displayMode: boolean,
+  ): ReturnType<NonNullable<MdastPluginDefinition['math']>> => {
     if (
       !config.theme.katex.enable ||
-      ctx.data.astro?.frontmatter?.katex === false
+      (
+        ctx.data.astro as
+          import('@astrojs/markdown-satteri').SatteriAstroData | undefined
+      )?.frontmatter?.katex === false
     )
       return;
     if (ctx.sourceFormat === 'mdx')

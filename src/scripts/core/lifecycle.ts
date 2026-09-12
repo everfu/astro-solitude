@@ -1,3 +1,4 @@
+import type { SolitudeLifecycleEvents } from '../types';
 const EVENT_PREFIX = 'solitude:';
 
 class Lifecycle {
@@ -14,18 +15,19 @@ class Lifecycle {
     return () => this.#disposers.delete(disposer);
   }
 
-  listen(
+  listen<K extends keyof (HTMLElementEventMap & DocumentEventMap)>(
     target: EventTarget | null,
-    type: string,
-    handler: EventListener,
+    type: K,
+    handler: (event: (HTMLElementEventMap & DocumentEventMap)[K]) => void,
     options: boolean | AddEventListenerOptions = {},
   ) {
     if (!target?.addEventListener) return () => {};
     const normalized: AddEventListenerOptions =
       typeof options === 'boolean' ? { capture: options } : { ...options };
     normalized.signal ??= this.signal;
-    target.addEventListener(type, handler, normalized);
-    return () => target.removeEventListener(type, handler, normalized);
+    target.addEventListener(type, handler as EventListener, normalized);
+    return () =>
+      target.removeEventListener(type, handler as EventListener, normalized);
   }
 
   disposePage() {
@@ -41,16 +43,29 @@ class Lifecycle {
     this.#pageController = new AbortController();
   }
 
-  emit(type: string, detail?: unknown) {
+  emit<K extends string>(
+    type: K,
+    detail?: K extends keyof SolitudeLifecycleEvents
+      ? SolitudeLifecycleEvents[K]
+      : unknown,
+  ) {
     document.dispatchEvent(
       new CustomEvent(`${EVENT_PREFIX}${type}`, { detail, bubbles: true }),
     );
   }
 
-  on(type: string, handler: EventListener) {
+  on<K extends string>(
+    type: K,
+    handler: (
+      event: K extends keyof SolitudeLifecycleEvents
+        ? CustomEvent<SolitudeLifecycleEvents[K]>
+        : Event,
+    ) => void,
+  ) {
     const eventName = `${EVENT_PREFIX}${type}`;
-    document.addEventListener(eventName, handler);
-    return () => document.removeEventListener(eventName, handler);
+    document.addEventListener(eventName, handler as EventListener);
+    return () =>
+      document.removeEventListener(eventName, handler as EventListener);
   }
 }
 

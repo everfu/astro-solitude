@@ -73,23 +73,20 @@ export interface HighlightConfiguration {
   };
 }
 
-export interface SolitudeSiteConfiguration {
-  root: string;
-  runtime: string | false;
-  localsearch: Record<string, unknown>;
-  algolia: Record<string, unknown>;
-  feature_modules: FeatureModules;
-  keyboard?: KeyboardConfiguration;
-  comment: CommentConfiguration;
-  valine?: ValineConfiguration;
-  cdn: AssetConfiguration;
-  highlight?: HighlightConfiguration;
-  lazyload: { enable: boolean; error?: string };
-  lightbox: string | false;
-  friend_links: { async: boolean; path: string; total: number };
-  lang: Record<string, any>;
-  [name: string]: any;
-}
+export type SolitudeSiteConfiguration = ReturnType<
+  typeof import('../lib/runtime-config').runtimeConfig
+> & {
+  copyright?: {
+    limit: number;
+    author: string;
+    link: string;
+    source: string;
+    info: string;
+  };
+  docsearch?: ReturnType<
+    typeof import('../lib/runtime-config').runtimeConfig
+  >['search']['docsearch'];
+};
 
 export interface SolitudePageConfiguration {
   is_post: boolean;

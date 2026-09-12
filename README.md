@@ -2,6 +2,8 @@ English 丨 [简体中文](README.zh-CN.md)
 
 <div align="center">
 
+<img src="public/img/logo.png" width="120" height="120" alt="Astro Solitude paper airplane logo" />
+
 # Astro Solitude
 
 A clean, elegant, feature-rich blog theme for Astro.

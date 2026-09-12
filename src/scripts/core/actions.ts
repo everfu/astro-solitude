@@ -1,4 +1,4 @@
-export const initActionDelegation = (api: Record<string, any>) => {
+export const initActionDelegation = (api: object) => {
   if (document.documentElement.dataset.solitudeActions === 'true') return;
   document.documentElement.dataset.solitudeActions = 'true';
 
@@ -20,7 +20,10 @@ export const initActionDelegation = (api: Record<string, any>) => {
     if (!(event.target instanceof Element)) return;
     const element = event.target.closest<HTMLElement>('[data-solitude-action]');
     if (!element) return;
-    const action = api[element.dataset.solitudeAction ?? ''];
+    const action: unknown = Reflect.get(
+      api,
+      element.dataset.solitudeAction ?? '',
+    );
     if (typeof action !== 'function') return;
 
     if (element.dataset.solitudePrevent === 'true') event.preventDefault();

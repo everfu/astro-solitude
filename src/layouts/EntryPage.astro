@@ -40,12 +40,22 @@ if (fullEntry && !fullEntry.filePath?.endsWith('.mdx') && !fullEntry.rendered)
 const result = fullEntry ? await render(fullEntry) : null;
 const Content = result?.Content;
 const headings = result?.headings ?? [];
-const p: Record<string, any> = route.entry?.data ?? {};
+const p: import('../lib/page-types').PageMetadata = route.entry?.data ?? {};
 const type = route.kind === 'home' ? 'solitude' : (route.type ?? route.kind);
 const post = route.kind === 'post' ? (route.entry as Post) : undefined;
 const hideAside =
   p.aside === false ||
-  ['about', 'music', 'tags', 'categories', 'links', 'kit', 'brevity', 'recentcomment', 'message'].includes(type) ||
+  [
+    'about',
+    'music',
+    'tags',
+    'categories',
+    'links',
+    'kit',
+    'brevity',
+    'recentcomment',
+    'message',
+  ].includes(type) ||
   route.kind === 'taxonomy';
 const index = post ? posts.findIndex((item) => item.id === post.id) : -1;
 const previous = posts[index + 1],
@@ -105,19 +115,22 @@ const commentsEnabled =
     }
   >
     {route.kind === 'home' ? (
-      <div class="home-main-flow">
+      <div class="home-main-flow tw:flex tw:flex-col">
         {cfg.hometop.enable && route.current === 1 && (
           <div id="home_top">
             <HomeTop posts={posts} />
           </div>
         )}
-        <div class="home-category-bar category-in-bar">
+        <div class="home-category-bar category-in-bar tw:[.home-main-flow_>_&]:shrink-0 tw:[.layout#content-inner.layout--category_>_&]:shrink-0 tw:[.layout.layout--archive_>_&]:shrink-0">
           <CategoryBar posts={posts} home />
         </div>
-        <main class="layout layout--home" id="content-inner">
-          <div class="home-layout-row">
+        <main
+          class="layout layout--home tw:[.layout#content-inner&]:flex-col tw:[.layout&]:relative"
+          id="content-inner"
+        >
+          <div class="home-layout-row tw:flex tw:[.layout#content-inner.layout--category_>_&]:flex">
             <div id="home">
-              <div class="recent-posts" id="recent-posts">
+              <div class="recent-posts tw:relative" id="recent-posts">
                 {route.posts?.map((post, i) => (
                   <PostCard post={post} index={i} newest={posts[0]?.id} />
                 ))}
@@ -132,22 +145,25 @@ const commentsEnabled =
         </main>
       </div>
     ) : post ? (
-      <main class="layout" id="content-inner">
+      <main class="layout tw:[.layout&]:relative" id="content-inner">
         <div id="post">
           {post.data.not_cover && <PostMeta post={post} />}
           <article class="post-content article-container">
             {Content && <Content components={components} />}
           </article>
           <Copyright post={post} />
-          <div class="post-tools-right">
+          <div class="post-tools-right tw:[#post_&]:flex tw:[#post_&]:items-center tw:[#post_&]:flex-row tw:[#post_&]:justify-between tw:[#post_&]:flex-wrap">
             <div class="tag_share">
-              <div class="post-meta__tag-list">
+              <div class="post-meta__tag-list tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_&]:flex tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_&]:flex-row tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_&]:items-center tw:[#post_.post-tools-right_.tag\_share_&]:flex tw:[#post_.post-tools-right_.tag\_share_&]:flex-wrap tw:[#post_.post-tools-right_.tag\_share_&]:flex-row">
                 {post.data.tags.map((tag) => (
-                  <a class="post-meta__tags" href={url(termPath('tags', tag))}>
-                    <span class="tags-punctuation">
+                  <a
+                    class="post-meta__tags tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_.post-meta\_\_tag-list_&]:flex tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_.post-meta\_\_tag-list_&]:flex-row tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_.post-meta\_\_tag-list_&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_&]:flex tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_&]:whitespace-nowrap"
+                    href={url(termPath('tags', tag))}
+                  >
+                    <span class="tags-punctuation tw:[span&]:flex tw:[span&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:flex tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:items-center">
                       <i class="solitude fas fa-hashtag" />
                       {tag}
-                      <span class="tagsPageCount">
+                      <span class="tagsPageCount tw:[span&]:text-center">
                         {posts.filter((p) => p.data.tags.includes(tag)).length}
                       </span>
                     </span>
@@ -158,14 +174,14 @@ const commentsEnabled =
           </div>
           {(previous || next) && (
             <nav
-              class="needEndHide pagination-post"
+              class="needEndHide pagination-post tw:[#post_&]:overflow-hidden"
               id="pagination"
               aria-label={t('postNavigation')}
             >
               {previous && (
                 <div class={`prev-post ${next ? 'pull-left' : 'pull-full'}`}>
                   <a href={url(contentPath(previous))}>
-                    <div class="pagination-info">
+                    <div class="pagination-info tw:[#post_#pagination_.prev-post_&]:text-left tw:[#post_#pagination_&]:absolute">
                       <div class="label">{t('previousPost')}</div>
                       <div class="prev_info">{previous.data.title}</div>
                     </div>
@@ -177,7 +193,7 @@ const commentsEnabled =
                   class={`next-post ${previous ? 'pull-right' : 'pull-full'}`}
                 >
                   <a href={url(contentPath(next))}>
-                    <div class="pagination-info">
+                    <div class="pagination-info tw:[#post_#pagination_.prev-post_&]:text-left tw:[#post_#pagination_&]:absolute">
                       <div class="label">{t('nextPost')}</div>
                       <div class="next_info">{next.data.title}</div>
                     </div>
@@ -188,20 +204,20 @@ const commentsEnabled =
           )}
           {cfg.related_post.enable && related.length > 0 && (
             <section class="relatedPosts" aria-labelledby="related-posts-title">
-              <div class="headline">
+              <div class="headline tw:[.site-data_.data-item_.data-item-link_&]:whitespace-nowrap tw:[.relatedPosts_&]:flex tw:[.relatedPosts_&]:items-center">
                 <i class="solitude fas fa-star" />
                 <span id="related-posts-title">{t('relatedPostsLead')}</span>
                 <button
-                  class="relatedPosts-random"
+                  class="relatedPosts-random tw:inline-flex tw:items-center tw:justify-center tw:whitespace-nowrap tw:cursor-pointer"
                   type="button"
                   data-solitude-action="randomPost"
                 >
                   {t('browseRandomly')}
                 </button>
               </div>
-              <div class="relatedPosts-list">
+              <div class="relatedPosts-list tw:flex tw:flex-col">
                 {related.map((item) => (
-                  <article class="relatedPosts-item">
+                  <article class="relatedPosts-item tw:[.relatedPosts_&]:relative tw:[.relatedPosts_&]:overflow-hidden">
                     <a class="relatedPosts-link" href={url(contentPath(item))}>
                       <img
                         class="cover"
@@ -235,11 +251,14 @@ const commentsEnabled =
         />
       </main>
     ) : type === 'archives' ? (
-      <main class="layout layout--archive" id="content-inner">
-        <div class="home-category-bar category-in-bar">
+      <main
+        class="layout layout--archive tw:[.layout&]:flex-col tw:[.layout&]:relative"
+        id="content-inner"
+      >
+        <div class="home-category-bar category-in-bar tw:[.home-main-flow_>_&]:shrink-0 tw:[.layout#content-inner.layout--category_>_&]:shrink-0 tw:[.layout.layout--archive_>_&]:shrink-0">
           <CategoryBar posts={posts} />
         </div>
-        <div class="archive-layout-row">
+        <div class="archive-layout-row tw:flex tw:items-start">
           <div id="page">
             <Archive posts={posts} />
           </div>
@@ -250,19 +269,24 @@ const commentsEnabled =
       <main
         class:list={['layout', { 'hide-aside': hideAside }]}
         id="content-inner"
+        class="tw:[.layout&]:relative"
       >
         <div id={route.kind === 'term' ? 'tag' : 'page'}>
           {route.kind === 'taxonomy' ? (
             <>
-              <h1 class="page-title">{route.title}</h1>
+              <h1 class="page-title tw:[#page_h1&]:text-center">
+                {route.title}
+              </h1>
               <div class="category-lists">
                 <div class="tag-cloud-list is-center">
                   {taxonomy(posts, route.taxonomy!).map((group) => (
                     <a href={url(group.path)} title={group.name}>
-                      <span class="tags-punctuation">
+                      <span class="tags-punctuation tw:[span&]:flex tw:[span&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:flex tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:items-center">
                         <i class="solitude fas fa-hashtag" />
                         {group.name}
-                        <span class="tagsPageCount">{group.posts.length}</span>
+                        <span class="tagsPageCount tw:[span&]:text-center">
+                          {group.posts.length}
+                        </span>
                       </span>
                     </a>
                   ))}
@@ -274,9 +298,9 @@ const commentsEnabled =
               <div class="article-sort-title">{route.title}</div>
               <div class="article-sort">
                 {route.posts?.map((item) => (
-                  <div class="article-sort-item">
+                  <div class="article-sort-item tw:[.article-sort_&]:relative tw:[.article-sort_&]:flex tw:[.article-sort_&]:items-center tw:[.article-sort_&]:overflow-hidden">
                     <a
-                      class="article-sort-item-img"
+                      class="article-sort-item-img tw:[.article-sort_.article-sort-item_&]:overflow-hidden"
                       href={url(contentPath(item))}
                     >
                       <img
@@ -285,7 +309,7 @@ const commentsEnabled =
                         loading="lazy"
                       />
                     </a>
-                    <div class="article-sort-item-info">
+                    <div class="article-sort-item-info tw:[.article-sort_.article-sort-item_&]:flex tw:[.article-sort_.article-sort-item_&]:flex-col">
                       <div class="article-sort-item-time">
                         <time>{dateLabel(item.data.date)}</time>
                       </div>
@@ -318,7 +342,7 @@ const commentsEnabled =
           ) : type === 'music' && cfg.music.enable ? (
             <>
               <div id="Music-bg" />
-              <div id="Music-page">
+              <div id="Music-page" class="tw:relative tw:overflow-hidden">
                 <solitude-meting
                   id={cfg.music.id}
                   server={cfg.music.server}
@@ -339,7 +363,9 @@ const commentsEnabled =
           ) : (
             <>
               <header class="page-title-wrap">
-                <h1 class="page-title">{route.title}</h1>
+                <h1 class="page-title tw:[#page_h1&]:text-center">
+                  {route.title}
+                </h1>
                 {p.description && <p>{String(p.description)}</p>}
               </header>
               <article class="post-content article-container">

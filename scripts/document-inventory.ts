@@ -86,7 +86,7 @@ const rows = [
   '| Field | Base default | Implementation |',
   '| --- | --- | --- |',
 ];
-function walk(value: any, keys: string[] = []) {
+function walk(value: object, keys: string[] = []) {
   for (const [k, v] of Object.entries(value)) {
     const next = [...keys, k];
     if (

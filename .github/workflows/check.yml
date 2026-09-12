@@ -32,3 +32,42 @@ jobs:
         with:
           name: test-results-node-${{ matrix.node }}
           path: test-results/
+  visual:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: .visual-baseline
+          persist-credentials: false
+      - run: pnpm --dir .visual-baseline install --frozen-lockfile
+      - run: pnpm --dir .visual-baseline build
+      - run: |
+          mkdir -p artifacts/modernization
+          cp -R .visual-baseline/dist artifacts/modernization/baseline-dist
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm check:visual before
+      - run: pnpm check:visual after
+      - run: pnpm check:size
+      - run: pnpm check:visual before --boundaries
+      - run: pnpm check:visual after --boundaries
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-comparison
+          path: |
+            artifacts/modernization/before/
+            artifacts/modernization/after/
+            artifacts/modernization/load-budget.json
+            artifacts/modernization/boundaries/
+          retention-days: 7

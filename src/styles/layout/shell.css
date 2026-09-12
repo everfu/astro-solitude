@@ -6,7 +6,6 @@
 }
 
 .layout#content-inner {
-  position: relative;
   max-width: 1400px;
   flex-grow: 1;
 }
@@ -361,13 +360,9 @@ span.tags-punctuation i {
 }
 
 .article-sort .article-sort-item {
-  position: relative;
-  display: flex;
   -webkit-box-align: center;
-  align-items: center;
   margin: 0 0 1rem 0;
   transition: all 0.2s ease-in-out 0s;
-  overflow: hidden;
 }
 
 .article-sort .article-sort-item.year {
@@ -381,7 +376,6 @@ span.tags-punctuation i {
   min-width: 151px;
   min-height: 80px;
   background: var(--efu-secondbg);
-  overflow: hidden;
   width: 80px;
   height: 80px;
 }
@@ -401,8 +395,6 @@ span.tags-punctuation i {
 
 .article-sort .article-sort-item .article-sort-item-info {
   padding: 0 0.8rem;
-  display: flex;
-  flex-direction: column;
   -webkit-box-flex: 1;
   flex: 1 1 0;
 }
@@ -462,8 +454,6 @@ span.tags-punctuation i {
 }
 
 #aside-content {
-  display: flex;
-  flex-direction: column;
   gap: var(--gap);
   animation: slide-in 0.6s 0.3s backwards;
   z-index: 10;

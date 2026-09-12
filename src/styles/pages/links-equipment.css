@@ -18,18 +18,13 @@
 }
 
 #equipment .equipment-item .equipment-item-content {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   margin: 0 -8px;
 }
 
 #equipment .equipment-item .equipment-item-content-item {
   width: calc(25% - 12px);
   min-height: 400px;
-  position: relative;
   margin: 8px 6px;
-  overflow: hidden;
   border: var(--style-border-always);
   border-radius: 16px;
   background: var(--efu-card-bg);
@@ -53,9 +48,6 @@
   width: 100%;
   height: 200px;
   background: var(--efu-secondbg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 #equipment .equipment-item .equipment-item-content-item .equipment-item-content-item-cover .equipment-item-content-item-image {
@@ -81,7 +73,6 @@
   font-weight: 700;
   line-height: 1;
   margin-bottom: 8px;
-  white-space: nowrap;
   text-overflow: ellipsis;
   width: fit-content;
 }
@@ -97,8 +88,6 @@
   color: var(--efu-secondtext);
   line-height: 1;
   margin-bottom: 12px;
-  white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -107,16 +96,12 @@
   color: var(--efu-secondtext);
   height: 60px;
   display: -webkit-box;
-  overflow: hidden;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   font-size: 14px;
 }
 
 #equipment .equipment-item .equipment-item-content-item .equipment-item-content-item-info .equipment-item-content-item-toolbar {
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
   bottom: 12px;
   left: 0;
   width: 100%;
@@ -128,7 +113,6 @@
   background: var(--efu-gray-op);
   padding: 4px 8px;
   border-radius: 8px;
-  cursor: pointer;
 }
 
 #equipment .equipment-item .equipment-item-content-item .equipment-item-content-item-info .equipment-item-content-item-toolbar .equipment-item-content-item-link:hover {
@@ -644,14 +628,11 @@ body[data-type=links] .article-container .site-card-group .site-card:focus-withi
   transition: 0.3s;
   border-radius: 12px;
   transition-timing-function: ease-in-out;
-  position: relative;
   width: calc(20% - 12px);
   border: var(--style-border-always);
   box-shadow: var(--efu-shadow-border);
   background: var(--efu-card-bg);
-  display: flex;
   float: left;
-  overflow: hidden;
   height: 90px;
   line-height: 17px;
   transform: translateZ(0);
@@ -805,15 +786,11 @@ body[data-type=links] .article-container .flink-list-item:focus-within .flink-it
 }
 
 div#banners {
-  display: flex;
   width: 100%;
   background: var(--efu-card-bg);
   border: var(--style-border-always);
   border-radius: 12px;
-  overflow: hidden;
-  position: relative;
   box-shadow: var(--efu-shadow-border);
-  flex-direction: column;
   transition: 0.3s;
   will-change: transform;
   animation: slide-in 0.6s 0.1s backwards;
@@ -834,10 +811,8 @@ div#banners:not(.flink):hover {
 }
 
 div#banners .banner-button-group {
-  position: absolute;
   right: 2rem;
   top: 2rem;
-  display: flex;
 }
 
 @media screen and (max-width: 768px) {
@@ -852,11 +827,8 @@ div#banners .banner-button {
   background: var(--efu-fontcolor);
   border-radius: 12px;
   color: var(--efu-card-bg);
-  display: flex;
-  align-items: center;
   z-index: 1;
   transition: 0.3s;
-  cursor: pointer;
   box-shadow: var(--efu-shadow-black);
   font: inherit;
   line-height: 32px;
@@ -889,9 +861,6 @@ div#banners .banner-button i {
 .banners-title {
   top: 2.6rem;
   left: 2rem;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
 }
 
 .banners-title-big {
@@ -918,10 +887,6 @@ div#banners .bannerText {
   font-size: 4rem;
   line-height: 4rem;
   font-weight: 700;
-}
-
-.tags-group-all {
-  display: flex;
 }
 
 @media screen and (max-width: 600px) {
@@ -1030,7 +995,6 @@ div#banners .bannerText {
   height: 19rem;
   background-size: cover;
   color: var(--efu-white);
-  overflow: hidden;
   margin-top: 0;
   margin-bottom: 12px;
 }
@@ -1076,9 +1040,6 @@ div#banners .bannerText {
 
 .author-content-item .content-bottom {
   margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .author-content-item .content-bottom .icon-group {
@@ -1093,14 +1054,11 @@ div#banners .bannerText {
 }
 
 .author-content-item .card-content {
-  position: absolute;
   width: 100%;
   z-index: 2;
   height: 100%;
   top: 0;
   left: 0;
-  display: flex;
-  flex-direction: column;
   padding: 1rem 2rem;
 }
 
@@ -1115,7 +1073,6 @@ div#banners .bannerText {
 }
 
 .author-content-item .card-content .banner-button-group {
-  position: absolute;
   bottom: 1rem;
   right: 2rem;
 }
@@ -1124,14 +1081,10 @@ div#banners .bannerText {
   height: 40px;
   padding: 0.5rem 0.7rem;
   border-radius: 20px;
-  justify-content: center;
   background: var(--efu-black-op);
   color: var(--efu-white);
-  display: flex;
-  align-items: center;
   z-index: 1;
   transition: 0.3s;
-  cursor: pointer;
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: blur(20px);
   transform: translateZ(0);

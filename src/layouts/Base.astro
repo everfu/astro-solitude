@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { applyInitialTheme } from '../scripts/theme-bootstrap';
 import { cfg, config, t, url, absolute, json } from '../lib/site';
 import { getPosts, getPages, contentPath, type Post } from '../lib/content';
 import { runtimeConfig } from '../lib/runtime-config';
@@ -11,6 +12,9 @@ import Capsule from '../components/Capsule.astro';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'katex/dist/katex.min.css';
 import '../styles/main.css';
+import layerOrder from '../styles/layers.css?inline';
+import aboutStyle from '../styles/pages/about.css?url';
+import brevityStyle from '../styles/pages/brevity.css?url';
 import '../styles/astro.css';
 import '../styles/custom.css';
 interface Props {
@@ -18,7 +22,7 @@ interface Props {
   description?: string;
   type?: string;
   post?: Post;
-  page?: Record<string, any>;
+  page?: import('../lib/page-types').PageMetadata;
   toc?: boolean;
 }
 const {
@@ -60,6 +64,9 @@ const inlineVars = Object.entries(vars)
 <!doctype html>
 <html lang={config.locale} data-theme="light" style={inlineVars}>
   <head>
+    <style is:inline set:html={layerOrder}></style>
+    {type === 'about' && <link rel="stylesheet" href={aboutStyle} />}
+    {type === 'brevity' && <link rel="stylesheet" href={brevityStyle} />}
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -97,7 +104,7 @@ const inlineVars = Object.entries(vars)
     {(post?.data.cover || page.cover) && (
       <meta
         property="og:image"
-        content={absolute(post?.data.cover ?? page.cover)}
+        content={absolute((post?.data.cover ?? page.cover)!)}
       />
     )}
     {cfg.pwa.enable && (
@@ -134,24 +141,9 @@ const inlineVars = Object.entries(vars)
     <ClientRouter />
     <script
       is:inline
-      define:vars={{ defaultMode: cfg.display_mode.type }}
       data-astro-rerun
-    >
-      (() => {
-        let mode = defaultMode;
-        try {
-          const stored = JSON.parse(localStorage.getItem('theme'));
-          if (stored?.value && (!stored.expiry || stored.expiry > Date.now()))
-            mode = stored.value;
-        } catch {}
-        if (mode === 'auto')
-          mode = matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark'
-            : 'light';
-        document.documentElement.dataset.theme =
-          mode === 'dark' ? 'dark' : 'light';
-      })();
-    </script>
+      set:html={`(${applyInitialTheme.toString()})(${json(cfg.display_mode.type)});`}
+    ></script>
     <template id="site-config" set:html={json(runtime)} />
     <template id="config-diff" set:html={json(pageConfig)} />
     {cfg.verify_site.map((html: string) => (

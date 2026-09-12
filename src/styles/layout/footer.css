@@ -6,15 +6,12 @@
 }
 
 #footer #footer_deal .deal_link {
-  display: flex;
   margin: 1rem 27px;
   color: var(--efu-card-bg);
   border-radius: 3rem;
   width: 32px;
   height: 32px;
   background: var(--efu-fontcolor);
-  justify-content: center;
-  align-items: center;
   transition: 0.3s;
 }
 
@@ -31,11 +28,9 @@
   border: 0;
   background: transparent;
   margin: 0 1rem;
-  cursor: pointer;
   transition: cubic-bezier(0, 0, 0, 1.29) 0.5s;
   user-select: none;
   border-radius: 50px;
-  overflow: hidden;
 }
 
 @media screen and (max-width: 768px) {
@@ -49,19 +44,11 @@
 }
 
 #footer #st-footer {
-  display: flex;
-  flex-direction: row;
   width: 100%;
   max-width: 1200px;
   justify-content: space-evenly;
-  flex-wrap: wrap;
   margin: 1rem auto 3rem;
   padding: 0 1rem;
-}
-
-#footer #st-footer .footer-links {
-  display: flex;
-  flex-direction: column;
 }
 
 #footer #st-footer .footer-item {
@@ -92,8 +79,6 @@
 }
 
 #footer #st-footer .footer-title-group {
-  display: flex;
-  align-items: center;
   margin: 0.5rem 0 0.7rem 8px;
 }
 
@@ -125,7 +110,6 @@
 }
 
 #footer #st-footer .random-friends-btn {
-  display: flex;
   margin-left: 8px;
 }
 
@@ -133,21 +117,15 @@
   color: var(--efu-fontcolor);
   margin-top: 1rem;
   background: var(--efu-secondbg);
-  display: flex;
-  overflow: hidden;
   z-index: 1;
   transition: 0.3s;
   border-top: var(--style-border-always);
 }
 
 #footer-bar .footer-bar-links {
-  display: flex;
-  justify-content: space-between;
   max-width: 1400px;
   width: 100%;
   margin: 0 auto;
-  flex-wrap: wrap;
-  align-items: center;
   line-height: 1;
   padding: 1rem 1.5rem;
 }
@@ -160,9 +138,7 @@
 }
 
 #footer-bar .footer-bar-left {
-  display: flex;
   gap: 8px;
-  flex-direction: column;
 }
 
 @media screen and (max-width: 768px) {
@@ -171,20 +147,12 @@
   }
 }
 
-#footer-bar .footer-bar-left .copyright {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 #footer-bar .footer-bar-left .copyright .footer-bar-link {
   margin: 0;
 }
 
 #footer-bar .footer-bar-left .beian-group {
-  display: flex;
   gap: 8px;
-  flex-wrap: wrap;
 }
 
 @media screen and (max-width: 768px) {
@@ -210,8 +178,6 @@
   color: var(--efu-secondtext);
   padding: 0;
   margin: 0;
-  display: flex;
-  align-items: center;
   gap: 4px;
 }
 
@@ -220,11 +186,8 @@
   color: var(--efu-fontcolor);
   font-size: 0.8rem;
   font-weight: 700;
-  white-space: nowrap;
   padding: 8px;
   border-radius: 32px;
   line-height: 1;
-  display: flex;
-  align-items: center;
   gap: 0.5rem;
 }

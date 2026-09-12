@@ -6,12 +6,10 @@
   top: var(--keyboard-panel-top);
   left: var(--keyboard-panel-inline);
   z-index: 999;
-  display: flex;
   max-width: calc(100vw - (var(--keyboard-panel-inline) * 2));
   max-height: calc(100dvh - var(--keyboard-panel-top) - 20px);
   padding: 20px;
   overflow: auto;
-  flex-direction: column;
   color: var(--efu-fontcolor);
   background: var(--efu-maskbgdeep);
   border: var(--style-border);
@@ -39,23 +37,17 @@
 }
 
 #keyboard-tips .keyboardList {
-  display: flex;
   margin-top: 8px;
-  flex-direction: column;
 }
 
 #keyboard-tips .keyboardItem {
-  display: grid;
   min-width: 0;
   margin-top: 4px;
   grid-template-columns: var(--keyboard-key-group-width) minmax(0, 1fr);
-  align-items: center;
 }
 
 #keyboard-tips .keyGroup {
-  display: flex;
   width: var(--keyboard-key-group-width);
-  align-items: center;
 }
 
 #keyboard-tips .key {

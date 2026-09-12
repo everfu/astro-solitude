@@ -47,29 +47,32 @@ const contextItems = [
 ---
 
 {cfg.console.enable && (
-  <div id="console">
-    <div class="console-content">
+  <div
+    id="console"
+    class="tw:flex tw:justify-center tw:flex-col tw:items-center"
+  >
+    <div class="console-content tw:[#console_&]:flex tw:[#console_&]:relative tw:[#console_&]:justify-center tw:[#console_&]:flex-col tw:[#console_&]:items-center">
       <div
-        class="console-card-group"
+        class="console-card-group tw:[#console_&]:flex tw:[#console_&]:justify-center tw:[#console_&]:items-center"
         data-solitude-action="onConsoleCardGroupClick"
         data-solitude-event="true"
       >
         {cfg.comment.use && cfg.console.recentComment.enable && (
           <div class="console-card-group-left">
             <div
-              class="console-card"
+              class="console-card tw:[#console_&]:flex tw:[#console_&]:flex-col"
               id="card-newest-comments"
               data-solitude-action="hideConsole"
             >
-              <div class="card-content">
+              <div class="card-content tw:[#aside-content_.card-widget_&]:relative tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:flex-col tw:[.author-content-item_&]:absolute tw:[.author-content-item_&]:flex tw:[.author-content-item_&]:flex-col">
                 <div class="author-content-item-tips">
                   {t('recentComments')}
                 </div>
-                <div class="author-content-item-title">
+                <div class="author-content-item-title tw:[#console_&]:flex tw:[#console_&]:items-center tw:[#console_&]:justify-between tw:[#about-page_.interest-card_&]:flex tw:[#about-page_.interest-card_&]:items-start tw:[#about-page_.interest-card_&]:justify-between tw:[#about-page_.interest-card--media_&]:block">
                   {t('comments')}
                   {cfg.recent_comments.enable && (
                     <a
-                      class="recent-comment-more"
+                      class="recent-comment-more tw:[.card-recent-comment_&]:inline-flex tw:[.card-recent-comment_&]:items-center tw:[.card-recent-comment_&]:justify-center tw:[#console_&]:flex tw:[#console_&]:items-center"
                       href={url(cfg.recent_comments.page)}
                       title={t('more')}
                       aria-label={t('more')}
@@ -80,25 +83,32 @@ const contextItems = [
                 </div>
               </div>
               <div
-                class="console_recentcomments"
+                class="console_recentcomments tw:[div&]:flex tw:[div&]:flex-wrap"
                 data-comment-provider={cfg.comment.use}
                 aria-live="polite"
                 aria-busy="true"
               >
-                <div class="comment-loading">{t('commentsLoading')}</div>
+                <div class="comment-loading tw:[.card-recent-comment_&]:inline-flex tw:[.card-recent-comment_&]:items-center">
+                  {t('commentsLoading')}
+                </div>
               </div>
             </div>
           </div>
         )}
         {(cfg.console.card.tags || cfg.console.card.archive) && (
-          <div class="console-card-group-right">
+          <div class="console-card-group-right tw:[#console_&]:flex tw:[#console_&]:flex-col tw:[#console_&]:justify-center">
             {cfg.console.card.tags && (
-              <div class="console-card tags" data-solitude-action="hideConsole">
-                <div class="card-content">
+              <div
+                class="console-card tags tw:[#console_&]:flex tw:[#console_&]:flex-col"
+                data-solitude-action="hideConsole"
+              >
+                <div class="card-content tw:[#aside-content_.card-widget_&]:relative tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:flex-col tw:[.author-content-item_&]:absolute tw:[.author-content-item_&]:flex tw:[.author-content-item_&]:flex-col">
                   <div class="author-content-item-tips">{t('tags')}</div>
-                  <div class="author-content-item-title">{t('explore')}</div>
+                  <div class="author-content-item-title tw:[#console_&]:flex tw:[#console_&]:items-center tw:[#console_&]:justify-between tw:[#about-page_.interest-card_&]:flex tw:[#about-page_.interest-card_&]:items-start tw:[#about-page_.interest-card_&]:justify-between tw:[#about-page_.interest-card--media_&]:block">
+                    {t('explore')}
+                  </div>
                 </div>
-                <div class="card-tag-cloud">
+                <div class="card-tag-cloud tw:overflow-hidden tw:relative tw:flex tw:flex-row tw:flex-wrap tw:[#console_.console-card.tags_&]:flex tw:[#console_.console-card.tags_&]:flex-wrap tw:[#sidebar_#sidebar-menus_&]:flex tw:[#sidebar_#sidebar-menus_&]:whitespace-nowrap tw:[#sidebar_#sidebar-menus_&]:flex-row tw:[#sidebar_#sidebar-menus_&]:flex-wrap">
                   {tags.slice(0, 20).map((tag) => (
                     <a href={url(tag.path)}>
                       {tag.name}
@@ -110,23 +120,25 @@ const contextItems = [
             )}
             {cfg.console.card.archive && (
               <div
-                class="console-card history"
+                class="console-card history tw:[#console_&]:flex tw:[#console_&]:flex-col"
                 data-solitude-action="hideConsole"
               >
-                <ul class="card-archive-list">
+                <ul class="card-archive-list tw:[#console_.console-card.history_&]:flex tw:[#console_.console-card.history_&]:flex-row tw:[#console_.console-card.history_&]:flex-wrap">
                   {months.map((month) => (
                     <li class="item">
                       <a href={url('/archives/')}>
                         <span class="date">{month}</span>
-                        <div class="count-group">
-                          <span class="count">
+                        <div class="count-group tw:[#console_.console-card.history_.card-archive-list_a_&]:flex tw:[#console_.console-card.history_.card-archive-list_a_&]:flex-row">
+                          <span class="count tw:[#console_.console-card.history_.card-archive-list_a_.count-group_&]:text-left">
                             {
                               posts.filter((p) =>
                                 p.data.date.toISOString().startsWith(month),
                               ).length
                             }
                           </span>
-                          <span class="unit">{t('postUnit')}</span>
+                          <span class="unit tw:[#console_.console-card.history_.card-archive-list_a_.count-group_&]:text-left">
+                            {t('postUnit')}
+                          </span>
                         </div>
                       </a>
                     </li>
@@ -134,9 +146,13 @@ const contextItems = [
                   <li class="item">
                     <a href={url('/archives/')}>
                       <span class="date">{t('allPosts')}</span>
-                      <div class="count-group">
-                        <span class="count">{posts.length}</span>
-                        <span class="unit">{t('postUnit')}</span>
+                      <div class="count-group tw:[#console_.console-card.history_.card-archive-list_a_&]:flex tw:[#console_.console-card.history_.card-archive-list_a_&]:flex-row">
+                        <span class="count tw:[#console_.console-card.history_.card-archive-list_a_.count-group_&]:text-left">
+                          {posts.length}
+                        </span>
+                        <span class="unit tw:[#console_.console-card.history_.card-archive-list_a_.count-group_&]:text-left">
+                          {t('postUnit')}
+                        </span>
                       </div>
                     </a>
                   </li>
@@ -146,17 +162,20 @@ const contextItems = [
           </div>
         )}
       </div>
-      <div class="button-group">
-        <div class="console-btn-item">
+      <div class="button-group tw:[#console_&]:flex tw:[#console_&]:justify-center">
+        <div class="console-btn-item tw:[#console_.button-group_&]:cursor-pointer">
           <button
-            class="darkmode_switchbutton"
+            class="darkmode_switchbutton tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:cursor-pointer"
             data-solitude-action="toggleTheme"
             aria-label={t('toggleTheme')}
           >
             <i class="solitude fas fa-circle-half-stroke" />
           </button>
         </div>
-        <div class="console-btn-item" id="consoleHideAside">
+        <div
+          class="console-btn-item tw:[#console_.button-group_&]:cursor-pointer"
+          id="consoleHideAside"
+        >
           <button
             class="asideSwitch"
             data-solitude-action="switchHideAside"
@@ -166,7 +185,10 @@ const contextItems = [
           </button>
         </div>
         {cfg.keyboard.enable && (
-          <div class="console-btn-item" id="consoleKeyboard">
+          <div
+            class="console-btn-item tw:[#console_.button-group_&]:cursor-pointer"
+            id="consoleKeyboard"
+          >
             <button
               class="keyboardSwitch"
               type="button"
@@ -179,7 +201,10 @@ const contextItems = [
           </div>
         )}
         {cfg.capsule.enable && (
-          <div class="console-btn-item" id="consoleMusic">
+          <div
+            class="console-btn-item tw:[#console_.button-group_&]:cursor-pointer"
+            id="consoleMusic"
+          >
             <button
               class="music-switch"
               data-solitude-action="musicToggle"
@@ -191,7 +216,7 @@ const contextItems = [
         )}
         {cfg.comment.use && cfg.comment.commentBarrage && (
           <div
-            class="console-btn-item on"
+            class="console-btn-item on tw:[#console_.button-group_&]:cursor-pointer"
             id="consoleCommentBarrage"
             data-solitude-action="switchCommentBarrage"
           >
@@ -202,18 +227,29 @@ const contextItems = [
         )}
       </div>
     </div>
-    <div class="console-mask" data-solitude-action="hideConsole" />
+    <div
+      class="console-mask tw:[#console_&]:absolute"
+      data-solitude-action="hideConsole"
+    />
   </div>
 )}
 {cfg.keyboard.enable && (
-  <aside id="keyboard-tips" aria-hidden="true" aria-labelledby="keyboard-title">
+  <aside
+    id="keyboard-tips"
+    aria-hidden="true"
+    aria-labelledby="keyboard-title"
+    class="tw:flex tw:flex-col"
+  >
     <div class="keyboardTitle" id="keyboard-title">
       {t('keyboardTitle')}
     </div>
-    <div class="keyboardList" role="list">
-      {cfg.keyboard.list.map((item: any, index: number) => (
+    <div
+      class="keyboardList tw:[#keyboard-tips_&]:flex tw:[#keyboard-tips_&]:flex-col"
+      role="list"
+    >
+      {cfg.keyboard.list.map((item, index: number) => (
         <div
-          class="keyboardItem"
+          class="keyboardItem tw:[#keyboard-tips_&]:grid tw:[#keyboard-tips_&]:items-center"
           role="listitem"
           data-shortcut-index={index}
           data-shortcut-action={item.action}
@@ -221,7 +257,7 @@ const contextItems = [
           data-theme-light-label={t('keyboardThemeLight')}
           data-theme-dark-label={t('keyboardThemeDark')}
         >
-          <div class="keyGroup">
+          <div class="keyGroup tw:[#keyboard-tips_&]:flex tw:[#keyboard-tips_&]:items-center">
             <kbd class="key">
               {item.modifier === 'mod' ? '⌘/Ctrl' : 'Shift'}
             </kbd>
@@ -229,7 +265,8 @@ const contextItems = [
           </div>
           <div class="keyContent">
             <span class="content">
-              {item.name ?? t(actionLabels[item.action] ?? item.action)}
+              {item.name ??
+                t(actionLabels[item.action ?? ''] ?? item.action ?? '')}
             </span>
           </div>
         </div>
@@ -239,17 +276,19 @@ const contextItems = [
 )}
 <div id="sidebar">
   <div id="menu-mask" />
-  <div id="sidebar-menus">
-    <div class="site-data">
+  <div id="sidebar-menus" class="tw:[#sidebar_&]:overflow-hidden">
+    <div class="site-data tw:flex tw:justify-between">
       {[
         { name: 'archives', path: '/archives/', count: posts.length },
         { name: 'categories', path: '/categories/', count: categories.length },
         { name: 'tags', path: '/tags/', count: tags.length },
       ].map((item) => (
-        <div class="data-item is-center">
+        <div class="data-item is-center tw:[.site-data_&]:flex tw:[.site-data_&]:justify-start">
           <div class="data-item-link">
             <a href={url(item.path)}>
-              <div class="headline">{t(item.name)}</div>
+              <div class="headline tw:[.site-data_.data-item_.data-item-link_&]:whitespace-nowrap tw:[.relatedPosts_&]:flex tw:[.relatedPosts_&]:items-center">
+                {t(item.name)}
+              </div>
               <div class="length-num">{item.count}</div>
             </a>
           </div>
@@ -257,10 +296,12 @@ const contextItems = [
       ))}
       {cfg.comment.sidebar &&
         cfg.comment.use.toLowerCase().includes('valine') && (
-          <div class="data-item is-center">
+          <div class="data-item is-center tw:[.site-data_&]:flex tw:[.site-data_&]:justify-start">
             <div class="data-item-link">
               <a href={url(cfg.recent_comments.page)}>
-                <div class="headline">{t('comments')}</div>
+                <div class="headline tw:[.site-data_.data-item_.data-item-link_&]:whitespace-nowrap tw:[.relatedPosts_&]:flex tw:[.relatedPosts_&]:items-center">
+                  {t('comments')}
+                </div>
                 <div class="length-num" id="valine_allcount">
                   <i class="solitude fas fa-spinner fa-spin" />
                 </div>
@@ -270,10 +311,10 @@ const contextItems = [
         )}
     </div>
     <span class="sidebar-menu-item-title">{t('sidebarFeatures')}</span>
-    <div class="sidebar-menu-item">
+    <div class="sidebar-menu-item tw:[#sidebar_#sidebar-menus_&]:flex tw:[#sidebar_#sidebar-menus_&]:flex-col">
       <button
         type="button"
-        class="darkmode_switchbutton menu-child"
+        class="darkmode_switchbutton menu-child tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:cursor-pointer tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:flex tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:items-center tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:text-left"
         data-solitude-action="toggleTheme"
       >
         <i class="solitude fas fa-circle-half-stroke" />
@@ -283,7 +324,7 @@ const contextItems = [
     <Menu />
     <span class="sidebar-menu-item-title">{t('tags')}</span>
     <div class="card-tags">
-      <div class="card-tag-cloud">
+      <div class="card-tag-cloud tw:overflow-hidden tw:relative tw:flex tw:flex-row tw:flex-wrap tw:[#console_.console-card.tags_&]:flex tw:[#console_.console-card.tags_&]:flex-wrap tw:[#sidebar_#sidebar-menus_&]:flex tw:[#sidebar_#sidebar-menus_&]:whitespace-nowrap tw:[#sidebar_#sidebar-menus_&]:flex-row tw:[#sidebar_#sidebar-menus_&]:flex-wrap">
         {tags.slice(0, cfg.aside.tags.limit).map((tag) => (
           <a
             href={url(tag.path)}
@@ -305,21 +346,21 @@ const contextItems = [
       )}
     </div>
     <span class="sidebar-menu-item-title">{t('siteInformation')}</span>
-    <div class="webinfo">
+    <div class="webinfo tw:[#sidebar_#sidebar-menus_&]:flex tw:[#sidebar_#sidebar-menus_&]:whitespace-nowrap tw:[#sidebar_#sidebar-menus_&]:flex-col">
       {cfg.aside.siteinfo.postcount && (
-        <div class="webinfo-item">
+        <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
           <div class="item-name">{t('posts')}</div>
           <div class="item-count">{posts.length}</div>
         </div>
       )}
       {cfg.aside.siteinfo.runtimeenable && (
-        <div class="webinfo-item">
+        <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
           <div class="item-name">{t('uptime')}</div>
           <div class="item-count runtimeshow" />
         </div>
       )}
       {cfg.aside.siteinfo.updatetime && (
-        <div class="webinfo-item">
+        <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
           <div class="item-name">{t('lastUpdated')}</div>
           <time class="item-count" datetime={isoDate(updated)}>
             {dateLabel(updated)}
@@ -327,7 +368,7 @@ const contextItems = [
         </div>
       )}
       {cfg.aside.siteinfo.wordcount && (
-        <div class="webinfo-item">
+        <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
           <div class="item-name">{t('totalWords')}</div>
           <div class="item-count">
             {posts.reduce((n, p) => n + wordCount(p.body ?? ''), 0)}
@@ -352,7 +393,7 @@ const contextItems = [
       )}
       {cfg.rightside.hide.mode && (
         <button
-          class="mode darkmode_switchbutton"
+          class="mode darkmode_switchbutton tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:cursor-pointer"
           type="button"
           data-solitude-action="toggleTheme"
           aria-label={t('toggleTheme')}
@@ -445,7 +486,7 @@ const contextItems = [
         ))}
       </div>
       <div class="rightMenu-group rightMenu-line rightMenuOther">
-        {cfg.right_menu.custom_list.map((item: any) => (
+        {cfg.right_menu.custom_list.map((item) => (
           <button
             class={`rightMenu-item ${item.class ?? ''}`}
             id={item.id}

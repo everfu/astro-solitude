@@ -6,3 +6,9 @@ declare namespace astroHTML.JSX {
     heotip?: string;
   }
 }
+
+/** Template implementations and props are checked by astro check. */
+declare module '*.astro' {
+  const component: import('astro/runtime/server/index.js').AstroComponentFactory;
+  export default component;
+}

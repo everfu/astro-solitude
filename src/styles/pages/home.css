@@ -1,9 +1,7 @@
 /* Homepage banner and category navigation. */
 .home-center-banner {
-  position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
 .home-center-banner-item {
@@ -56,11 +54,7 @@
 .home-center-cover {
   width: 80%;
   max-width: 80%;
-  flex-shrink: 0;
   overflow: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .home-center-cover-img {
@@ -79,7 +73,6 @@
 }
 
 .home-center-mask {
-  position: absolute;
   left: 0;
   bottom: 0;
   z-index: 2;
@@ -92,13 +85,11 @@
 }
 
 .home-center-title {
-  position: absolute;
   left: 32px;
   bottom: 32px;
   z-index: 10;
   width: 80%;
   max-width: 80%;
-  text-align: left;
   pointer-events: none;
 }
 
@@ -120,8 +111,6 @@
 }
 
 .home-center-title-tag {
-  display: flex;
-  align-items: center;
   gap: 4px;
   margin-top: 2px;
   color: var(--efu-white);
@@ -158,9 +147,6 @@
 }
 
 .home-center-right {
-  display: flex;
-  flex-shrink: 0;
-  flex-direction: column;
   width: 30%;
   height: 100%;
   background: var(--current-theme, var(--efu-theme));
@@ -168,18 +154,13 @@
 }
 
 .home-center-list {
-  display: flex;
   flex: 1;
-  flex-direction: column;
 }
 
 .home-center-item {
-  display: flex;
-  align-items: center;
   gap: 15px;
   max-height: 20%;
   padding: 16px;
-  cursor: pointer;
   background: rgba(0,0,0,0.12);
   transition: 0.2s;
 }
@@ -193,15 +174,9 @@
 }
 
 .home-center-item-icon {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
   width: 36px;
   min-width: 36px;
   height: 36px;
-  overflow: hidden;
   border-radius: 8px;
   background: var(--efu-card-bg);
 }
@@ -228,7 +203,6 @@
 .home-center-item-title {
   flex: 1;
   min-width: 0;
-  overflow: hidden;
 }
 
 .home-center-item-title a {
@@ -334,16 +308,10 @@
 }
 
 #category-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
   min-height: 0;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  white-space: nowrap;
   background: transparent;
   border: 0;
   border-radius: 0;
@@ -399,9 +367,6 @@
 }
 
 .category-bar-link-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 14px;
   height: 14px;
 }
@@ -411,11 +376,7 @@
 }
 
 .category-bar-more-group {
-  position: relative;
   z-index: 2;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
   gap: 6px;
 }
 
@@ -443,13 +404,8 @@
 }
 
 .category-bar-more {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   min-height: 38px;
   padding: 8px 18px;
-  overflow: hidden;
   color: var(--efu-fontcolor);
   font-size: 14px;
   font-weight: 700;
@@ -562,12 +518,10 @@
   width: 100%;
   max-width: 100%;
   align-self: stretch;
-  flex-shrink: 0;
   animation: slide-in 0.6s 0.3s backwards;
 }
 
 .layout#content-inner.layout--category > .home-layout-row {
-  display: flex;
   align-items: stretch;
   gap: 0.5rem;
   width: 100%;

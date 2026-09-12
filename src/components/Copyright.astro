@@ -12,7 +12,10 @@ const avatar = String(p.avatar ?? c.author ?? cfg.site.icon);
 const background = String(p.avatar_background ?? c.author_background ?? '');
 ---
 
-<section class="post-copyright" aria-label={t('copyrightSection')}>
+<section
+  class="post-copyright tw:[#post_&]:box-border tw:[#post_&]:relative"
+  aria-label={t('copyrightSection')}
+>
   <div class="post-copyright__author_group">
     <a
       class:list={[
@@ -36,19 +39,25 @@ const background = String(p.avatar_background ?? c.author_background ?? '');
         alt={author}
       />
     </a>
-    <div class="post-copyright__author_name">{author}</div>
-    <div class="post-copyright__author_desc">
+    <div class="post-copyright__author_name tw:[#post_.post-copyright_&]:text-center">
+      {author}
+    </div>
+    <div class="post-copyright__author_desc tw:[#post_.post-copyright_&]:text-center">
       {String(p.desc ?? config.description)}
     </div>
   </div>
   {(cfg.post.share.enable || cfg.post.award.enable) && (
-    <div class="post-tools" role="group" aria-label={t('copyrightActions')}>
+    <div
+      class="post-tools tw:[#post_.post-copyright_&]:flex tw:[#post_.post-copyright_&]:items-center tw:[#post_.post-copyright_&]:justify-center tw:[#post_.post-copyright_&]:flex-wrap tw:[#post_&]:flex tw:[#post_&]:justify-center tw:[#post_&]:flex-wrap"
+      role="group"
+      aria-label={t('copyrightActions')}
+    >
       {cfg.post.share.enable && (
-        <div class="post-copyright__share">
+        <div class="post-copyright__share tw:[#post_.post-copyright_&]:flex tw:[#post_.post-copyright_&]:items-center tw:[#post_.post-copyright_&]:flex-wrap">
           {cfg.post.share.list.map((name: string) =>
             name === 'link' ? (
               <button
-                class="post-copyright__share-button"
+                class="post-copyright__share-button tw:[#post_.post-copyright_&]:inline-flex tw:[#post_.post-copyright_&]:items-center tw:[#post_.post-copyright_&]:justify-center tw:[#post_.post-copyright_&]:cursor-pointer"
                 type="button"
                 data-solitude-action="copy"
                 data-solitude-value={absolute(contentPath(post))}
@@ -58,7 +67,7 @@ const background = String(p.avatar_background ?? c.author_background ?? '');
               </button>
             ) : (
               <a
-                class="post-copyright__share-button"
+                class="post-copyright__share-button tw:[#post_.post-copyright_&]:inline-flex tw:[#post_.post-copyright_&]:items-center tw:[#post_.post-copyright_&]:justify-center tw:[#post_.post-copyright_&]:cursor-pointer"
                 href={`https://www.addtoany.com/add_to/${encodeURIComponent(name)}?linkurl=${encodeURIComponent(absolute(contentPath(post)))}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -74,7 +83,7 @@ const background = String(p.avatar_background ?? c.author_background ?? '');
         <details class="reward">
           <summary>{t('reward')}</summary>
           <div class="reward-list">
-            {cfg.post.award.list.map((item: any) => (
+            {cfg.post.award.list.map((item) => (
               <figure>
                 <img src={url(item.qrcode)} alt={item.name} />
                 <figcaption>{item.name}</figcaption>
@@ -86,7 +95,7 @@ const background = String(p.avatar_background ?? c.author_background ?? '');
     </div>
   )}
   {(p.copyright ?? c.enable) && (
-    <div class="post-copyright__notice">
+    <div class="post-copyright__notice tw:[#post_.post-copyright_&]:flex tw:[#post_.post-copyright_&]:justify-center tw:[#post_.post-copyright_&]:text-center">
       <div class="post-copyright-info">
         {p.reprint ? (
           t('copyrightReprint')

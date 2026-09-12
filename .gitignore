@@ -8,3 +8,6 @@ playwright-report/
 !.env.example
 .DS_Store
 artifacts/
+
+# Temporary pull-request comparison checkout
+.visual-baseline/

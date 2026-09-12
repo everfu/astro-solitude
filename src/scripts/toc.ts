@@ -97,7 +97,7 @@ export function initToc() {
     if (active === current.link) return;
     active = current.link;
     panel
-      .querySelectorAll('.active')
+      .querySelectorAll<HTMLElement>('.active')
       .forEach((el) => el.classList.remove('active'));
     links.forEach((link) => link.removeAttribute('aria-current'));
     active.classList.add('active');
@@ -150,7 +150,11 @@ export function initToc() {
     update();
   });
   toggles.forEach((button) => lifecycle.listen(button, 'click', open));
-  lifecycle.listen(panel.querySelector('.toc-close'), 'click', () => close());
+  lifecycle.listen(
+    panel.querySelector<HTMLElement>('.toc-close'),
+    'click',
+    () => close(),
+  );
   lifecycle.listen(mask, 'click', () => close());
   lifecycle.listen(compact, 'change', syncLayout);
   lifecycle.add(() => {

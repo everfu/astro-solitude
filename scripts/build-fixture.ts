@@ -19,6 +19,7 @@ for (const variant of [
     'scripts',
     'astro.config.mjs',
     'tsconfig.json',
+    'tsconfig.scripts.json',
     'package.json',
   ])
     await fs.cp(file, path.join(target, file), { recursive: true });

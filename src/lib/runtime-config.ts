@@ -4,21 +4,25 @@ import links from '../data/links.json';
 export function runtimeConfig(
   posts: Post[],
   pages: Page[],
-  page: Record<string, any>,
+  page: { right_menu?: boolean; type?: string },
 ) {
   const total = links.links.reduce((n, g) => n + g.link_list.length, 0);
   const right =
     cfg.right_menu.enable &&
     page.right_menu !== false &&
-    !cfg.right_menu.exclude.includes(page.type);
-  const labels = (keys: Record<string, string>) =>
-    Object.fromEntries(Object.entries(keys).map(([k, v]) => [k, t(v)]));
+    !cfg.right_menu.exclude.includes(page.type || '');
+  const labels = <K extends string>(
+    keys: Record<K, string>,
+  ): Record<K, string> =>
+    Object.fromEntries(
+      Object.entries<string>(keys).map(([k, v]) => [k, t(v)]),
+    ) as Record<K, string>;
   return {
     ...cfg,
     root: config.base,
     runtime: cfg.aside.siteinfo.runtimeenable
       ? cfg.aside.siteinfo.runtime
-      : false,
+      : (false as const),
     localsearch: {
       preload: cfg.search.local.preload,
       path: url(cfg.search.local.CDN || '/search.xml'),
@@ -51,13 +55,17 @@ export function runtimeConfig(
       }),
     },
     feature_modules: {
-      search: cfg.search.enable ? cfg.search.type : false,
+      search: (cfg.search.enable
+        ? cfg.search.type
+        : false) as import('../scripts/types').SearchProvider,
       friend_links: total > 0,
       keyboard: cfg.keyboard.enable,
       music: cfg.capsule.enable || cfg.music.enable,
       right_menu: right,
       translate: cfg.translate.enable,
-      covercolor: cfg.post.covercolor.enable ? cfg.post.covercolor.mode : false,
+      covercolor: (cfg.post.covercolor.enable
+        ? cfg.post.covercolor.mode
+        : false) as import('../scripts/types').CoverColorProvider,
     },
     lang: {
       ui: labels({
@@ -174,7 +182,7 @@ export function runtimeConfig(
           ...cfg.right_menu,
           ctrlOriginalMenu: cfg.right_menu.ctrlOriginalMenu
             ? t('rightMenuCtrlOriginal')
-            : false,
+            : (false as const),
           img_error: t('rightMenuImageError'),
           mode: labels({ dark: 'rightMenuDark', light: 'rightMenuLight' }),
           barrage: labels({
@@ -189,9 +197,9 @@ export function runtimeConfig(
                 forward: 'rightMenuMusicForward',
                 copyMusicName: 'rightMenuMusicCopy',
               })
-            : false,
+            : (false as const),
         }
-      : false,
-    translate: cfg.translate.enable ? cfg.translate : false,
+      : (false as const),
+    translate: cfg.translate.enable ? cfg.translate : (false as const),
   };
 }

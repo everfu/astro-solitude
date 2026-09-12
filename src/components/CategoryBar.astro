@@ -9,7 +9,10 @@ const { posts, home = false } = Astro.props;
 const categories = taxonomy(posts, 'categories');
 ---
 
-<div id="category-bar">
+<div
+  id="category-bar"
+  class="tw:relative tw:flex tw:items-center tw:justify-between tw:overflow-hidden tw:whitespace-nowrap"
+>
   <div class:list={['category-bar-items', { home }]} id="category-bar-items">
     <div
       class:list={['category-bar-item', { select: home }]}
@@ -17,7 +20,7 @@ const categories = taxonomy(posts, 'categories');
       data-default-order="0"
     >
       <a href={url('/')}>
-        <span class="category-bar-link-icon">
+        <span class="category-bar-link-icon tw:inline-flex tw:items-center tw:justify-center">
           <i class="solitude fas fa-star" />
         </span>
         <span>{t('home')}</span>
@@ -25,7 +28,7 @@ const categories = taxonomy(posts, 'categories');
     </div>
     <div class="category-bar-item" id="archives" data-default-order="1">
       <a href={url('/archives/')}>
-        <span class="category-bar-link-icon">
+        <span class="category-bar-link-icon tw:inline-flex tw:items-center tw:justify-center">
           <i class="solitude fas fa-book" />
         </span>
         <span>{t('allPosts')}</span>
@@ -41,7 +44,7 @@ const categories = taxonomy(posts, 'categories');
       </div>
     ))}
   </div>
-  <div class="category-bar-more-group">
+  <div class="category-bar-more-group tw:relative tw:flex tw:items-center tw:shrink-0">
     {categories.length > 5 && (
       <button
         class="category-bar-next"
@@ -53,7 +56,10 @@ const categories = taxonomy(posts, 'categories');
         <i class="solitude fas fa-angles-right" />
       </button>
     )}
-    <a class="category-bar-more" href={url('/categories/')}>
+    <a
+      class="category-bar-more tw:relative tw:inline-flex tw:items-center tw:justify-center tw:overflow-hidden"
+      href={url('/categories/')}
+    >
       {t('more')}
     </a>
   </div>

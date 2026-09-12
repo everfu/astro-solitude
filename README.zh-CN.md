@@ -2,6 +2,8 @@
 
 <div align="center">
 
+<img src="public/img/logo.png" width="120" height="120" alt="Astro Solitude 纸飞机标志" />
+
 # Astro Solitude
 
 一款简洁、优雅、功能丰富的 Astro 博客主题。

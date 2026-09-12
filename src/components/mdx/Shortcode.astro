@@ -2,15 +2,16 @@
 import { randomUUID } from 'node:crypto';
 import { getPosts, contentPath } from '../../lib/content';
 import { cfg, t, url } from '../../lib/site';
-export interface Props {
+import type { ShortcodeProps } from '../../lib/page-types';
+export interface Props extends ShortcodeProps {
   kind: string;
-  [key: string]: any;
 }
 const { kind, ...p } = Astro.props;
 const id = p.id ?? `solitude-${kind}-${randomUUID()}`;
 const src = p.url ?? p.src;
 const external =
-  typeof (p.url ?? p.link) === 'string' && /^https?:/.test(p.url ?? p.link);
+  typeof (p.url ?? p.link) === 'string' &&
+  /^https?:/.test(p.url ?? p.link ?? '');
 const type = p.type ?? 'default';
 const icons: Record<string, string> = {
   info: 'circle-info',
@@ -46,7 +47,7 @@ const seriesName =
   allSeriesPosts.find((post) => url(contentPath(post)) === Astro.url.pathname)
     ?.data.series[0];
 const seriesPosts = allSeriesPosts
-  .filter((post) => post.data.series.includes(seriesName))
+  .filter((post) => post.data.series.includes(seriesName ?? ''))
   .sort((a, b) => +a.data.date - +b.data.date);
 ---
 
@@ -386,7 +387,7 @@ const seriesPosts = allSeriesPosts
 {kind === 'timeline' && (
   <div class={`solitude-tag timeline tag-timeline ${p.color ?? ''}`}>
     {p.title && (
-      <div class="timeline-item headline">
+      <div class="timeline-item headline tw:[.site-data_.data-item_.data-item-link_&]:whitespace-nowrap tw:[.relatedPosts_&]:flex tw:[.relatedPosts_&]:items-center">
         <div class="timeline-item-title">
           <div class="item-circle">{p.title}</div>
         </div>
@@ -397,7 +398,7 @@ const seriesPosts = allSeriesPosts
 )}
 {kind === 'timenode' && (
   <div class="timeline-item solitude-tag timenode tag-timenode">
-    <div class="timeline-item-title meta">
+    <div class="timeline-item-title meta tw:[#bber_&]:flex tw:[#bber_&]:items-center">
       <div class="item-circle">
         <p>{p.time}</p>
       </div>
@@ -471,13 +472,13 @@ const seriesPosts = allSeriesPosts
 )}
 {kind === 'flink' && (
   <div class="solitude-tag flink tag-flink">
-    {(p.groups ?? []).map((g: any) => (
+    {(p.groups ?? []).map((g) => (
       <>
         {g.class_name && <div class="flink-name">{g.class_name}</div>}
         {g.class_desc && <div class="flink-desc">{g.class_desc}</div>}
         <div class="flink-list">
-          {g.link_list.map((item: any) => (
-            <div class="flink-list-item">
+          {g.link_list.map((item) => (
+            <div class="flink-list-item tw:[.article-container_&]:relative tw:[.article-container_&]:flex tw:[.article-container_&]:overflow-hidden">
               <a
                 class="cf-friends-link"
                 href={url(item.link)}

@@ -64,13 +64,11 @@ body[data-type="music"] .page .layout#content-inner {
 }
 
 #Music-page {
-  position: relative;
   width: 100%;
   max-width: var(--music-shell-max);
   height: calc(100vh - 170px);
   height: calc(100dvh - 170px);
   margin: auto;
-  overflow: hidden;
 }
 
 #Music-page solitude-meting {

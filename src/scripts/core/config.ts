@@ -21,18 +21,18 @@ const parseConfig = <T>(id: string, fallback: T): T => {
 };
 
 const promoteSerializedKey = (
-  record: object | undefined,
+  record: object | false | undefined,
   canonical: string,
   serialized: string,
 ) => {
   if (!record) return;
-  const values = record as Record<string, any>;
+  const values = record as Record<string, unknown>;
   if (!(serialized in values)) return;
   if (!(canonical in values)) values[canonical] = values[serialized];
   delete values[serialized];
 };
 
-const normalizeProviderKeys = (record: object | undefined) => {
+const normalizeProviderKeys = (record: object | false | undefined) => {
   promoteSerializedKey(record, 'appId', 'appid');
   promoteSerializedKey(record, 'apiKey', 'apikey');
   promoteSerializedKey(record, 'appKey', 'appkey');

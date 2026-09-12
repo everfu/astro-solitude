@@ -19,7 +19,7 @@ const data = posts.map((p) => ({
 ---
 
 <div
-  class="archive-page-shell"
+  class="archive-page-shell tw:overflow-hidden"
   id="archives-page"
   data-per-page={config.pagination}
   data-initial-year="all"
@@ -31,7 +31,7 @@ const data = posts.map((p) => ({
   data-label-next={t('nextPageShort')}
 >
   <section class="archive-page-section archive-page-section-toolbar">
-    <div class="archive-page-toolbar">
+    <div class="archive-page-toolbar tw:justify-between">
       <div
         class="archive-page-years"
         role="group"
@@ -53,7 +53,7 @@ const data = posts.map((p) => ({
     class="archive-page-section archive-page-section-list"
     aria-live="polite"
   >
-    <div class="archive-page-list" id="archives-page-list">
+    <div class="archive-page-list tw:grid" id="archives-page-list">
       {data.slice(0, config.pagination).map((p) => (
         <a class="archive-item" href={p.url}>
           <time>{p.dateLabel}</time> {p.title}
@@ -62,7 +62,11 @@ const data = posts.map((p) => ({
     </div>
   </section>
   <section class="archive-page-section archive-page-section-pagination">
-    <nav id="pagination" aria-label={t('paginationNavigation')}>
+    <nav
+      id="pagination"
+      aria-label={t('paginationNavigation')}
+      class="tw:[#post_&]:overflow-hidden"
+    >
       <div class="pagination" />
     </nav>
   </section>

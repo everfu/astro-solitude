@@ -1,5 +1,5 @@
-import { lifecycle } from './core/lifecycle';
 import type { NormalizedComment } from './comments';
+import { lifecycle } from './core/lifecycle';
 
 interface Bullet {
   element: HTMLAnchorElement;

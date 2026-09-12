@@ -51,7 +51,6 @@ span.tagsPageCount {
   border-radius: 8px;
   color: var(--efu-secondtext);
   line-height: 1;
-  text-align: center;
   min-width: 35px;
   display: inline-block;
   font-size: 1rem;
@@ -126,7 +125,6 @@ span.tagsPageCount {
 }
 
 .layout.layout--archive {
-  flex-direction: column;
   align-items: stretch;
   gap: 12px;
 }
@@ -134,12 +132,9 @@ span.tagsPageCount {
 .layout.layout--archive > .home-category-bar {
   width: 100%;
   max-width: 100%;
-  flex-shrink: 0;
 }
 
 .archive-layout-row {
-  display: flex;
-  align-items: flex-start;
   gap: 8px;
   width: 100%;
 }
@@ -152,7 +147,6 @@ span.tagsPageCount {
 }
 
 .archive-page-shell {
-  overflow: hidden;
   margin-top: 0;
   background: var(--efu-card-bg);
   border: var(--style-border);
@@ -193,7 +187,6 @@ span.tagsPageCount {
 }
 
 .archive-page-toolbar {
-  justify-content: space-between;
   gap: 16px;
 }
 
@@ -240,7 +233,6 @@ span.tagsPageCount {
 }
 
 .archive-page-list {
-  display: grid;
   gap: 0;
 }
 
@@ -641,25 +633,17 @@ span.tagsPageCount {
 }
 
 #body-wrap.error #error-wrap {
-  display: flex;
-  justify-content: center;
   margin: 0 1rem;
   width: 100%;
-  position: relative;
 }
 
 #body-wrap.error #error-wrap .error-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   margin: 0 1rem;
   height: 18rem;
   max-width: 800px;
   background: var(--efu-card-bg);
   transition: all 0.3s ease 0s;
   border: var(--style-border-always);
-  position: relative;
   width: 100%;
   box-shadow: none;
   border-radius: 12px;
@@ -695,7 +679,6 @@ span.tagsPageCount {
 #body-wrap.error #error-wrap .error-content .error-info {
   flex: 1 1 0;
   padding: 0.5rem;
-  text-align: center;
   font-size: 14px;
   font-family: PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
 }
@@ -748,8 +731,6 @@ span.tagsPageCount {
 }
 
 #body-wrap.error .aside-list {
-  display: flex;
-  flex-direction: row;
   flex-wrap: nowrap;
   margin: 1rem;
   max-width: 100%;
@@ -763,12 +744,8 @@ span.tagsPageCount {
 }
 
 #body-wrap.error .aside-list .aside-list-group {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   max-width: 800px;
   margin: 0 auto;
-  justify-content: space-between;
 }
 
 #body-wrap.error .aside-list .aside-list-item {
@@ -815,8 +792,6 @@ span.tagsPageCount {
 }
 
 div.console_recentcomments {
-  display: flex;
-  flex-wrap: wrap;
   gap: 8px;
   min-height: 100px;
   width: 100%;

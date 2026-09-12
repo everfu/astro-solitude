@@ -150,12 +150,12 @@ test('missing artwork resets only its own color and late failures cannot reset a
   await page.evaluate(() => {
     (document.querySelector('#post-cover') as HTMLImageElement).src =
       '/missing-cover.png';
-    (window as any).__pendingColor = window.Solitude.coverColor();
+    (window as any).__pendingColor = window.Solitude.coverColor!();
   });
   await page.evaluate(() => {
     (document.querySelector('#post-cover') as HTMLImageElement).src =
       '/color-fixture-blue.svg';
-    return window.Solitude.coverColor();
+    return window.Solitude.coverColor!();
   });
   const current = await mainColor(page);
   release();
@@ -166,7 +166,7 @@ test('missing artwork resets only its own color and late failures cannot reset a
     (
       document.querySelector('#nav-music .aplayer-pic') as HTMLElement
     ).style.backgroundImage = '';
-    return window.Solitude.coverColor(true);
+    return window.Solitude.coverColor!(true);
   });
   await expect.poll(() => musicColor(page)).toBe('');
   expect(await mainColor(page)).toBe(current);
@@ -190,7 +190,7 @@ test('cross-origin artwork uses a blurred cover and clears the fallback after sw
     (
       document.querySelector('#nav-music .aplayer-pic') as HTMLElement
     ).style.backgroundImage = 'url("https://artwork.invalid/cover.svg")';
-    return window.Solitude.coverColor(true);
+    return window.Solitude.coverColor!(true);
   });
   await expect(page.locator('#nav-music')).toHaveAttribute(
     'data-cover-color-fallback',
@@ -211,7 +211,7 @@ test('cross-origin artwork uses a blurred cover and clears the fallback after sw
     (
       document.querySelector('#nav-music .aplayer-pic') as HTMLElement
     ).style.backgroundImage = 'url("/color-fixture-blue.svg")';
-    return window.Solitude.coverColor(true);
+    return window.Solitude.coverColor!(true);
   });
   await expect.poll(() => musicColor(page)).toBe('#2060a0');
   await expect(page.locator('#nav-music')).not.toHaveAttribute(

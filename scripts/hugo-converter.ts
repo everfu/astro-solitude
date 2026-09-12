@@ -1,3 +1,28 @@
+interface HugoMenu {
+  name: string;
+  parent?: string;
+  identifier?: string;
+  weight?: number;
+  pageRef?: string;
+  url?: string;
+  params?: Record<string, unknown>;
+}
+interface HugoConfig {
+  baseURL?: string;
+  title?: string;
+  locale?: string;
+  defaultContentLanguage?: string;
+  timeZone?: string;
+  hasCJKLanguage?: boolean;
+  params?: {
+    solitude?: Record<string, unknown>;
+    description?: string;
+    author?: string | { name: string };
+    [key: string]: unknown;
+  };
+  menus?: { main?: HugoMenu[] };
+  pagination?: { pagerSize?: number };
+}
 import { parse as yamlParse, stringify as yamlStringify } from 'yaml';
 import sourceParams from '../src/lib/shortcode-params.json';
 import map from '../src/lib/shortcode-map.json';
@@ -67,15 +92,15 @@ const positional: Record<string, string[]> = {
 export function frontmatter(source: string) {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
   if (!match)
-    return { data: {} as Record<string, any>, body: source, lines: 0 };
+    return { data: {} as Record<string, unknown>, body: source, lines: 0 };
   return {
-    data: yamlParse(match[1]) ?? {},
+    data: (yamlParse(match[1]) ?? {}) as Record<string, unknown>,
     body: source.slice(match[0].length),
     lines: match[0].split('\n').length - 1,
   };
 }
 function attributes(source: string, name: string) {
-  const attrs: Record<string, any> = {};
+  const attrs: Record<string, unknown> = {};
   let position = 0;
   const tokens =
     source.match(
@@ -87,10 +112,11 @@ function attributes(source: string, name: string) {
       equal > 0
         ? token.slice(0, equal)
         : (positional[name]?.[position++] ?? `__unknown${position}`);
-    let value: any = equal > 0 ? token.slice(equal + 1) : token;
+    let value: string | number | boolean =
+      equal > 0 ? token.slice(equal + 1) : token;
     if (/^"/.test(value)) {
       try {
-        value = JSON.parse(value);
+        value = JSON.parse(value) as string;
       } catch {
         value = value.slice(1, -1);
       }
@@ -292,9 +318,9 @@ export function convertDocument(source: string, file: string): Converted {
     issues,
   };
 }
-export function convertConfig(source: Record<string, any>) {
+export function convertConfig(source: HugoConfig) {
   const issues: Issue[] = [];
-  const clean = (value: any): any =>
+  const clean = (value: unknown): unknown =>
     Array.isArray(value)
       ? value.map(clean)
       : value && typeof value === 'object'
@@ -304,8 +330,12 @@ export function convertConfig(source: Record<string, any>) {
               .map(([k, v]) => [k, clean(v)]),
           )
         : value;
-  const theme = clean(source.params?.solitude ?? {});
-  function compare(input: any, reference: any, path = 'theme') {
+  const theme = clean(source.params?.solitude ?? {}) as Record<string, unknown>;
+  function compare(
+    input: object,
+    reference: Record<string, unknown>,
+    path = 'theme',
+  ) {
     for (const [key, value] of Object.entries(input)) {
       if (key === '_merge') continue;
       if (!(key in reference)) {
@@ -324,7 +354,11 @@ export function convertConfig(source: Record<string, any>) {
         typeof reference[key] === 'object' &&
         Object.keys(reference[key]).length
       )
-        compare(value, reference[key], `${path}.${key}`);
+        compare(
+          value,
+          reference[key] as Record<string, unknown>,
+          `${path}.${key}`,
+        );
     }
   }
   compare(theme, defaults);
@@ -337,10 +371,10 @@ export function convertConfig(source: Record<string, any>) {
       });
   const original = source.menus?.main ?? [];
   const menus = original
-    .filter((item: any) => !item.parent)
-    .sort((a: any, b: any) => (a.weight ?? 0) - (b.weight ?? 0))
-    .map((item: any) => {
-      const convert = (x: any) => ({
+    .filter((item: HugoMenu) => !item.parent)
+    .sort((a: HugoMenu, b: HugoMenu) => (a.weight ?? 0) - (b.weight ?? 0))
+    .map((item: HugoMenu) => {
+      const convert = (x: HugoMenu) => ({
         name: x.name,
         ...(x.pageRef || x.url
           ? { url: x.pageRef ? x.pageRef.replace(/\/$/, '') + '/' : x.url }
@@ -349,9 +383,10 @@ export function convertConfig(source: Record<string, any>) {
       });
       const children = original
         .filter(
-          (x: any) => x.parent && x.parent === (item.identifier || item.name),
+          (x: HugoMenu) =>
+            x.parent && x.parent === (item.identifier || item.name),
         )
-        .sort((a: any, b: any) => (a.weight ?? 0) - (b.weight ?? 0))
+        .sort((a: HugoMenu, b: HugoMenu) => (a.weight ?? 0) - (b.weight ?? 0))
         .map(convert);
       return { ...convert(item), ...(children.length ? { children } : {}) };
     });

@@ -33,8 +33,9 @@ test('mobile recommendation switches its cover and opens the selected article', 
     'ready',
   );
   await page.locator('.home-center-indicator').nth(1).click();
-  const selected = page.locator('.home-center-banner-item.active');
-  await expect(selected).toHaveAttribute('data-index', '1');
+  // Keep the click target stable while smooth scrolling updates .active.
+  const selected = page.locator('.home-center-banner-item[data-index="1"]');
+  await expect(selected).toHaveClass(/active/);
   const destination = await selected.getAttribute('data-link');
   await expect(page.locator('.home-center-title-link')).toHaveAttribute(
     'href',

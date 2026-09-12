@@ -3,12 +3,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 // Astro's directory output wraps extension-bearing page routes in index.html.
 // Flatten these generated files so static hosts serve the original Hugo URLs.
-export default function outputLayout() {
+export default function outputLayout(): import('astro').AstroIntegration {
   return {
     name: 'solitude-output-layout',
     hooks: {
       'astro:build:done': async ({ dir }) => {
-        async function visit(directory) {
+        async function visit(directory: string): Promise<void> {
           for (const entry of await fs.readdir(directory, {
             withFileTypes: true,
           })) {

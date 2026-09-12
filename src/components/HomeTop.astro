@@ -9,8 +9,8 @@ const normalize = (s: string) => s.replace(/\/$/, '').replace(/\.html$/, '');
 const hidden = new Set(
   posts.filter((p) => !p.data.home).map((p) => normalize(contentPath(p))),
 );
-const items: any[] = cfg.hometop.recommendList.filter(
-  (p: any) => p.enable !== false && !hidden.has(normalize(p.url)),
+const items = cfg.hometop.recommendList.filter(
+  (p) => p.enable !== false && !hidden.has(normalize(p.url)),
 );
 for (const post of homePosts(posts).sort(
   (a, b) => +b.data.date - +a.data.date,
@@ -33,9 +33,12 @@ const first = items[0];
     id="home_center"
     style="--current-theme:var(--efu-main);--current-theme-op:color-mix(in srgb,var(--efu-main) 14%,transparent);--current-theme-op-deep:color-mix(in srgb,var(--efu-main) 87%,transparent)"
   >
-    <div class="home-center-content">
-      <div class="home-center-left">
-        <div class="home-center-banner" data-mobile-loop="false">
+    <div class="home-center-content tw:flex tw:overflow-hidden">
+      <div class="home-center-left tw:relative tw:overflow-hidden">
+        <div
+          class="home-center-banner tw:relative tw:overflow-hidden"
+          data-mobile-loop="false"
+        >
           {items.slice(0, 5).map((item, i) => (
             <div
               class:list={[
@@ -51,24 +54,24 @@ const first = items[0];
               data-label={item.label}
               data-color={item.color}
             >
-              <div class="home-center-cover">
+              <div class="home-center-cover tw:shrink-0 tw:flex tw:items-center tw:justify-center">
                 <img
-                  class="home-center-cover-img nolazyload"
+                  class="home-center-cover-img nolazyload tw:[.home-center-banner-item.has-banner-cover_&]:object-cover"
                   src={url(item.cover ?? cfg.post.default.cover[0])}
                   alt={item.title}
                   loading={i === 0 ? 'eager' : 'lazy'}
                   data-solitude-fallback={url(cfg.post.default.cover[0])}
                 />
               </div>
-              <div class="home-center-mask" />
+              <div class="home-center-mask tw:absolute" />
             </div>
           ))}
         </div>
-        <div class="home-center-title">
+        <div class="home-center-title tw:absolute tw:text-left">
           <a class="home-center-title-link" href={url(first.url)}>
             {first.title}
           </a>
-          <div class="home-center-title-tag">
+          <div class="home-center-title-tag tw:flex tw:items-center">
             <i class="solitude fas fa-star" />
             <span>{first.label}</span>
           </div>
@@ -89,15 +92,18 @@ const first = items[0];
         </div>
       </div>
       {items.length > 1 && (
-        <div class="home-center-right">
-          <div class="home-center-list">
+        <div class="home-center-right tw:flex tw:shrink-0 tw:flex-col">
+          <div class="home-center-list tw:flex tw:flex-col">
             {items.slice(0, 5).map((item, i) => (
               <div
-                class:list={['home-center-item', { active: i === 0 }]}
+                class:list={[
+                  'home-center-item tw:flex tw:items-center tw:cursor-pointer',
+                  { active: i === 0 },
+                ]}
                 data-index={i}
                 aria-current={i === 0 ? 'true' : 'false'}
               >
-                <div class="home-center-item-icon">
+                <div class="home-center-item-icon tw:relative tw:flex tw:items-center tw:justify-center tw:shrink-0 tw:overflow-hidden">
                   <img
                     class="nolazyload"
                     src={url(item.cover ?? cfg.post.default.cover[0])}
@@ -105,7 +111,7 @@ const first = items[0];
                     loading="lazy"
                   />
                 </div>
-                <div class="home-center-item-title">
+                <div class="home-center-item-title tw:overflow-hidden">
                   <a href={url(item.url)}>{item.title}</a>
                 </div>
               </div>

@@ -1,4 +1,6 @@
-export const initPreloader = (api: Record<string, any>) => {
+export const initPreloader = (
+  api: Pick<import('../api-types').SolitudeAPI, 'endLoading'>,
+) => {
   if (document.documentElement.dataset.solitudePreloader === 'true') return;
   document.documentElement.dataset.solitudePreloader = 'true';
 

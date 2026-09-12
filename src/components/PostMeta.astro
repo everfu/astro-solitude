@@ -9,16 +9,22 @@ const p = post.data;
 const count = wordCount(post.body ?? '');
 ---
 
-<div id="post-info">
-  <div id="post-firstinfo">
-    <div class="meta-firstline">
-      <a class="post-meta-original">
+<div
+  id="post-info"
+  class="tw:[.post_&]:absolute tw:[.post_&]:flex tw:[.post_&]:flex-col tw:[.post_&]:items-start tw:[.post_&]:justify-center"
+>
+  <div
+    id="post-firstinfo"
+    class="tw:[.post_#post-info_&]:flex tw:[.post_#post-info_&]:text-left tw:[.post_#post-info_&]:whitespace-nowrap"
+  >
+    <div class="meta-firstline tw:[.post_#post-info_#post-firstinfo_&]:flex tw:[.post_#post-info_#post-firstinfo_&]:items-center">
+      <a class="post-meta-original tw:[.post_#post-info_#post-firstinfo_.meta-firstline_&]:flex">
         {p.reprint ? t('reprint') : t('original')}
       </a>
       {p.categories[0] && (
-        <span class="post-meta-categories">
+        <span class="post-meta-categories tw:[.post_#post-info_#post-firstinfo_.meta-firstline_span.post-meta-categories_a&]:flex">
           <a
-            class="post-meta-categories"
+            class="post-meta-categories tw:[.post_#post-info_#post-firstinfo_.meta-firstline_span.post-meta-categories_a&]:flex"
             href={url(termPath('categories', p.categories[0]))}
           >
             {p.categories[0]}
@@ -26,10 +32,13 @@ const count = wordCount(post.body ?? '');
         </span>
       )}
       <div class="tag_share">
-        <div class="post-meta__tag-list">
+        <div class="post-meta__tag-list tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_&]:flex tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_&]:flex-row tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_&]:items-center tw:[#post_.post-tools-right_.tag\_share_&]:flex tw:[#post_.post-tools-right_.tag\_share_&]:flex-wrap tw:[#post_.post-tools-right_.tag\_share_&]:flex-row">
           {p.tags.map((tag) => (
-            <a class="post-meta__tags" href={url(termPath('tags', tag))}>
-              <span class="tags-name tags-punctuation">
+            <a
+              class="post-meta__tags tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_.post-meta\_\_tag-list_&]:flex tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_.post-meta\_\_tag-list_&]:flex-row tw:[.post_#post-info_#post-firstinfo_.meta-firstline_.tag\_share_.post-meta\_\_tag-list_&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_&]:flex tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_&]:whitespace-nowrap"
+              href={url(termPath('tags', tag))}
+            >
+              <span class="tags-name tags-punctuation tw:[span&]:flex tw:[span&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:flex tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:items-center">
                 <i class="solitude fas fa-hashtag" />
                 {tag}
               </span>
@@ -39,9 +48,11 @@ const count = wordCount(post.body ?? '');
       </div>
     </div>
   </div>
-  <h1 class="post-title">{p.title}</h1>
-  <div id="post-meta">
-    <div class="meta-secondline">
+  <h1 class="post-title tw:[.post_#post-info_&]:overflow-hidden tw:[.post_#post-info_&]:text-left">
+    {p.title}
+  </h1>
+  <div id="post-meta" class="tw:[.post_#post-info_&]:flex">
+    <div class="meta-secondline tw:[.post_#post-info_#post-meta_&]:flex tw:[.post_#post-info_#post-meta_&]:flex-row tw:[.post_#post-info_#post-meta_&]:flex-wrap tw:[.post_#post-info_#post-meta_&]:items-center tw:[.post_#post-info_#post-meta_&]:justify-start">
       {cfg.post.meta.wordcount && (
         <span class="post-meta-wordcount">
           <i class="post-meta-icon solitude fas fa-file-word" />
