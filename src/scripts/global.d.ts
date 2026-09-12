@@ -20,6 +20,11 @@ declare global {
     Fancybox?: {
       close(): void;
       bind(selector: string, options: Record<string, unknown>): void;
+      bind(
+        container: HTMLElement,
+        selector: string,
+        options: Record<string, unknown>,
+      ): void;
     };
     __solitudeShortcodeRuntime?: {
       init(): Promise<PromiseSettledResult<unknown>[]>;

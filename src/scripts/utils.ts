@@ -157,7 +157,8 @@ export const utilsFn = {
         }
       });
       if (!window.fancyboxRun) {
-        window.Fancybox!.bind('[data-fancybox]', {
+        // Astro replaces the body on navigation; keep delegation on the stable root.
+        window.Fancybox!.bind(document.documentElement, '[data-fancybox]', {
           Hash: false,
           Carousel: {
             transition: 'slide',

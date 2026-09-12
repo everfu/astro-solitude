@@ -28,6 +28,7 @@ export default defineSolitudeConfig({
     },
   ],
   theme: {
+    lightbox: 'fancybox',
     nav: {
       group: {
         Project: [
