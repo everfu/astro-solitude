@@ -150,7 +150,7 @@
 
 .home-center-content {
   width: 100%;
-  height: 320px;
+  height: var(--home-center-height, 320px);
   background: var(--efu-card-bg);
   border: var(--style-border-always);
   border-radius: var(--radius);

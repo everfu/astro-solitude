@@ -51,6 +51,7 @@ export default defineSolitudeConfig({
       post: { noSticky: 'about', Sticky: 'newestPost,allInfo' },
       page: { noSticky: 'about', Sticky: 'newestPost,allInfo' },
       my_card: {
+        cover: '/img/brand/profile-portrait.webp',
         description: 'An expressive Astro theme for your personal blog.',
         content: 'Let your content take center stage.',
         witty_words: ['Capture life in words', 'Create something with code'],
@@ -60,6 +61,7 @@ export default defineSolitudeConfig({
             url: 'https://github.com/everfu/astro-solitude',
             icon: 'simple-icons:github',
           },
+          { name: 'o@efu.me', url: 'mailto:o@efu.me', icon: 'lucide:mail' },
         ],
       },
     },

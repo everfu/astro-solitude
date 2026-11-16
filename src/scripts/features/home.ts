@@ -343,6 +343,12 @@ export const initHomeCenter = () => {
     schedulePlayback();
   });
   const alignSlides = () => {
+    const profileHeight = profileCard?.getBoundingClientRect().height;
+    if (profileHeight) {
+      container.style.setProperty('--home-center-height', `${profileHeight}px`);
+    } else {
+      container.style.removeProperty('--home-center-height');
+    }
     cancelAnimationFrame(resizeFrame);
     cancelAnimationFrame(scrollFrame);
     stopTransition();
@@ -355,6 +361,7 @@ export const initHomeCenter = () => {
   lifecycle.listen(mobile, 'change', alignSlides);
   const resizeObserver = new ResizeObserver(alignSlides);
   resizeObserver.observe(banner);
+  if (profileCard) resizeObserver.observe(profileCard);
   const intersectionObserver = new IntersectionObserver(([entry]) => {
     inView = entry.isIntersecting;
     schedulePlayback();

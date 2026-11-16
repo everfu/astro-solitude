@@ -38,6 +38,7 @@
       "Sticky": "newestPost,allInfo"
     },
     "my_card": {
+      "cover": null,
       "author": {
         "img": "/img/logo.png",
         "emoji": null,
