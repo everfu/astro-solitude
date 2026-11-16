@@ -1,4 +1,3 @@
-import { Solitude } from '@/scripts/core/api';
 import { lifecycle } from '@/scripts/core/lifecycle';
 export const showTodayCard = () => {
   const el = document.getElementById('todayCard');
@@ -9,12 +8,10 @@ export const showTodayCard = () => {
 export const initHomeCenter = () => {
   const container = document.getElementById('home_center');
   if (!container || container.dataset.initialized === 'true') return;
-  container.dataset.initialized = 'true';
   const banners = [
-    ...container.querySelectorAll<HTMLElement>('.home-center-banner-item'),
-  ];
-  const items = [
-    ...container.querySelectorAll<HTMLElement>('.home-center-item'),
+    ...container.querySelectorAll<HTMLAnchorElement>(
+      '.home-center-banner-item',
+    ),
   ];
   const indicators = [
     ...container.querySelectorAll<HTMLElement>('.home-center-indicator'),
@@ -23,17 +20,26 @@ export const initHomeCenter = () => {
   const titleLink = container.querySelector<HTMLAnchorElement>(
     '.home-center-title-link',
   );
-  const titleTag = container.querySelector<HTMLElement>(
-    '.home-center-title-tag span',
+  const description = container.querySelector<HTMLElement>(
+    '.home-center-description',
   );
   const categoryBar = document.getElementById('category-bar');
   const profileCard = document.querySelector<HTMLElement>(
-    '#aside-content .card-info',
+    '#aside-content .card-profile',
   );
-  if (!banner || !titleLink || !titleTag) return;
+  if (!banner || !titleLink || !banners.length) return;
+  container.dataset.initialized = 'true';
+  const { signal } = lifecycle;
+  const mobile = window.matchMedia('(max-width: 768px)');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let activeIndex = 0;
   let scrollFrame = 0;
-  lifecycle.add(() => cancelAnimationFrame(scrollFrame));
+  let resizeFrame = 0;
+  let autoplayTimer = 0;
+  let inView = false;
+  let hovered =
+    matchMedia('(hover: hover)').matches && container.matches(':hover');
+  let animations: Animation[] = [];
   const getCachedColor = (src: string) => {
     try {
       const cache = JSON.parse(localStorage.getItem('Solitude') || '{}') || {};
@@ -137,9 +143,6 @@ export const initHomeCenter = () => {
     banners[index].style.setProperty('--home-center-theme', color);
     banners[index].style.setProperty('--home-center-theme-op', colorOp);
     banners[index].style.setProperty('--home-center-theme-op-deep', colorDeep);
-    items[index]?.style.setProperty('--item-theme', color);
-    items[index]?.style.setProperty('--item-theme-op', colorOp);
-    items[index]?.style.setProperty('--item-theme-op-deep', colorDeep);
     if (activeIndex === index) select(index);
   };
   const extractItemColor = (index: number, sourceImage: HTMLImageElement) => {
@@ -154,7 +157,7 @@ export const initHomeCenter = () => {
     const image = new Image();
     image.crossOrigin = 'Anonymous';
     image.onload = () => {
-      if (!container.isConnected) return;
+      if (signal.aborted || !container.isConnected) return;
       try {
         const dominantColor = window.ColorThief?.getColorSync(image);
         const rgb = dominantColor
@@ -171,32 +174,9 @@ export const initHomeCenter = () => {
     image.onerror = () => {};
     image.src = src;
   };
-  const navigate = (link: string, event?: MouseEvent | KeyboardEvent) => {
-    if (!link) return;
-    if (event?.metaKey || event?.ctrlKey) {
-      window.open(link, '_blank');
-    } else {
-      Solitude.navigate(link);
-    }
-  };
   const select = (index: number) => {
-    if (!banners[index]) return;
-    activeIndex = index;
-    banners.forEach((banner, bannerIndex) => {
-      const isActive = bannerIndex === index;
-      banner.classList.toggle('active', isActive);
-      banner.setAttribute('aria-hidden', String(!isActive));
-      banner.tabIndex = isActive ? 0 : -1;
-    });
-    items.forEach((item, itemIndex) => {
-      const isActive = itemIndex === index;
-      item.classList.toggle('active', isActive);
-      item.setAttribute('aria-current', String(isActive));
-    });
-    indicators.forEach((indicator, indicatorIndex) =>
-      indicator.classList.toggle('active', indicatorIndex === index),
-    );
     const selected = banners[index];
+    if (!selected) return;
     const selectedStyle = getComputedStyle(selected);
     const color = selectedStyle.getPropertyValue('--home-center-theme').trim();
     const colorOp = selectedStyle
@@ -205,9 +185,24 @@ export const initHomeCenter = () => {
     const colorDeep = selectedStyle
       .getPropertyValue('--home-center-theme-op-deep')
       .trim();
+    activeIndex = index;
+    banners.forEach((banner, bannerIndex) => {
+      const isActive = bannerIndex === index;
+      banner.classList.toggle('active', isActive);
+      banner.setAttribute('aria-hidden', String(!isActive));
+      banner.tabIndex = isActive ? 0 : -1;
+    });
+    indicators.forEach((indicator, indicatorIndex) => {
+      const isActive = indicatorIndex === index;
+      indicator.classList.toggle('active', isActive);
+      indicator.setAttribute('aria-current', String(isActive));
+    });
     titleLink.textContent = selected.dataset.title || '';
-    titleLink.href = selected.dataset.link || '';
-    titleTag.textContent = selected.dataset.label || '';
+    titleLink.href = selected.href;
+    if (description) {
+      description.textContent = selected.dataset.description || '';
+      description.hidden = !description.textContent;
+    }
     container.style.setProperty('--current-theme', color);
     container.style.setProperty('--current-theme-op', colorOp);
     container.style.setProperty('--current-theme-op-deep', colorDeep);
@@ -223,48 +218,156 @@ export const initHomeCenter = () => {
         profileTextColor,
       );
     }
+    const nextImage = banners[
+      (index + 1) % banners.length
+    ].querySelector<HTMLImageElement>('.home-center-cover-img');
+    if (nextImage) nextImage.loading = 'eager';
   };
-  items.forEach((item, index) => {
-    lifecycle.listen(item, 'mouseenter', () => select(index));
-    lifecycle.listen(item, 'focusin', () => select(index));
-  });
-  banners.forEach((item, index) => {
-    let pointerType = '';
-    lifecycle.listen(
-      item,
-      'pointerdown',
-      (event) => (pointerType = event.pointerType),
-      true,
-    );
-    lifecycle.listen(item, 'click', (event) => {
-      if (pointerType === 'touch' && window.innerWidth <= 768) {
-        event.preventDefault();
-        select(index);
-      } else {
-        navigate(item.dataset.link || '', event);
-      }
-      pointerType = '';
-    });
-    lifecycle.listen(item, 'keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        navigate(item.dataset.link || '', event);
-      }
-    });
-  });
+  const stopTransition = () => {
+    animations.forEach((animation) => animation.cancel());
+    animations = [];
+    banners.forEach((item) => item.classList.remove('is-leaving'));
+  };
+  const schedulePlayback = () => {
+    window.clearTimeout(autoplayTimer);
+    if (
+      signal.aborted ||
+      banners.length < 2 ||
+      mobile.matches ||
+      reducedMotion.matches ||
+      document.hidden ||
+      !inView ||
+      hovered ||
+      container.contains(document.activeElement)
+    )
+      return;
+    autoplayTimer = window.setTimeout(() => {
+      changeSlide((activeIndex + 1) % banners.length, 1);
+    }, 5000);
+  };
+  const changeSlide = (
+    index: number,
+    direction = index > activeIndex ? 1 : -1,
+  ) => {
+    const previous = banners[activeIndex];
+    const selected = banners[index];
+    if (!selected) return;
+    const mobileLeft = mobile.matches ? banner.clientWidth * index : 0;
+    stopTransition();
+    select(index);
+    if (mobile.matches) {
+      banner.scrollTo({
+        left: mobileLeft,
+        behavior: reducedMotion.matches ? 'instant' : 'smooth',
+      });
+    } else if (previous !== selected && !reducedMotion.matches) {
+      previous.classList.add('is-leaving');
+      const options = {
+        duration: 350,
+        easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
+      };
+      const outgoing = previous.animate(
+        [
+          { transform: 'translateX(0)' },
+          { transform: `translateX(${-direction * 100}%)` },
+        ],
+        options,
+      );
+      const incoming = selected.animate(
+        [
+          { transform: `translateX(${direction * 100}%)` },
+          { transform: 'translateX(0)' },
+        ],
+        options,
+      );
+      animations = [outgoing, incoming];
+      incoming.onfinish = stopTransition;
+    }
+    schedulePlayback();
+  };
   indicators.forEach((indicator, index) => {
     lifecycle.listen(indicator, 'click', (event) => {
       event.preventDefault();
-      select(index);
-      banner.scrollTo({ left: banner.clientWidth * index, behavior: 'smooth' });
+      changeSlide(index);
     });
   });
+  lifecycle.listen(container, 'keydown', (event) => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      const direction = event.key === 'ArrowRight' ? 1 : -1;
+      const focusedBanner = event.target === banners[activeIndex];
+      const index = (activeIndex + direction + banners.length) % banners.length;
+      changeSlide(index, direction);
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.matches('.home-center-indicator')
+      ) {
+        indicators[index]?.focus();
+      } else if (focusedBanner) {
+        banners[index].focus({ preventScroll: true });
+      }
+    } else if (event.key === ' ' && event.target instanceof HTMLAnchorElement) {
+      event.preventDefault();
+      event.target.click();
+    }
+  });
   lifecycle.listen(banner, 'scroll', () => {
+    if (!mobile.matches) return;
     cancelAnimationFrame(scrollFrame);
     scrollFrame = requestAnimationFrame(() => {
-      if (window.innerWidth > 768 || !banner.clientWidth) return;
+      if (!mobile.matches || !banner.clientWidth) return;
       select(Math.round(banner.scrollLeft / banner.clientWidth));
     });
+  });
+  lifecycle.listen(container, 'pointerenter', (event) => {
+    if (event.pointerType === 'touch') return;
+    hovered = true;
+    schedulePlayback();
+  });
+  lifecycle.listen(container, 'pointerleave', () => {
+    hovered = false;
+    schedulePlayback();
+  });
+  lifecycle.listen(container, 'focusin', schedulePlayback);
+  lifecycle.listen(container, 'focusout', (event) => {
+    if (
+      event.relatedTarget instanceof Node &&
+      container.contains(event.relatedTarget)
+    )
+      return;
+    schedulePlayback();
+  });
+  lifecycle.listen(document, 'visibilitychange', schedulePlayback);
+  lifecycle.listen(reducedMotion, 'change', () => {
+    stopTransition();
+    schedulePlayback();
+  });
+  const alignSlides = () => {
+    cancelAnimationFrame(resizeFrame);
+    cancelAnimationFrame(scrollFrame);
+    stopTransition();
+    resizeFrame = requestAnimationFrame(() => {
+      const left = mobile.matches ? banner.clientWidth * activeIndex : 0;
+      banner.scrollTo({ left, behavior: 'instant' });
+      schedulePlayback();
+    });
+  };
+  lifecycle.listen(mobile, 'change', alignSlides);
+  const resizeObserver = new ResizeObserver(alignSlides);
+  resizeObserver.observe(banner);
+  const intersectionObserver = new IntersectionObserver(([entry]) => {
+    inView = entry.isIntersecting;
+    schedulePlayback();
+  });
+  intersectionObserver.observe(container);
+  lifecycle.add(() => {
+    window.clearTimeout(autoplayTimer);
+    cancelAnimationFrame(scrollFrame);
+    cancelAnimationFrame(resizeFrame);
+    stopTransition();
+    resizeObserver.disconnect();
+    intersectionObserver.disconnect();
+    delete container.dataset.initialized;
   });
   select(0);
   banners.forEach((item, index) => {

@@ -1,10 +1,5 @@
 /* Unlayered third-party compatibility overrides. Keep this file intentionally small. */
 
-/* Keep SVG artwork centered inside fixed-size icon controls. */
-.card-info .bottom-group .social-icons .social-icon .solitude-icon {
-  display: flex;
-}
-
 /* Keep the progress arrow centered across the full button, including its long state. */
 #nav-totop .totopbtn .solitude-icon {
   width: 1em;

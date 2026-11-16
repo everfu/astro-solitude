@@ -1,8 +1,9 @@
 ---
 import Icon from '@/components/Icon.astro';
-import { cfg, config, t, url, dateLabel, isoDate } from '@/lib/site';
+import { cfg, t, url, dateLabel, isoDate } from '@/lib/site';
 import TocItems, { type Heading } from '@/components/navigation/TocItems.astro';
 import AsideGroup from '@/components/layout/AsideGroup.astro';
+import ProfileCard from '@/components/layout/ProfileCard.astro';
 import {
   homePosts,
   contentPath,
@@ -26,7 +27,6 @@ const {
 } = Astro.props;
 const scope = home ? cfg.aside.home : post ? cfg.aside.post : cfg.aside.page;
 const groups = [scope.noSticky.split(','), scope.Sticky.split(',')];
-const card = cfg.aside.my_card;
 const recent = (home ? homePosts(posts) : posts)
   .slice()
   .sort((a, b) => +b.data.date - +a.data.date)
@@ -71,70 +71,7 @@ for (const heading of headings) {
           )}
         {names.map((name) =>
           name.trim() === 'about' ? (
-            <div class="card-widget card-info tw:relative tw:[#aside-content_&]:overflow-hidden">
-              <div class="card-content tw:[#aside-content_.card-widget_&]:relative tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:flex-col tw:[.author-content-item_&]:absolute tw:[.author-content-item_&]:flex tw:[.author-content-item_&]:flex-col">
-                <div class="card-info-avatar is-center">
-                  <div class="top-group">
-                    <div
-                      class="sayhi"
-                      id="sayhi"
-                      data-solitude-action="changeWittyWord"
-                    />
-                  </div>
-                </div>
-                <div class="avatar tw:[.card-info_&]:absolute tw:[#bber_&]:object-cover">
-                  <img
-                    src={url(card.author.img)}
-                    alt={config.author.name}
-                    loading="lazy"
-                  />
-                  {card.author.emoji ? (
-                    <span
-                      class="sticker sticker-emoji tw:[.card-info_.avatar_&]:absolute tw:[.card-info_.avatar_&]:flex tw:[.card-info_.avatar_&]:items-center tw:[.card-info_.avatar_&]:justify-center"
-                      aria-hidden="true"
-                    >
-                      {card.author.emoji}
-                    </span>
-                  ) : (
-                    card.author.sticker && (
-                      <span class="sticker tw:[.card-info_.avatar_&]:absolute tw:[.card-info_.avatar_&]:flex tw:[.card-info_.avatar_&]:items-center tw:[.card-info_.avatar_&]:justify-center">
-                        <img
-                          class="sticker-img tw:[.card-info_.avatar_&]:object-cover"
-                          src={url(card.author.sticker)}
-                          alt=""
-                        />
-                      </span>
-                    )
-                  )}
-                </div>
-                <div
-                  class="description tw:[.card-info_&]:flex tw:[.card-info_&]:flex-col"
-                  set:html={card.content}
-                />
-                <div class="bottom-group tw:[.card-info_&]:absolute tw:[.card-info_&]:flex tw:[.card-info_&]:justify-between">
-                  <span class="left">
-                    <div class="name">{config.author.name}</div>
-                    <div class="desc" set:html={card.description} />
-                  </span>
-                  <div class="social-icons is-center tw:[.card-info_.bottom-group_&]:flex tw:[.card-info_.bottom-group_&]:justify-end">
-                    {card.information.map((l) => (
-                      <a
-                        class="social-icon tw:[.card-info_.bottom-group_.social-icons_&]:cursor-pointer tw:[.card-info_.bottom-group_.social-icons_&]:flex"
-                        href={url(l.url)}
-                        title={l.name}
-                        aria-label={l.name}
-                      >
-                        {l.icon ? (
-                          <Icon name={l.icon} class="solitude" />
-                        ) : (
-                          l.name
-                        )}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ProfileCard />
           ) : name.trim() === 'newestPost' ? (
             <div class="card-widget card-recent-post tw:[#aside-content_&]:overflow-hidden">
               <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">

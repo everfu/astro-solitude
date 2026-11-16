@@ -16,20 +16,20 @@ const { route, posts } = Astro.props;
 ---
 
 <div class="home-main-flow tw:flex tw:flex-col">
-  {cfg.hometop.enable && route.current === 1 && (
-    <div id="home_top">
-      <HomeTop posts={posts} />
-    </div>
-  )}
-  <div class="home-category-bar category-in-bar tw:[.home-main-flow_>_&]:shrink-0 tw:[.layout#content-inner.layout--category_>_&]:shrink-0 tw:[.layout.layout--archive_>_&]:shrink-0">
-    <CategoryBar posts={posts} home />
-  </div>
   <main
     class="layout layout--home tw:[.layout#content-inner&]:flex-col tw:[.layout&]:relative"
     id="content-inner"
   >
-    <div class="home-layout-row tw:flex tw:[.layout#content-inner.layout--category_>_&]:flex">
+    <div class="home-layout-row">
       <div id="home">
+        {cfg.hometop.enable && route.current === 1 && (
+          <div id="home_top">
+            <HomeTop posts={posts} />
+          </div>
+        )}
+        <div class="home-category-bar category-in-bar">
+          <CategoryBar posts={posts} home />
+        </div>
         <div class="recent-posts tw:relative" id="recent-posts">
           {route.posts?.map((post, i) => (
             <PostCard post={post} index={i} newest={posts[0]?.id} />

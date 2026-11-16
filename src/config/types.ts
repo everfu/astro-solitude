@@ -19,6 +19,7 @@ export interface ThemeLink extends Link {
 export interface Recommendation {
   color?: string;
   title: string;
+  description?: string;
   url: string;
   cover?: string;
   label?: string;

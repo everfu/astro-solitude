@@ -1,5 +1,4 @@
 ---
-import Icon from '@/components/Icon.astro';
 import { cfg, t, url } from '@/lib/site';
 import { homePosts, contentPath, type Post } from '@/lib/content';
 interface Props {
@@ -25,101 +24,84 @@ for (const post of homePosts(posts).sort(
       label: post.data.categories[0],
     });
 }
-const first = items[0];
+const slides = items.slice(0, 5).map((item) => ({
+  ...item,
+  description:
+    item.description ??
+    posts.find((post) => normalize(contentPath(post)) === normalize(item.url))
+      ?.data.description ??
+    '',
+}));
+const first = slides[0];
 ---
 
 {first && (
   <div
     class="home-center"
     id="home_center"
+    role="region"
+    aria-label={t('recommendations')}
     style="--current-theme:var(--efu-main);--current-theme-op:color-mix(in srgb,var(--efu-main) 14%,transparent);--current-theme-op-deep:color-mix(in srgb,var(--efu-main) 87%,transparent)"
   >
     <div class="home-center-content tw:flex tw:overflow-hidden">
       <div class="home-center-left tw:relative tw:overflow-hidden">
-        <div
-          class="home-center-banner tw:relative tw:overflow-hidden"
-          data-mobile-loop="false"
-        >
-          {items.slice(0, 5).map((item, i) => (
-            <div
-              class:list={[
-                'home-center-banner-item has-banner-cover',
-                { active: i === 0 },
-              ]}
-              role="link"
+        <div class="home-center-banner" aria-live="off">
+          {slides.map((item, i) => (
+            <a
+              class:list={['home-center-banner-item', { active: i === 0 }]}
+              id={`home-center-slide-${i}`}
+              href={url(item.url)}
+              aria-label={item.title}
               tabindex={i === 0 ? 0 : -1}
               aria-hidden={i !== 0}
               data-index={i}
-              data-link={url(item.url)}
               data-title={item.title}
-              data-label={item.label}
+              data-description={item.description}
               data-color={item.color}
             >
               <div class="home-center-cover tw:shrink-0 tw:flex tw:items-center tw:justify-center">
                 <img
-                  class="home-center-cover-img nolazyload tw:[.home-center-banner-item.has-banner-cover_&]:object-cover"
+                  class="home-center-cover-img nolazyload"
                   src={url(item.cover ?? cfg.post.default.cover[0])}
-                  alt={item.title}
+                  alt=""
                   loading={i === 0 ? 'eager' : 'lazy'}
                   data-solitude-fallback={url(cfg.post.default.cover[0])}
                 />
               </div>
               <div class="home-center-mask tw:absolute" />
-            </div>
+            </a>
           ))}
         </div>
         <div class="home-center-title tw:absolute tw:text-left">
           <a class="home-center-title-link" href={url(first.url)}>
             {first.title}
           </a>
-          <div class="home-center-title-tag tw:flex tw:items-center">
-            <Icon name="lucide:star" class="solitude" />
-            <span>{first.label}</span>
-          </div>
-          <div class="home-center-indicators" aria-label={t('recommendations')}>
-            {items.slice(0, 5).map((_, i) => (
-              <button
-                class:list={['home-center-indicator', { active: i === 0 }]}
-                type="button"
-                data-index={i}
-                aria-label={t('recommendationItem').replace(
-                  '{index}',
-                  String(i + 1),
-                )}
-                aria-current={i === 0 ? 'true' : 'false'}
-              />
-            ))}
-          </div>
+          <p class="home-center-description" hidden={!first.description}>
+            {first.description}
+          </p>
+          {slides.length > 1 && (
+            <div
+              class="home-center-indicators"
+              role="group"
+              aria-label={t('recommendations')}
+            >
+              {slides.map((_, i) => (
+                <button
+                  class:list={['home-center-indicator', { active: i === 0 }]}
+                  type="button"
+                  data-index={i}
+                  aria-controls={`home-center-slide-${i}`}
+                  aria-label={t('recommendationItem').replace(
+                    '{index}',
+                    String(i + 1),
+                  )}
+                  aria-current={i === 0 ? 'true' : 'false'}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
-      {items.length > 1 && (
-        <div class="home-center-right tw:flex tw:shrink-0 tw:flex-col">
-          <div class="home-center-list tw:flex tw:flex-col">
-            {items.slice(0, 5).map((item, i) => (
-              <div
-                class:list={[
-                  'home-center-item tw:flex tw:items-center tw:cursor-pointer',
-                  { active: i === 0 },
-                ]}
-                data-index={i}
-                aria-current={i === 0 ? 'true' : 'false'}
-              >
-                <div class="home-center-item-icon tw:relative tw:flex tw:items-center tw:justify-center tw:shrink-0 tw:overflow-hidden">
-                  <img
-                    class="nolazyload"
-                    src={url(item.cover ?? cfg.post.default.cover[0])}
-                    alt=""
-                    loading="lazy"
-                  />
-                </div>
-                <div class="home-center-item-title tw:overflow-hidden">
-                  <a href={url(item.url)}>{item.title}</a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   </div>
 )}
