@@ -4,7 +4,7 @@ Bug fixes, documentation, translations, and focused improvements are welcome. Yo
 
 ## Before you start
 
-- Read the [documentation](docs/README.md) and [FAQ](docs/faq.md), then search existing issues and pull requests.
+- Read the [README](README.md), then search existing issues and pull requests.
 - Use the bug report form for defects and the feature request form for proposals. For substantial changes, discuss the approach in an issue before implementing it.
 - Report vulnerabilities privately using the [security policy](SECURITY.md), rather than a public issue or pull request.
 
@@ -19,7 +19,7 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open the local URL printed in the terminal. See [Getting started](docs/getting-started.md) for site configuration and content setup.
+Open the local URL printed in the terminal. See the [README](README.md) for site configuration and content setup.
 
 ## Make a focused change
 
@@ -27,7 +27,7 @@ Open the local URL printed in the terminal. See [Getting started](docs/getting-s
 - Follow the surrounding code style and verify affected behavior when fixing defects.
 - For visible changes, review desktop and mobile layouts, light and dark modes, and keyboard interaction.
 - Keep interface translation keys consistent across `src/i18n/` when adding or changing translatable UI text.
-- Update the relevant documentation when changing configuration, components, or user-facing behavior. If generated reference files change, run `pnpm docs:generate` and review the result.
+- Update the README when changing configuration, commands, or user-facing behavior.
 - Never include credentials, private service identifiers, or personal data in changes, logs, or screenshots.
 
 ## Validate your change
@@ -35,8 +35,6 @@ Open the local URL printed in the terminal. See [Getting started](docs/getting-s
 The core CI checks are:
 
 ```sh
-pnpm docs:check
-pnpm assets:check
 pnpm check
 pnpm build
 ```
@@ -49,16 +47,10 @@ pnpm preview
 
 Check affected pages at desktop and mobile sizes, in both themes, and with keyboard navigation. Verify configured third-party services with your own account and site.
 
-For documentation-only changes, check the affected links and run `pnpm docs:check`. State which checks you ran and explain anything skipped. The full CI workflow is in [check.yml](.github/workflows/check.yml). See the [development and validation guide](docs/parity.md) for check details.
+For Markdown changes, check the affected links. State which checks you ran and explain anything skipped. The full CI workflow is in [check.yml](.github/workflows/check.yml).
 
 ## Submit a pull request
 
 Target `main` and complete the pull request template. Explain the problem, the resulting behavior, and how you verified it. Link the related issue, include screenshots for visible changes, and mention configuration changes or migration steps when applicable.
 
 Keep commits clear and reviewable, and respond to review feedback. Contributions are made under the project's existing [Apache-2.0 license](LICENSE).
-
-## Shared brand assets
-
-Astro is the source of the shared Astro, Hexo, and Hugo static assets. Follow
-[the asset synchronization guide](docs/shared-assets.md) when changing these files.
-Run `pnpm assets:check` to validate this checkout without the sibling repositories.

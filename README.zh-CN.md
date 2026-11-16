@@ -1,42 +1,12 @@
 [English](README.md) 丨 简体中文
 
-<div align="center">
-
-<img src="public/img/logo.png" width="120" height="120" alt="Astro Solitude 纸飞机标志" />
-
 # Astro Solitude
 
-一款简洁、优雅、功能丰富的 Astro 博客主题。
+简洁、优雅、功能丰富的 Astro 博客主题。
 
-以静态页面承载内容，搭配 Markdown / MDX 写作、明暗模式与丰富的内容组件，构建属于自己的个人博客。
+支持静态页面、Markdown / MDX、明暗模式、内容组件、本地搜索、订阅、评论和跨页面音乐胶囊。
 
-[![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)](https://astro.build/)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22.12.0-5FA04E?logo=node.js&logoColor=white)](package.json)
-[![License](https://img.shields.io/badge/license-Apache--2.0-FF5531)](LICENSE)
-[![Checks](https://github.com/everfu/astro-solitude/actions/workflows/check.yml/badge.svg)](https://github.com/everfu/astro-solitude/actions/workflows/check.yml)
-[![Stars](https://img.shields.io/github/stars/everfu/astro-solitude)](https://github.com/everfu/astro-solitude/stargazers)
-
-[使用此模板](https://github.com/everfu/astro-solitude/generate) · [使用文档](docs/README.md) · [快速开始](#快速开始) · [主题配置](docs/configuration.md) · [内容组件](docs/components.md) · [部署指南](docs/deployment.md) · [问题反馈](https://github.com/everfu/astro-solitude/issues)
-
-</div>
-
-<p align="center">
-  <img src="public/img/brand/solitude-banner.webp" width="960" height="540" alt="Solitude paper airplane over a layered paper landscape" />
-</p>
-
-![Astro Solitude 桌面首页预览](docs/screenshots/home-desktop.png)
-
-## 特性
-
-- **布局与阅读**：响应式卡片首页、推荐文章、侧栏、文章目录、相关文章、版权与赞赏。
-- **内容创作**：Markdown / MDX、41 个内容组件、Shiki 代码高亮、KaTeX 数学公式。
-- **文章管理**：分类、标签、系列、归档、分页、置顶、草稿、自定义链接与别名。
-- **特色页面**：关于、友链、我的装备、音乐馆、留言板、即刻短文、最近评论与 404 页面。
-- **交互体验**：明暗模式、图片灯箱、快捷键、右键菜单与跨页面保留的音乐胶囊。
-- **搜索与订阅**：本地搜索、Algolia、DocSearch、RSS 与 Sitemap。
-- **评论系统**：Twikoo、Waline、Valine、Artalk、Giscus，按配置加载。
-- **多语言界面**：简体中文、繁体中文、英语与西班牙语。
-- **静态部署**：构建生成静态文件，可发布到静态托管平台或自建服务器。
+[使用此模板](https://github.com/everfu/astro-solitude/generate) · [快速开始](#快速开始) · [问题反馈](https://github.com/everfu/astro-solitude/issues)
 
 ## 快速开始
 
@@ -44,7 +14,7 @@
 
 准备 Node.js **22.12.0+** 与 pnpm，pnpm 版本以 [package.json](package.json) 的 `packageManager` 为准。
 
-点击 [Use this template](https://github.com/everfu/astro-solitude/generate) 创建自己的独立仓库，再克隆自己的副本（替换 `YOUR_NAME` 和 `my-blog`）：
+点击 [Use this template](https://github.com/everfu/astro-solitude/generate) 创建自己的独立仓库，再使用自己的账号和仓库名称克隆副本。
 
 ```sh
 git clone https://github.com/YOUR_NAME/my-blog.git
@@ -57,7 +27,7 @@ pnpm dev
 
 ### 2. 配置站点
 
-编辑 [`site.config.ts`](site.config.ts)，设置站点地址、标题、作者、导航和主题选项。以下是最小配置示例：
+编辑 [`site.config.ts`](site.config.ts)，设置站点地址、标题、作者、导航和主题选项。
 
 ```ts
 import { defineSolitudeConfig } from './src/config';
@@ -71,13 +41,13 @@ export default defineSolitudeConfig({
 });
 ```
 
-部署在子目录时，另外设置 `base`，例如 `base: '/blog/'`。完整选项见 [配置文档](docs/configuration.md)。
+部署在子目录时，另外设置 `base`，例如 `base: '/blog/'`。
 
-模板保留示例文章和特色页面，本地搜索开箱即用。评论、评论聚合和音乐馆默认关闭，服务标识为空。音乐胶囊已启用示例汽水音乐歌单；可替换 `theme.capsule.id`，或设置 `theme.capsule.enable: false` 关闭。需要时按 [第三方集成指南](docs/integrations.md) 配置自己的服务。发布前替换示例内容、头像和站点信息。界面语言设置不会自动翻译文章或自定义导航。
+模板保留示例文章和特色页面，本地搜索开箱即用。评论、评论聚合和音乐馆默认关闭，服务标识为空。音乐胶囊已启用示例汽水音乐歌单。可以替换 `theme.capsule.id`，或设置 `theme.capsule.enable: false` 关闭。发布前替换示例内容、头像和站点信息。界面语言设置不会自动翻译文章或自定义导航。
 
 ### 3. 开始写作
 
-在 `src/content/posts/` 中创建 Markdown 或 MDX 文件，例如 `hello-world.md`：
+在 `src/content/posts/` 中添加文章，下面的示例可保存为 `hello-world.md`。
 
 ```md
 ---
@@ -90,9 +60,7 @@ tags: [生活]
 从这里开始记录。
 ```
 
-默认文章地址为 `/p/hello-world/`。可以通过 `slug`、`url` 和 `aliases` 调整地址；`draft: true` 用于草稿，`home: false` 可从首页各区域隐藏文章，同时保留归档、搜索、RSS 与直接访问。
-
-更多写作能力见 [内容字段](docs/writing.md#front-matter) 与 [MDX 组件文档](docs/components.md)。
+默认文章地址为 `/p/hello-world/`。可以通过 `slug`、`url` 和 `aliases` 调整地址。`draft: true` 用于草稿，`home: false` 可从首页各区域隐藏文章，同时保留归档、搜索、RSS 与直接访问。
 
 ### 4. 构建与部署
 
@@ -101,73 +69,22 @@ pnpm build
 pnpm preview
 ```
 
-将生成的 `dist/` 目录发布到托管平台。构建命令为 `pnpm build`，输出目录为 `dist`；安装依赖时可使用 `pnpm install --frozen-lockfile`。
+将生成的 `dist/` 目录发布到托管平台。构建命令为 `pnpm build`，输出目录为 `dist`。安装依赖时可使用 `pnpm install --frozen-lockfile`。
 
-部署步骤与路径配置见 [部署指南](docs/deployment.md)。
+## 常用命令
 
-## 文档
+在项目根目录运行。
 
-模板默认界面、示例内容与详细文档使用英文；可通过 `locale` 切换内置界面语言。
-
-从 [文档首页](docs/README.md) 按步骤阅读，或直接选择当前任务：
-
-| 指南                                | 内容                             |
-| ----------------------------------- | -------------------------------- |
-| [快速开始](docs/getting-started.md) | 创建模板副本、安装、第一篇文章   |
-| [主题配置](docs/configuration.md)   | 站点信息、外观、导航与默认值     |
-| [写作指南](docs/writing.md)         | 文章字段、草稿、分类、地址和订阅 |
-| [特色页面](docs/pages.md)           | 关于、友链、装备与短文数据       |
-| [内容组件](docs/components.md)      | 41 个 MDX 组件的用途、参数和示例 |
-| [第三方集成](docs/integrations.md)  | 评论、弹幕、音乐与外部搜索       |
-| [部署指南](docs/deployment.md)      | GitHub Pages、静态托管与子目录   |
-| [Hugo 导入](docs/migration.md)      | 预检、导出与迁移验证             |
-| [常见问题](docs/faq.md)             | 故障排查与更新主题               |
-
-<details>
-<summary>更多预览：深色模式与移动端阅读</summary>
-
-![深色首页](docs/screenshots/home-desktop-dark.png)
-![移动端文章](docs/screenshots/post-mobile-dark.png)
-
-</details>
-
-## 项目结构
-
-```text
-astro-solitude/
-├── site.config.ts        # 站点配置入口
-├── astro.config.mjs      # Astro 构建配置
-├── scripts/              # 资源、文档和导入工具
-├── src/
-│   ├── config/           # 配置工厂、默认值和短代码映射
-│   ├── components/       # 主题组件、页面视图与 MDX 组件
-│   ├── content/          # 博客文章与自定义页面
-│   ├── data/             # 关于、友链、装备和短文数据
-│   ├── i18n/             # 界面翻译
-│   ├── integrations/     # Astro 构建集成
-│   ├── layouts/          # 文档外壳与页面视图分派
-│   ├── lib/              # 内容、路由和站点公共逻辑
-│   ├── pages/            # Astro 路由
-│   ├── scripts/          # 浏览器入口、应用初始化与功能模块
-│   ├── styles/           # 主题样式与 custom.css
-│   └── types/            # 共享内容和运行时类型
-└── docs/                 # 使用文档
-```
+| 命令           | 用途                          |
+| -------------- | ----------------------------- |
+| `pnpm dev`     | 启动本地开发                  |
+| `pnpm build`   | 构建静态站点到 `dist/`        |
+| `pnpm preview` | 预览生产构建                  |
+| `pnpm check`   | 检查 TypeScript 与 Astro 组件 |
 
 ## 参与贡献
 
-欢迎通过 [Issues](https://github.com/everfu/astro-solitude/issues) 反馈问题或提出建议，也欢迎提交 [Pull Request](https://github.com/everfu/astro-solitude/pulls) 改进主题、文档与翻译。反馈问题时，请提供复现步骤、运行环境和相关配置。
-
-提交改动前，可运行以下检查：
-
-```sh
-pnpm docs:check
-pnpm assets:check
-pnpm check
-pnpm build
-```
-
-涉及页面交互时，使用 `pnpm preview` 检查受影响的页面。本地检查与来源说明见 [开发与验证指南](docs/parity.md)。
+欢迎反馈问题和提交改进。请按 [贡献指南](CONTRIBUTING.md) 提供复现步骤和验证结果。
 
 ## 许可
 

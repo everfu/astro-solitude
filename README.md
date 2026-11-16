@@ -1,42 +1,12 @@
 English 丨 [简体中文](README.zh-CN.md)
 
-<div align="center">
-
-<img src="public/img/logo.png" width="120" height="120" alt="Astro Solitude paper airplane logo" />
-
 # Astro Solitude
 
 A clean, elegant, feature-rich blog theme for Astro.
 
-Build your personal blog with static pages, Markdown / MDX, light and dark modes, and a rich collection of content components.
+Static pages, Markdown / MDX, light and dark modes, content components, local search, feeds, comments, and a music capsule that persists across navigation.
 
-[![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)](https://astro.build/)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22.12.0-5FA04E?logo=node.js&logoColor=white)](package.json)
-[![License](https://img.shields.io/badge/license-Apache--2.0-FF5531)](LICENSE)
-[![Checks](https://github.com/everfu/astro-solitude/actions/workflows/check.yml/badge.svg)](https://github.com/everfu/astro-solitude/actions/workflows/check.yml)
-[![Stars](https://img.shields.io/github/stars/everfu/astro-solitude)](https://github.com/everfu/astro-solitude/stargazers)
-
-[Use this template](https://github.com/everfu/astro-solitude/generate) · [Documentation](docs/README.md) · [Quick start](#quick-start) · [Configuration](docs/configuration.md) · [Components](docs/components.md) · [Deployment](docs/deployment.md) · [Report an issue](https://github.com/everfu/astro-solitude/issues)
-
-</div>
-
-<p align="center">
-  <img src="public/img/brand/solitude-banner.webp" width="960" height="540" alt="Solitude paper airplane over a layered paper landscape" />
-</p>
-
-![Astro Solitude desktop homepage preview](docs/screenshots/home-desktop.png)
-
-## Features
-
-- **Layout and reading**: responsive post cards, recommendations, sidebar, table of contents, related posts, copyright notices, and donation links.
-- **Writing**: Markdown / MDX, 41 content components, Shiki syntax highlighting, and KaTeX math rendering.
-- **Post management**: categories, tags, series, archives, pagination, pinned posts, drafts, custom URLs, and aliases.
-- **Special pages**: About, Links, Equipment, Music, Message Board, short posts, Recent Comments, and 404.
-- **Interactions**: light and dark modes, image lightbox, keyboard shortcuts, context menu, and a music capsule that persists across page navigation.
-- **Search and feeds**: local search, Algolia, DocSearch, RSS, and sitemap.
-- **Comments**: Twikoo, Waline, Valine, Artalk, and Giscus, loaded according to configuration.
-- **Interface languages**: English by default, with Simplified Chinese, Traditional Chinese, and Spanish.
-- **Static deployment**: generate static files for a hosting platform or your own server.
+[Use this template](https://github.com/everfu/astro-solitude/generate) · [Quick start](#quick-start) · [Report an issue](https://github.com/everfu/astro-solitude/issues)
 
 ## Quick start
 
@@ -44,7 +14,7 @@ Build your personal blog with static pages, Markdown / MDX, light and dark modes
 
 Install Node.js **22.12.0+** and pnpm. Use the pnpm version specified in the `packageManager` field of [package.json](package.json).
 
-Click [Use this template](https://github.com/everfu/astro-solitude/generate) to create an independent repository, then clone your copy (replace `YOUR_NAME` and `my-blog`):
+Click [Use this template](https://github.com/everfu/astro-solitude/generate) to create an independent repository, then clone your copy with your account and repository names.
 
 ```sh
 git clone https://github.com/YOUR_NAME/my-blog.git
@@ -57,7 +27,7 @@ Open the local URL shown in your terminal to preview the theme and sample conten
 
 ### 2. Configure your site
 
-Edit [`site.config.ts`](site.config.ts) to set your site URL, title, author, navigation, and theme options. Here is a minimal configuration:
+Edit [`site.config.ts`](site.config.ts) to set your site URL, title, author, navigation, and theme options.
 
 ```ts
 import { defineSolitudeConfig } from './src/config';
@@ -71,13 +41,13 @@ export default defineSolitudeConfig({
 });
 ```
 
-For a site hosted under a subdirectory, also set `base`, for example `base: '/blog/'`. See [Configuration](docs/configuration.md) for all options.
+For a site hosted under a subdirectory, also set `base`, for example `base: '/blog/'`.
 
-The template includes sample posts and pages with local search enabled. Comments, comment aggregation, and the music hall are disabled with empty service identifiers. The music capsule is enabled with a sample Qishui playlist; replace `theme.capsule.id` with your own playlist or set `theme.capsule.enable: false` to disable it. Follow the [integration guide](docs/integrations.md) to connect your own services. Replace sample content, images, and site identity before publishing. Changing the interface locale does not translate posts or custom navigation.
+The template includes sample posts and pages with local search enabled. Comments, comment aggregation, and the music hall are disabled with empty service identifiers. The music capsule is enabled with a sample Qishui playlist. Replace `theme.capsule.id` with your own playlist or set `theme.capsule.enable: false` to disable it. Replace sample content, images, and site identity before publishing. Changing the interface locale does not translate posts or custom navigation.
 
 ### 3. Start writing
 
-Create a Markdown or MDX file in `src/content/posts/`, such as `hello-world.md`:
+Create a Markdown or MDX file named `hello-world.md` under `src/content/posts/`.
 
 ```md
 ---
@@ -92,8 +62,6 @@ Start your story here.
 
 The default URL is `/p/hello-world/`. Use `slug`, `url`, and `aliases` to customize addresses. Set `draft: true` for drafts, or `home: false` to hide a post from homepage areas while keeping it in archives, search, RSS, and direct links.
 
-See [Front matter](docs/writing.md#front-matter) and [MDX components](docs/components.md) for more writing options.
-
 ### 4. Build and deploy
 
 ```sh
@@ -103,69 +71,20 @@ pnpm preview
 
 Publish the generated `dist/` directory to your hosting platform. Set the build command to `pnpm build` and the output directory to `dist`. Use `pnpm install --frozen-lockfile` during dependency installation.
 
-See [Deployment](docs/deployment.md) for hosting instructions and path configuration.
+## Commands
 
-## Documentation
+Run commands from the project root.
 
-The template, sample content, and documentation use English by default. Built-in interface translations are available in Simplified Chinese, Traditional Chinese, and Spanish. Start with the [documentation index](docs/README.md).
-
-| Guide                                      | Contents                                                  |
-| ------------------------------------------ | --------------------------------------------------------- |
-| [Getting started](docs/getting-started.md) | Create a template copy, install, write your first post    |
-| [Configuration](docs/configuration.md)     | Site identity, appearance, navigation, defaults           |
-| [Writing](docs/writing.md)                 | Front matter, drafts, categories, URLs, feeds             |
-| [Pages](docs/pages.md)                     | About, links, equipment, short updates                    |
-| [Components](docs/components.md)           | Usage, parameters, and examples for all 41 MDX components |
-| [Integrations](docs/integrations.md)       | Comments, music, external search                          |
-| [Deployment](docs/deployment.md)           | GitHub Pages, static hosts, subpaths                      |
-| [Hugo import](docs/migration.md)           | Preview, export, verify migrated content                  |
-| [FAQ](docs/faq.md)                         | Troubleshooting and theme updates                         |
-
-<details>
-<summary>More previews: dark mode and mobile reading</summary>
-
-![Dark homepage](docs/screenshots/home-desktop-dark.png)
-![Mobile article](docs/screenshots/post-mobile-dark.png)
-
-</details>
-
-## Project structure
-
-```text
-astro-solitude/
-├── site.config.ts        # Site configuration
-├── astro.config.mjs      # Astro build configuration
-├── scripts/              # Asset, documentation, and import tools
-├── src/
-│   ├── config/           # Configuration factory, defaults, and shortcode mappings
-│   ├── components/       # Theme, page views, and MDX components
-│   ├── content/          # Blog posts and custom pages
-│   ├── data/             # About, links, equipment, and short-post data
-│   ├── i18n/             # Translations
-│   ├── integrations/     # Astro build integrations
-│   ├── layouts/          # Document shell and route view dispatch
-│   ├── lib/              # Content, routing, and site logic
-│   ├── pages/            # Astro routes
-│   ├── scripts/          # Browser entry, app, core, and feature modules
-│   ├── styles/           # Theme styles and custom.css
-│   └── types/            # Shared content and runtime types
-└── docs/                 # Documentation
-```
+| Command        | Purpose                               |
+| -------------- | ------------------------------------- |
+| `pnpm dev`     | Start local development               |
+| `pnpm build`   | Generate the static site in `dist/`   |
+| `pnpm preview` | Preview the production build          |
+| `pnpm check`   | Check TypeScript and Astro components |
 
 ## Contributing
 
-Use [Issues](https://github.com/everfu/astro-solitude/issues) for bug reports and suggestions. [Pull requests](https://github.com/everfu/astro-solitude/pulls) improving the theme, documentation, and translations are welcome. Include reproduction steps, your environment, and relevant configuration when reporting a problem.
-
-Run these checks before submitting changes:
-
-```sh
-pnpm docs:check
-pnpm assets:check
-pnpm check
-pnpm build
-```
-
-For changes to page interactions, use `pnpm preview` to review the affected pages. See the [development and validation guide](docs/parity.md) for local checks and source attribution.
+Feedback and focused improvements are welcome. Follow the [contribution guide](CONTRIBUTING.md) and include reproduction steps and verification results in issues or pull requests.
 
 ## License
 

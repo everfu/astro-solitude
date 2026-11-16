@@ -1,14 +1,13 @@
 Astro Solitude
 Copyright 2026 Solitude contributors
 
-This work is derived from Solitude (https://github.com/everfu/hexo-theme-solitude) and is,
+This work is derived from Solitude (https://github.com/everfu/hexo-theme-solitude),
 licensed under the Apache License, Version 2.0. Original copyright notices and
-the Apache-2.0 license are retained. The source snapshot and local About-page
-changes are identified by file SHA-256 values in docs/source-manifest.json.
+the Apache-2.0 license are retained.
 
 Migration changes include Astro layouts and routes, TypeScript configuration,
 Content Collections, MDX component wrappers, static highlighting, lifecycle
-integration, a Hexo importer, demos, and documentation.
+integration, and demos.
 
 Source theme CSS and browser behavior are retained where applicable. Original
 JavaScript behavior copied from source TypeScript files without annotations is
@@ -22,6 +21,4 @@ Font Awesome Free is distributed under its upstream font/icon/code licenses;
 KaTeX and other npm dependencies retain their licenses in their packages.
 Third-party browser libraries loaded by URL retain their respective licenses.
 
-Shared theme asset destinations, current SHA-256 values, and new generated
-paper-cut artwork prompts are recorded in docs/shared-assets.json. This inventory
-is separate from the historical Hexo source snapshot in docs/source-manifest.json.
+Paper-cut illustrations are generated project artwork.

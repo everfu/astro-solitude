@@ -91,7 +91,6 @@ export default defineSolitudeConfig({
       type: 'playlist',
       server: 'qishui',
     },
-    // See docs/integrations.md to configure a playlist or enable comments.
     post: {
       meta: { locate: false },
       covercolor: { enable: true, mode: 'local' },

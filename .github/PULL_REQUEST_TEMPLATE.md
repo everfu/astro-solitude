@@ -9,9 +9,9 @@
 ## Validation
 
 <!-- List commands run and their results. Explain skipped checks or known failures.
-Run pnpm docs:check, pnpm assets:check, pnpm check, and pnpm build.
+Run pnpm check and pnpm build.
 For browser changes, review affected pages, interactions, and responsive layouts with pnpm preview.
-For documentation-only changes: check affected links and run pnpm docs:check.
+For Markdown changes, check affected links.
 -->
 
 ## Screenshots

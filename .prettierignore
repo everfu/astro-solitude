@@ -4,5 +4,4 @@ dist
 artifacts
 public
 src/styles
-docs/source-manifest.json
 pnpm-lock.yaml

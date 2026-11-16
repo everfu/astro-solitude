@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         English and Chinese reports are welcome / 欢迎使用中文或英文反馈。
-        Search existing issues and read the [FAQ](https://github.com/everfu/astro-solitude/blob/main/docs/faq.md) first.
+        Search existing issues and read the [README](https://github.com/everfu/astro-solitude/blob/main/README.md) first.
         For vulnerabilities, follow the [security policy](https://github.com/everfu/astro-solitude/blob/main/SECURITY.md) instead of posting details here.
         Remove credentials and personal data from configuration, logs, and screenshots.
   - type: input
