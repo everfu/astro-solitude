@@ -181,6 +181,23 @@
   gap: 4px;
 }
 
+#footer-bar .footer-bar-left .beian-group .footer-brand-link {
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+}
+
+#footer-bar .footer-bar-left .beian-group .footer-brand-link:hover {
+  color: var(--efu-theme);
+}
+
+#footer-bar .footer-bar-left .beian-group .footer-brand-link > svg {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
 #footer-bar .footer-bar-link {
   margin: 0 4px;
   color: var(--efu-fontcolor);

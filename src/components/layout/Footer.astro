@@ -112,20 +112,24 @@ const linkIcons = (icon: IconName | IconName[]): IconName[] =>
             </a>
           ))}
           <a
-            class="footer-bar-link tw:[#footer-bar_.footer-bar-left_.beian-group_&]:flex tw:[#footer-bar_.footer-bar-left_.beian-group_&]:items-center tw:[#footer-bar_&]:whitespace-nowrap tw:[#footer-bar_&]:flex tw:[#footer-bar_&]:items-center"
+            class="footer-bar-link footer-brand-link tw:[#footer-bar_.footer-bar-left_.beian-group_&]:flex tw:[#footer-bar_.footer-bar-left_.beian-group_&]:items-center tw:[#footer-bar_&]:whitespace-nowrap tw:[#footer-bar_&]:flex tw:[#footer-bar_&]:items-center"
             href="https://astro.build/"
             target="_blank"
             rel="noopener noreferrer"
+            title={`${t('frameworkBy')} Astro`}
+            aria-label={`${t('frameworkBy')} Astro`}
           >
-            {t('frameworkBy')} Astro
+            <Icon name="simple-icons:astro" size={18} />
           </a>
           <a
-            class="footer-bar-link tw:[#footer-bar_.footer-bar-left_.beian-group_&]:flex tw:[#footer-bar_.footer-bar-left_.beian-group_&]:items-center tw:[#footer-bar_&]:whitespace-nowrap tw:[#footer-bar_&]:flex tw:[#footer-bar_&]:items-center"
+            class="footer-bar-link footer-brand-link tw:[#footer-bar_.footer-bar-left_.beian-group_&]:flex tw:[#footer-bar_.footer-bar-left_.beian-group_&]:items-center tw:[#footer-bar_&]:whitespace-nowrap tw:[#footer-bar_&]:flex tw:[#footer-bar_&]:items-center"
             href="https://github.com/everfu/astro-solitude"
             target="_blank"
             rel="noopener noreferrer"
+            title={`${t('themeBy')} Solitude`}
+            aria-label={`${t('themeBy')} Solitude`}
           >
-            {t('themeBy')} Solitude
+            <Icon name="lucide:send" size={18} />
           </a>
         </div>
       </div>
