@@ -1,10 +1,10 @@
 ---
-import brevity from '../../data/brevity.json';
-import { cfg, config, dateLabel, t, url } from '../../lib/site';
+import brevity from '@/data/brevity.json';
+import { cfg, config, dateLabel, t, url } from '@/lib/site';
 interface Props {
   data?: {
     title?: string;
-    items: import('../../lib/page-types').BrevityItem[];
+    items: import('@/types/page').BrevityItem[];
     header?: {
       description?: string;
       cover?: string;
@@ -176,5 +176,5 @@ const items = data.items.slice(0, c.strip);
 )}
 
 <script>
-  import '../../scripts/brevity';
+  import '@/scripts/features/brevity';
 </script>

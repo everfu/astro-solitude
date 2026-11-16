@@ -1,8 +1,8 @@
 ---
 import { randomUUID } from 'node:crypto';
-import { getPosts, contentPath } from '../../lib/content';
-import { cfg, t, url } from '../../lib/site';
-import type { ShortcodeProps } from '../../lib/page-types';
+import { getPosts, contentPath } from '@/lib/content';
+import { cfg, t, url } from '@/lib/site';
+import type { ShortcodeProps } from '@/types/page';
 export interface Props extends ShortcodeProps {
   kind: string;
 }

@@ -1,28 +1,27 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { applyInitialTheme } from '../scripts/theme-bootstrap';
-import { cfg, config, t, url, absolute, json } from '../lib/site';
-import { getPosts, getPages, contentPath, type Post } from '../lib/content';
-import { runtimeConfig } from '../lib/runtime-config';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import Search from '../components/Search.astro';
-import Overlays from '../components/Overlays.astro';
-import Capsule from '../components/Capsule.astro';
+import { applyInitialTheme } from '@/scripts/core/theme-bootstrap';
+import { cfg, config, t, url, absolute, json } from '@/lib/site';
+import { getPosts, getPages, contentPath, type Post } from '@/lib/content';
+import { runtimeConfig } from '@/lib/site/runtime-config';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Search from '@/components/integrations/Search.astro';
+import Overlays from '@/components/layout/Overlays.astro';
+import Capsule from '@/components/integrations/Capsule.astro';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'katex/dist/katex.min.css';
-import '../styles/main.css';
-import layerOrder from '../styles/layers.css?inline';
-import aboutStyle from '../styles/pages/about.css?url';
-import brevityStyle from '../styles/pages/brevity.css?url';
-import '../styles/astro.css';
-import '../styles/custom.css';
+import '@/styles/main.css';
+import layerOrder from '@/styles/layers.css?inline';
+import aboutStyle from '@/styles/pages/about.css?url';
+import brevityStyle from '@/styles/pages/brevity.css?url';
+import '@/styles/custom.css';
 interface Props {
   title?: string;
   description?: string;
   type?: string;
   post?: Post;
-  page?: import('../lib/page-types').PageMetadata;
+  page?: import('@/types/page').PageMetadata;
   toc?: boolean;
 }
 const {
@@ -211,7 +210,7 @@ const inlineVars = Object.entries(vars)
     <Search />
     <Capsule />
     <script>
-      import '../scripts/entry';
+      import '@/scripts/entry';
     </script>
     {cfg.extends.body.map((html: string) => (
       <Fragment set:html={html} />

@@ -1,6 +1,6 @@
-import { Solitude } from '../core/api';
-import { lifecycle } from '../core/lifecycle';
-import { initThemeColor } from './theme';
+import { Solitude } from '@/scripts/core/api';
+import { lifecycle } from '@/scripts/core/lifecycle';
+import { initThemeColor } from '@/scripts/features/theme';
 export const scrollFn = () => {
   const $rightside = document.getElementById('rightside');
   const $header = document.getElementById('page-header');

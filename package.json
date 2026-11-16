@@ -13,13 +13,13 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "pnpm check:scripts && pnpm check:astro",
-    "migrate:hugo": "tsx scripts/migrate-hugo.ts",
-    "docs:generate": "tsx scripts/document-inventory.ts",
-    "docs:check": "tsx scripts/check-docs.ts && tsx scripts/document-inventory.ts --check",
+    "migrate:hugo": "tsx scripts/migration/hugo/index.ts",
+    "docs:generate": "tsx scripts/docs/generate.ts",
+    "docs:check": "tsx scripts/docs/check.ts && tsx scripts/docs/generate.ts --check",
     "check:scripts": "astro sync && tsc --noEmit -p tsconfig.scripts.json",
     "check:astro": "astro check",
-    "assets:sync": "node scripts/sync-assets.mjs",
-    "assets:check": "node scripts/sync-assets.mjs --check --project astro"
+    "assets:sync": "node scripts/assets/sync.mjs",
+    "assets:check": "node scripts/assets/sync.mjs --check --project astro"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "0.4.1",

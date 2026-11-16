@@ -1,5 +1,5 @@
-import { Solitude } from '../core/api';
-import { lifecycle } from '../core/lifecycle';
+import { Solitude } from '@/scripts/core/api';
+import { lifecycle } from '@/scripts/core/lifecycle';
 export const showTodayCard = () => {
   const el = document.getElementById('todayCard');
   const topGroup = document.querySelector<HTMLElement>('.topGroup');

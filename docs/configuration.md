@@ -2,7 +2,7 @@
 
 [Documentation](README.md) · [Writing](writing.md) · [Full reference](configuration-inventory.md)
 
-Configure the theme through `defineSolitudeConfig` in [src/site.config.ts](../src/site.config.ts). Objects merge recursively; arrays replace the entire default array. Omitted fields use base defaults. You normally do not need to edit `src/lib/defaults.json`.
+Configure the theme through `defineSolitudeConfig` in [site.config.ts](../site.config.ts). Objects merge recursively; arrays replace the entire default array. Omitted fields use base defaults. You normally do not need to edit `src/config/defaults.json`.
 
 ## Site identity
 
@@ -36,7 +36,7 @@ Configure the theme through `defineSolitudeConfig` in [src/site.config.ts](../sr
 | Music hall | Disabled, empty playlist | Disabled |
 | Music capsule | Disabled, empty playlist | Enabled with a sample Qishui playlist |
 
-The [full reference](configuration-inventory.md) lists base defaults, not the merged template configuration. Inspect `src/site.config.ts` for the template's locale and all overrides.
+The [full reference](configuration-inventory.md) lists base defaults, not the merged template configuration. Inspect `site.config.ts` for the template's locale and all overrides.
 
 ## Navigation and links
 

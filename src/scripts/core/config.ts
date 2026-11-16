@@ -1,7 +1,7 @@
 import type {
   SolitudePageConfiguration,
   SolitudeSiteConfiguration,
-} from '../types';
+} from '@/types/runtime';
 
 const parseConfig = <T>(id: string, fallback: T): T => {
   const element = document.getElementById(id);

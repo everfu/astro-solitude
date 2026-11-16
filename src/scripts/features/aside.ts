@@ -1,4 +1,4 @@
-import { Solitude } from '../core/api';
+import { Solitude } from '@/scripts/core/api';
 export const asideActions = {
   timeoutId: undefined as ReturnType<typeof setTimeout> | undefined,
   lastWittyWord: '',

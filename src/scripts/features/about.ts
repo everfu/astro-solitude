@@ -1,4 +1,4 @@
-import { lifecycle } from '../core/lifecycle';
+import { lifecycle } from '@/scripts/core/lifecycle';
 export const getAboutValue = (source: unknown, path: string): unknown => {
   if (!path) return source;
   return String(path)

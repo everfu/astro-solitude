@@ -1,0 +1,256 @@
+---
+import { cfg, config, t, url, dateLabel, isoDate } from '@/lib/site';
+import TocItems, { type Heading } from '@/components/navigation/TocItems.astro';
+import AsideGroup from '@/components/layout/AsideGroup.astro';
+import {
+  homePosts,
+  contentPath,
+  taxonomy,
+  wordCount,
+  type Post,
+} from '@/lib/content';
+interface Props {
+  posts: Post[];
+  home?: boolean;
+  post?: boolean;
+  enabled?: boolean;
+  headings?: { depth: number; slug: string; text: string }[];
+}
+const {
+  posts,
+  home = false,
+  post = false,
+  enabled = true,
+  headings = [],
+} = Astro.props;
+const scope = home ? cfg.aside.home : post ? cfg.aside.post : cfg.aside.page;
+const groups = [scope.noSticky.split(','), scope.Sticky.split(',')];
+const card = cfg.aside.my_card;
+const recent = (home ? homePosts(posts) : posts)
+  .slice()
+  .sort((a, b) => +b.data.date - +a.data.date)
+  .slice(0, 5);
+const tags = taxonomy(posts, 'tags');
+const updated = new Date();
+const toc: Heading[] = [];
+const ancestors: Heading[] = [];
+for (const heading of headings) {
+  const item: Heading = { ...heading, children: [] };
+  while (ancestors.length && ancestors.at(-1)!.depth >= item.depth)
+    ancestors.pop();
+  (ancestors.at(-1)?.children ?? toc).push(item);
+  ancestors.push(item);
+}
+---
+
+{enabled && (
+  <div class="aside-content tw:flex tw:flex-col" id="aside-content">
+    {groups.map((names, index) => (
+      <AsideGroup sticky={index === 1}>
+        {index === 1 &&
+          headings.length > 0 &&
+          (post ? cfg.aside.toc.post : cfg.aside.toc.page) && (
+            <div
+              class="card-widget tw:[#aside-content_&]:overflow-hidden"
+              id="card-toc"
+            >
+              <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">
+                <i class="solitude fas fa-bars" />
+                <span id="toc-title">{t('toc')}</span>
+                <button class="toc-close" type="button" aria-label={t('close')}>
+                  <i class="fas fa-xmark" aria-hidden="true" />
+                </button>
+              </div>
+              <div class="toc-content" id="toc-content">
+                <ol class="toc">
+                  <TocItems headings={toc} />
+                </ol>
+              </div>
+            </div>
+          )}
+        {names.map((name) =>
+          name.trim() === 'about' ? (
+            <div class="card-widget card-info tw:relative tw:[#aside-content_&]:overflow-hidden">
+              <div class="card-content tw:[#aside-content_.card-widget_&]:relative tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:flex-col tw:[.author-content-item_&]:absolute tw:[.author-content-item_&]:flex tw:[.author-content-item_&]:flex-col">
+                <div class="card-info-avatar is-center">
+                  <div class="top-group">
+                    <div
+                      class="sayhi"
+                      id="sayhi"
+                      data-solitude-action="changeWittyWord"
+                    />
+                  </div>
+                </div>
+                <div class="avatar tw:[.card-info_&]:absolute tw:[#bber_&]:object-cover">
+                  <img
+                    src={url(card.author.img)}
+                    alt={config.author.name}
+                    loading="lazy"
+                  />
+                  {card.author.emoji ? (
+                    <span
+                      class="sticker sticker-emoji tw:[.card-info_.avatar_&]:absolute tw:[.card-info_.avatar_&]:flex tw:[.card-info_.avatar_&]:items-center tw:[.card-info_.avatar_&]:justify-center"
+                      aria-hidden="true"
+                    >
+                      {card.author.emoji}
+                    </span>
+                  ) : (
+                    card.author.sticker && (
+                      <span class="sticker tw:[.card-info_.avatar_&]:absolute tw:[.card-info_.avatar_&]:flex tw:[.card-info_.avatar_&]:items-center tw:[.card-info_.avatar_&]:justify-center">
+                        <img
+                          class="sticker-img tw:[.card-info_.avatar_&]:object-cover"
+                          src={url(card.author.sticker)}
+                          alt=""
+                        />
+                      </span>
+                    )
+                  )}
+                </div>
+                <div
+                  class="description tw:[.card-info_&]:flex tw:[.card-info_&]:flex-col"
+                  set:html={card.content}
+                />
+                <div class="bottom-group tw:[.card-info_&]:absolute tw:[.card-info_&]:flex tw:[.card-info_&]:justify-between">
+                  <span class="left">
+                    <div class="name">{config.author.name}</div>
+                    <div class="desc" set:html={card.description} />
+                  </span>
+                  <div class="social-icons is-center tw:[.card-info_.bottom-group_&]:flex tw:[.card-info_.bottom-group_&]:justify-end">
+                    {card.information.map((l) => (
+                      <a
+                        class="social-icon tw:[.card-info_.bottom-group_.social-icons_&]:cursor-pointer tw:[.card-info_.bottom-group_.social-icons_&]:flex"
+                        href={url(l.url)}
+                        title={l.name}
+                      >
+                        <i class={`solitude ${l.icon}`} />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : name.trim() === 'newestPost' ? (
+            <div class="card-widget card-recent-post tw:[#aside-content_&]:overflow-hidden">
+              <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">
+                <i class="solitude fas fa-map" />
+                <span>{t('recentPosts')}</span>
+              </div>
+              <div class="aside-list tw:[#console_&]:flex tw:[#console_&]:flex-wrap tw:[#console_&]:flex-row tw:[#console_&]:justify-between tw:[#body-wrap.error_&]:flex tw:[#body-wrap.error_&]:flex-row">
+                {recent.map((p) => (
+                  <a
+                    class="aside-list-item"
+                    href={url(contentPath(p))}
+                    title={p.data.title}
+                  >
+                    {p.data.cover && (
+                      <div class="thumbnail">
+                        <img src={url(p.data.cover)} alt="" loading="lazy" />
+                      </div>
+                    )}
+                    <div class="content">
+                      <span class="title">{p.data.title}</span>
+                      <span class="categories">{p.data.categories[0]}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : name.trim() === 'allInfo' ? (
+            <div class="card-widget card-tags card-archives card-webinfo card-allinfo tw:[#aside-content_&]:overflow-hidden">
+              {cfg.aside.tags.enable && (
+                <>
+                  <div class="card-tag-cloud tw:overflow-hidden tw:relative tw:flex tw:flex-row tw:flex-wrap tw:[#console_.console-card.tags_&]:flex tw:[#console_.console-card.tags_&]:flex-wrap tw:[#sidebar_#sidebar-menus_&]:flex tw:[#sidebar_#sidebar-menus_&]:whitespace-nowrap tw:[#sidebar_#sidebar-menus_&]:flex-row tw:[#sidebar_#sidebar-menus_&]:flex-wrap">
+                    {tags.slice(0, cfg.aside.tags.limit).map((tag) => (
+                      <a
+                        href={url(tag.path)}
+                        class={
+                          cfg.aside.tags.highlight_list.includes(tag.name)
+                            ? 'highlight'
+                            : undefined
+                        }
+                      >
+                        {tag.name}
+                        <sup>{tag.posts.length}</sup>
+                      </a>
+                    ))}
+                  </div>
+                  {tags.length >= cfg.aside.tags.limit && (
+                    <span id="more-tags-btn" data-solitude-action="openAllTags">
+                      {t('moreTags')}
+                    </span>
+                  )}
+                  <hr />
+                </>
+              )}
+              <div class="webinfo tw:[#sidebar_#sidebar-menus_&]:flex tw:[#sidebar_#sidebar-menus_&]:whitespace-nowrap tw:[#sidebar_#sidebar-menus_&]:flex-col">
+                {cfg.aside.siteinfo.postcount && (
+                  <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
+                    <div class="item-name">{t('posts')}</div>
+                    <div class="item-count">{posts.length}</div>
+                  </div>
+                )}
+                {cfg.aside.siteinfo.runtimeenable && (
+                  <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
+                    <div class="item-name">{t('uptime')}</div>
+                    <div class="item-count runtimeshow" />
+                  </div>
+                )}
+                {cfg.aside.siteinfo.updatetime && (
+                  <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
+                    <div class="item-name">{t('lastUpdated')}</div>
+                    <time class="item-count" datetime={isoDate(updated)}>
+                      {dateLabel(updated)}
+                    </time>
+                  </div>
+                )}
+                {cfg.aside.siteinfo.wordcount && (
+                  <div class="webinfo-item tw:flex tw:flex-row tw:justify-between tw:[#sidebar_#sidebar-menus_.webinfo_&]:justify-between">
+                    <div class="item-name">{t('totalWords')}</div>
+                    <div class="item-count">
+                      {posts.reduce((n, p) => n + wordCount(p.body ?? ''), 0)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : name.trim() === 'newest_comment' &&
+            cfg.comment.use &&
+            cfg.comment.sidebar ? (
+            <div class="card-widget card-recent-comment tw:[#aside-content_&]:overflow-hidden">
+              <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">
+                <i class="solitude fas fa-comment" />
+                <span>{t('recentComments')}</span>
+                {cfg.recent_comments.enable && (
+                  <a
+                    class="recent-comment-more tw:[.card-recent-comment_&]:inline-flex tw:[.card-recent-comment_&]:items-center tw:[.card-recent-comment_&]:justify-center tw:[#console_&]:flex tw:[#console_&]:items-center"
+                    href={url(cfg.recent_comments.page)}
+                    title={t('more')}
+                    aria-label={t('more')}
+                  >
+                    <i
+                      class="solitude fas fa-circle-chevron-right"
+                      aria-hidden="true"
+                    />
+                  </a>
+                )}
+              </div>
+              <div
+                class="aside-list tw:[#console_&]:flex tw:[#console_&]:flex-wrap tw:[#console_&]:flex-row tw:[#console_&]:justify-between tw:[#body-wrap.error_&]:flex tw:[#body-wrap.error_&]:flex-row"
+                data-comment-provider={cfg.comment.use}
+                aria-live="polite"
+                aria-busy="true"
+              >
+                <div
+                  class="comment-loading tw:[.card-recent-comment_&]:inline-flex tw:[.card-recent-comment_&]:items-center"
+                  role="status"
+                >
+                  {t('commentsLoading')}
+                </div>
+              </div>
+            </div>
+          ) : null,
+        )}
+      </AsideGroup>
+    ))}
+  </div>
+)}

@@ -26,7 +26,7 @@ Output must be separate from the source and its parent directory must exist. Pre
 
 | Source | Exported location |
 | --- | --- |
-| `hugo.yaml` | `src/site.config.ts` |
+| `hugo.yaml` | `site.config.ts` |
 | `content/` | `src/content/posts/`, `src/content/pages/` |
 | Media alongside content | `public/hugo-content/`, with recognized references rewritten |
 | `data/*.yaml`, JSON | `src/data/*.json` |

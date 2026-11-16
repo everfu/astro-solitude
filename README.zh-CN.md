@@ -57,10 +57,10 @@ pnpm dev
 
 ### 2. 配置站点
 
-编辑 [`src/site.config.ts`](src/site.config.ts)，设置站点地址、标题、作者、导航和主题选项。以下是最小配置示例：
+编辑 [`site.config.ts`](site.config.ts)，设置站点地址、标题、作者、导航和主题选项。以下是最小配置示例：
 
 ```ts
-import { defineSolitudeConfig } from './lib/config';
+import { defineSolitudeConfig } from './src/config';
 
 export default defineSolitudeConfig({
   site: 'https://example.com',
@@ -135,19 +135,23 @@ pnpm preview
 
 ```text
 astro-solitude/
-├── public/                # 图片、字体等静态资源
+├── site.config.ts        # 站点配置入口
+├── astro.config.mjs      # Astro 构建配置
+├── scripts/              # 资源、文档和导入工具
 ├── src/
-│   ├── components/        # 主题与 MDX 组件
-│   ├── content/
-│   │   ├── posts/         # 博客文章
-│   │   └── pages/         # 自定义页面
-│   ├── data/              # 关于、友链、装备、短文等页面数据
-│   ├── layouts/           # 页面布局
-│   ├── pages/             # Astro 路由
-│   ├── styles/custom.css  # 自定义样式
-│   └── site.config.ts     # 站点配置入口
-├── docs/                  # 使用文档
-└── astro.config.mjs       # Astro 配置
+│   ├── config/           # 配置工厂、默认值和短代码映射
+│   ├── components/       # 主题组件、页面视图与 MDX 组件
+│   ├── content/          # 博客文章与自定义页面
+│   ├── data/             # 关于、友链、装备和短文数据
+│   ├── i18n/             # 界面翻译
+│   ├── integrations/     # Astro 构建集成
+│   ├── layouts/          # 文档外壳与页面视图分派
+│   ├── lib/              # 内容、路由和站点公共逻辑
+│   ├── pages/            # Astro 路由
+│   ├── scripts/          # 浏览器入口、应用初始化与功能模块
+│   ├── styles/           # 主题样式与 custom.css
+│   └── types/            # 共享内容和运行时类型
+└── docs/                 # 使用文档
 ```
 
 ## 参与贡献

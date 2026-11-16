@@ -1,10 +1,10 @@
 ---
-import links from '../../data/links.json';
-import { cfg, t, url } from '../../lib/site';
+import links from '@/data/links.json';
+import { cfg, t, url } from '@/lib/site';
 interface Props {
   data?: {
     links: (Omit<(typeof links.links)[number], 'link_list'> & {
-      link_list: import('../../lib/page-types').FriendLink[];
+      link_list: import('@/types/page').FriendLink[];
     })[];
   };
   title?: string;

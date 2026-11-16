@@ -1,5 +1,5 @@
-import { Solitude } from '../core/api';
-import { lifecycle } from '../core/lifecycle';
+import { Solitude } from '@/scripts/core/api';
+import { lifecycle } from '@/scripts/core/lifecycle';
 export const sidebarFn = () => {
   const $toggleMenu = document.getElementById('toggle-menu');
   const $mobileSidebarMenus = document.getElementById('sidebar-menus');

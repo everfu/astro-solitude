@@ -1,10 +1,10 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import site from './src/site.config.ts';
+import site from './site.config.ts';
 import mdx from '@astrojs/mdx';
 import { satteri } from '@astrojs/markdown-satteri';
-import outputLayout from './scripts/output-layout.ts';
-import { solitudeMarkdown, solitudeMath } from './scripts/markdown-plugin.ts';
+import outputLayout from './src/integrations/output-layout.ts';
+import { solitudeMarkdown, solitudeMath } from './src/integrations/markdown.ts';
 
 export default defineConfig({
   site: site.site,

@@ -23,7 +23,7 @@ Check the homepage, posts, images, search, and 404 page before publishing. Use N
 | `https://YOUR_NAME.github.io/` | `https://YOUR_NAME.github.io` | `/` |
 | `https://YOUR_NAME.github.io/my-blog/` | `https://YOUR_NAME.github.io` | `/my-blog/` |
 
-Set these values in `src/site.config.ts`; avoid maintaining a different address in Astro's configuration. Rebuild after changing the domain or prefix. RSS, Sitemap, canonical links, and search paths depend on these settings.
+Set these values in `site.config.ts`; avoid maintaining a different address in Astro's configuration. Rebuild after changing the domain or prefix. RSS, Sitemap, canonical links, and search paths depend on these settings.
 
 ## GitHub Pages
 

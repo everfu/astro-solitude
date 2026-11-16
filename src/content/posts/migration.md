@@ -19,7 +19,7 @@ Welcome to **Astro Solitude**. This sample post is ready to replace with your ow
 
 ## Content and expression
 
-The theme separates content, configuration, and page components. Keep posts in `src/content/posts` and site settings in `src/site.config.ts`.
+The theme separates content, configuration, and page components. Keep posts in `src/content/posts` and site settings in `site.config.ts`.
 
 > Let your content take center stage.
 

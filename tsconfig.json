@@ -5,6 +5,9 @@
   "compilerOptions": {
     "allowJs": false,
     "resolveJsonModule": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }

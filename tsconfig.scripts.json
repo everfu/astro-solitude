@@ -1,6 +1,11 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/**/*.ts", "scripts/**/*.ts", ".astro/types.d.ts"],
+  "include": [
+    "site.config.ts",
+    "src/**/*.ts",
+    "scripts/**/*.ts",
+    ".astro/types.d.ts"
+  ],
   "exclude": ["node_modules", "dist", "artifacts", "output"],
   "compilerOptions": {
     "noEmit": true,

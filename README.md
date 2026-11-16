@@ -57,10 +57,10 @@ Open the local URL shown in your terminal to preview the theme and sample conten
 
 ### 2. Configure your site
 
-Edit [`src/site.config.ts`](src/site.config.ts) to set your site URL, title, author, navigation, and theme options. Here is a minimal configuration:
+Edit [`site.config.ts`](site.config.ts) to set your site URL, title, author, navigation, and theme options. Here is a minimal configuration:
 
 ```ts
-import { defineSolitudeConfig } from './lib/config';
+import { defineSolitudeConfig } from './src/config';
 
 export default defineSolitudeConfig({
   site: 'https://example.com',
@@ -133,19 +133,23 @@ The template, sample content, and documentation use English by default. Built-in
 
 ```text
 astro-solitude/
-├── public/                # Images, fonts, and other static assets
+├── site.config.ts        # Site configuration
+├── astro.config.mjs      # Astro build configuration
+├── scripts/              # Asset, documentation, and import tools
 ├── src/
-│   ├── components/        # Theme and MDX components
-│   ├── content/
-│   │   ├── posts/         # Blog posts
-│   │   └── pages/         # Custom pages
-│   ├── data/              # About, links, equipment, and short-post data
-│   ├── layouts/           # Page layouts
-│   ├── pages/             # Astro routes
-│   ├── styles/custom.css  # Custom styles
-│   └── site.config.ts     # Site configuration
-├── docs/                  # Documentation
-└── astro.config.mjs       # Astro configuration
+│   ├── config/           # Configuration factory, defaults, and shortcode mappings
+│   ├── components/       # Theme, page views, and MDX components
+│   ├── content/          # Blog posts and custom pages
+│   ├── data/             # About, links, equipment, and short-post data
+│   ├── i18n/             # Translations
+│   ├── integrations/     # Astro build integrations
+│   ├── layouts/          # Document shell and route view dispatch
+│   ├── lib/              # Content, routing, and site logic
+│   ├── pages/            # Astro routes
+│   ├── scripts/          # Browser entry, app, core, and feature modules
+│   ├── styles/           # Theme styles and custom.css
+│   └── types/            # Shared content and runtime types
+└── docs/                 # Documentation
 ```
 
 ## Contributing

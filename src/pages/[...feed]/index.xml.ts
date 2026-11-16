@@ -1,5 +1,5 @@
-import { getPosts, taxonomy } from '../../lib/content';
-import { rss } from '../../lib/feeds';
+import { getPosts, taxonomy } from '@/lib/content';
+import { rss } from '@/lib/content/feeds';
 export async function getStaticPaths() {
   const posts = await getPosts();
   return [

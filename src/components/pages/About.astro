@@ -1,11 +1,11 @@
 ---
-import about from '../../data/about.json';
-import { url, json, t } from '../../lib/site';
+import about from '@/data/about.json';
+import { url, json, t } from '@/lib/site';
 import { marked } from 'marked';
 interface Props {
-  data?: import('../../lib/about-types').AboutData;
+  data?: import('@/types/about').AboutData;
 }
-const data: import('../../lib/about-types').AboutData =
+const data: import('@/types/about').AboutData =
   Astro.props.data ?? about;
 const careerStyle = (
   event: { from: number; to?: number; color?: string },

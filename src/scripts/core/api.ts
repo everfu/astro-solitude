@@ -1,9 +1,9 @@
 import { navigate } from 'astro:transitions/client';
-import type { SolitudeAPI } from '../api-types';
-import { getConfig, getPageConfig } from './config';
-import { lifecycle } from './lifecycle';
-import { loadScript, loadStyle, type ScriptOptions } from './resources';
-import { saveToLocal } from './storage';
+import type { SolitudeAPI } from '@/scripts/types/api';
+import { getConfig, getPageConfig } from '@/scripts/core/config';
+import { lifecycle } from '@/scripts/core/lifecycle';
+import { loadScript, loadStyle, type ScriptOptions } from '@/scripts/core/resources';
+import { saveToLocal } from '@/scripts/core/storage';
 
 document.documentElement.dataset.solitudeRuntime = 'booting';
 

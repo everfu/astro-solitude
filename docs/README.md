@@ -28,4 +28,4 @@ Start with a template. Make it your own blog.
 
 File paths are relative to the repository root. Run commands there. Merge configuration snippets into your existing `defineSolitudeConfig({...})` call; do not add a second default export. Except for complete examples in Getting started, snippets show only the fields being changed.
 
-Base defaults come from `src/lib/defaults.json` and `src/lib/config.ts`. The template overrides selected appearance and interaction settings in `src/site.config.ts`. Comments and the music hall are disabled in the template; the music capsule uses a sample Qishui playlist. Local search works without an account. Replace `theme.capsule.id` or set `theme.capsule.enable: false` to disable the capsule.
+Base defaults come from `src/config/defaults.json` and `src/config/index.ts`. The template overrides selected appearance and interaction settings in `site.config.ts`. Comments and the music hall are disabled in the template; the music capsule uses a sample Qishui playlist. Local search works without an account. Replace `theme.capsule.id` or set `theme.capsule.enable: false` to disable the capsule.

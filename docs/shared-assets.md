@@ -9,9 +9,9 @@ Hugo does not need Node.js to build; Node.js is only used by maintainers when sy
 Run these commands from the Astro repository with Node.js 22.12.0 or later:
 
 ```sh
-node scripts/sync-assets.mjs
-node scripts/sync-assets.mjs --write
-node scripts/sync-assets.mjs --check
+node scripts/assets/sync.mjs
+node scripts/assets/sync.mjs --write
+node scripts/assets/sync.mjs --check
 ```
 
 The default operation previews changes without writing. `--write` copies the listed
@@ -24,8 +24,8 @@ The default layout has sibling directories `astro-solitude`, `hexo-theme-solitud
 and `solitude`. For another layout, supply paths:
 
 ```sh
-node scripts/sync-assets.mjs --check --hexo-root ../my-hexo-theme --hugo-root ../my-hugo-theme
-node scripts/sync-assets.mjs --check --project astro
+node scripts/assets/sync.mjs --check --hexo-root ../my-hexo-theme --hugo-root ../my-hugo-theme
+node scripts/assets/sync.mjs --check --project astro
 ```
 
 Use `--source-root` to select another Astro source checkout. `--astro-root` can

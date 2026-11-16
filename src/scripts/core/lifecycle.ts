@@ -1,4 +1,4 @@
-import type { SolitudeLifecycleEvents } from '../types';
+import type { SolitudeLifecycleEvents } from '@/types/runtime';
 const EVENT_PREFIX = 'solitude:';
 
 class Lifecycle {

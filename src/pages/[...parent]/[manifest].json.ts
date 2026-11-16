@@ -1,4 +1,4 @@
-import { cfg, config, url } from '../../lib/site';
+import { cfg, config, url } from '@/lib/site';
 export function getStaticPaths() {
   return cfg.pwa.enable && cfg.pwa.manifest.endsWith('.json')
     ? [

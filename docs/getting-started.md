@@ -27,10 +27,10 @@ Open the local address shown in your terminal. Press `Ctrl+C` for a foreground s
 
 ## 3. Set your identity and URL
 
-Edit [src/site.config.ts](../src/site.config.ts). Keep the template navigation and appearance, or replace the file with this minimal configuration:
+Edit [site.config.ts](../site.config.ts). Keep the template navigation and appearance, or replace the file with this minimal configuration:
 
 ```ts
-import { defineSolitudeConfig } from './lib/config';
+import { defineSolitudeConfig } from './src/config';
 
 export default defineSolitudeConfig({
   site: 'https://example.com',
@@ -72,7 +72,7 @@ Preview `/p/hello-world/`. Use `.md` for regular posts and `.mdx` for posts cont
 | Posts and cover images | `src/content/posts/`, `public/img/` |
 | Custom pages | `src/content/pages/` |
 | About, friends, equipment, short updates | `src/data/`; see [Pages](pages.md) |
-| Title, avatar, navigation, sidebar, footer | `src/site.config.ts` |
+| Title, avatar, navigation, sidebar, footer | `site.config.ts` |
 | Additional styles | `src/styles/custom.css` |
 
 Keep the component showcase as a reference until you no longer need it. When removing a sample post, also update navigation, recommendations, and links from other posts. Comments and the music hall have no preset service identifiers. The capsule uses a sample Qishui playlist; replace `theme.capsule.id` or set `theme.capsule.enable: false` to disable it. Configure your own services through [Integrations](integrations.md).

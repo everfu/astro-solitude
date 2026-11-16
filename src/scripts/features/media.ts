@@ -1,4 +1,4 @@
-import { lifecycle } from '../core/lifecycle';
+import { lifecycle } from '@/scripts/core/lifecycle';
 export const initPostCoverTilt = () => {
   const cover = document.querySelector<HTMLElement>('.post-cover-aside');
   const canTilt = window.matchMedia(
