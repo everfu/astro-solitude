@@ -9,8 +9,8 @@
 ## Validation
 
 <!-- List commands run and their results. Explain skipped checks or known failures.
-Core checks: pnpm docs:check, pnpm check, pnpm build, pnpm test.
-For browser changes: pnpm build:fixture, pnpm exec playwright install chromium, pnpm test:e2e.
+Run pnpm docs:check, pnpm assets:check, pnpm check, and pnpm build.
+For browser changes, review affected pages, interactions, and responsive layouts with pnpm preview.
 For documentation-only changes: check affected links and run pnpm docs:check.
 -->
 
@@ -27,5 +27,5 @@ For documentation-only changes: check affected links and run pnpm docs:check.
 - [ ] I have read the [contribution guide](https://github.com/everfu/astro-solitude/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/everfu/astro-solitude/blob/main/CODE_OF_CONDUCT.md).
 - [ ] This change is focused and contains no credentials or private data.
 - [ ] I have updated relevant documentation and translations, or they are not affected.
-- [ ] I have added appropriate regression coverage, or explained why it is not needed.
+- [ ] I have checked affected behavior and recorded the verification steps.
 - [ ] I have recorded validation results and any remaining limitations above.

@@ -1,20 +1,7 @@
 {
   "extends": "./tsconfig.json",
-  "include": [
-    "src/**/*.ts",
-    "scripts/**/*.ts",
-    "tests/**/*.ts",
-    "playwright.config.ts",
-    ".astro/types.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    ".astro/*-fixture",
-    "artifacts",
-    "output",
-    "test-results"
-  ],
+  "include": ["src/**/*.ts", "scripts/**/*.ts", ".astro/types.d.ts"],
+  "exclude": ["node_modules", "dist", "artifacts", "output"],
   "compilerOptions": {
     "noEmit": true,
     "types": ["node"],

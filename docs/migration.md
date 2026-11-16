@@ -45,4 +45,4 @@ pnpm build
 pnpm preview
 ```
 
-Check old URLs, images, categories, series, components, formulas, and redirects. Configure third-party services again. Mapping tests and the component showcase cannot replace a review of your actual content.
+Review your actual content, including old URLs, images, categories, series, components, formulas, and redirects. Configure third-party services again.

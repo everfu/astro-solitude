@@ -156,20 +156,12 @@ Run these checks before submitting changes:
 
 ```sh
 pnpm docs:check
+pnpm assets:check
 pnpm check
 pnpm build
-pnpm test
 ```
 
-For changes to page interactions, also run the browser tests:
-
-```sh
-pnpm build:fixture
-pnpm exec playwright install chromium
-pnpm test:e2e
-```
-
-Browser tests use an isolated fixture site. Mocked third-party tests do not establish that live services work. See the [development validation report](docs/parity.md) for test coverage and source comparisons.
+For changes to page interactions, use `pnpm preview` to review the affected pages. See the [development and validation guide](docs/parity.md) for local checks and source attribution.
 
 ## License
 

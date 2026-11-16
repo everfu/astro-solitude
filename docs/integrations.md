@@ -88,4 +88,4 @@ The theme provides a search interface but does not create or synchronize your ex
 
 ## Verify your integration
 
-Check loading, empty results, error messages, theme switching, and navigation with your own service. Repository tests use mocked responses and do not establish that your production account is configured correctly. Test identifiers are not production credentials.
+Check loading, empty results, error messages, theme switching, and navigation with your own service. Use the credentials and public identifiers for your production account.

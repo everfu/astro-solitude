@@ -22,7 +22,7 @@ Start with a template. Make it your own blog.
 - [Troubleshooting](faq.md): paths, drafts, resources, and theme updates.
 - [Configuration reference](configuration-inventory.md): generated base defaults.
 - [Component parameter index](component-inventory.md): local component mappings and parameter summaries.
-- [Development and validation](parity.md): checks, test coverage, and screenshots.
+- [Development and validation](parity.md) covers local checks, architecture, and source attribution.
 
 ## Conventions
 

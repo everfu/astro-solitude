@@ -24,7 +24,7 @@ Open the local URL printed in the terminal. See [Getting started](docs/getting-s
 ## Make a focused change
 
 - Keep each pull request focused on one problem. Avoid unrelated formatting, sample-content changes, or dependency updates.
-- Follow the surrounding code style and add regression coverage when fixing behavior.
+- Follow the surrounding code style and verify affected behavior when fixing defects.
 - For visible changes, review desktop and mobile layouts, light and dark modes, and keyboard interaction.
 - Keep interface translation keys consistent across `src/i18n/` when adding or changing translatable UI text.
 - Update the relevant documentation when changing configuration, components, or user-facing behavior. If generated reference files change, run `pnpm docs:generate` and review the result.
@@ -36,22 +36,20 @@ The core CI checks are:
 
 ```sh
 pnpm docs:check
+pnpm assets:check
 pnpm check
 pnpm build
-pnpm test
 ```
 
-Build before running tests: output tests inspect the generated site. For layout, interaction, routing, or integration changes, also run:
+Use the production preview after building to review layout, interaction, routing, or integration changes.
 
 ```sh
-pnpm build:fixture
-pnpm exec playwright install chromium
-pnpm test:e2e
+pnpm preview
 ```
 
-The browser suite uses the main production build and isolated fixture sites. Keep the ports configured in [playwright.config.ts](playwright.config.ts) available so an unrelated preview server is not reused. Mocked integration tests do not verify live third-party services.
+Check affected pages at desktop and mobile sizes, in both themes, and with keyboard navigation. Verify configured third-party services with your own account and site.
 
-For documentation-only changes, check the affected links and run `pnpm docs:check`. State which checks you ran and explain anything skipped. The full CI workflow is in [check.yml](.github/workflows/check.yml); see the [validation report](docs/parity.md) for coverage details.
+For documentation-only changes, check the affected links and run `pnpm docs:check`. State which checks you ran and explain anything skipped. The full CI workflow is in [check.yml](.github/workflows/check.yml). See the [development and validation guide](docs/parity.md) for check details.
 
 ## Submit a pull request
 

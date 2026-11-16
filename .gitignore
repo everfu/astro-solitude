@@ -1,13 +1,8 @@
 node_modules/
 dist/
 .astro/
-test-results/
-playwright-report/
 .env
 .env.*
 !.env.example
 .DS_Store
 artifacts/
-
-# Temporary pull-request comparison checkout
-.visual-baseline/

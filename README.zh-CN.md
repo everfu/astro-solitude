@@ -158,20 +158,12 @@ astro-solitude/
 
 ```sh
 pnpm docs:check
+pnpm assets:check
 pnpm check
 pnpm build
-pnpm test
 ```
 
-涉及页面交互时，可进一步运行浏览器测试：
-
-```sh
-pnpm build:fixture
-pnpm exec playwright install chromium
-pnpm test:e2e
-```
-
-浏览器测试使用独立测试站，第三方服务的模拟测试不代表线上服务已联调。测试范围与来源对照见 [开发验收记录](docs/parity.md)。
+涉及页面交互时，使用 `pnpm preview` 检查受影响的页面。本地检查与来源说明见 [开发与验证指南](docs/parity.md)。
 
 ## 许可
 
