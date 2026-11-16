@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/Icon.astro';
 import { url, t } from '@/lib/site';
 import { pageRange } from '@/lib/routing/pagination';
 interface Props {
@@ -23,7 +24,7 @@ const href = (n: number) => url(n === 1 ? `${base}/` : `${base}/page/${n}/`);
           href={href(current - 1)}
           aria-label={t('previousPage')}
         >
-          <i class="fas fa-chevron-left" aria-hidden="true" />
+          <Icon name="lucide:chevron-left" aria-hidden="true" />
           <span class="pagination_tips_prev">{t('previousPageShort')}</span>
         </a>
       )}
@@ -49,7 +50,7 @@ const href = (n: number) => url(n === 1 ? `${base}/` : `${base}/page/${n}/`);
           aria-label={t('nextPage')}
         >
           <span class="pagination_tips_next">{t('nextPageShort')}</span>
-          <i class="fas fa-chevron-right" aria-hidden="true" />
+          <Icon name="lucide:chevron-right" aria-hidden="true" />
         </a>
       )}
     </div>

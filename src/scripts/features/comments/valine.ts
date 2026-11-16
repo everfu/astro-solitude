@@ -1,7 +1,12 @@
 import { Solitude } from '@/scripts/core/api';
+import { createIcon } from '@/scripts/core/icons';
 import { lifecycle } from '@/scripts/core/lifecycle';
 import { initializeMessageBarrage } from '@/scripts/features/comments/message-barrage';
-import { commentText, formatCommentText, setStatus } from '@/scripts/features/comments/shared';
+import {
+  commentText,
+  formatCommentText,
+  setStatus,
+} from '@/scripts/features/comments/shared';
 import {
   commentBarrageEnabled,
   fetchAggregateComments,
@@ -173,9 +178,7 @@ export const renderAside = (
       comment.content || commentText('empty', 'No comments yet');
     const source = document.createElement('div');
     source.className = 'comment-source';
-    const sourceIcon = document.createElement('i');
-    sourceIcon.className = 'solitude fas fa-file-lines';
-    sourceIcon.setAttribute('aria-hidden', 'true');
+    const sourceIcon = createIcon('lucide:file-text');
     const sourceTitle = document.createElement('span');
     sourceTitle.textContent = comment.title;
     source.append(sourceIcon, sourceTitle);
@@ -211,8 +214,7 @@ export const createCommentCard = (comment: NormalizedComment) => {
     comment.content || commentText('empty', 'No comments yet');
   const title = document.createElement('div');
   title.className = 'comment-title';
-  const icon = document.createElement('i');
-  icon.className = 'solitude fas fa-comment';
+  const icon = createIcon('lucide:message-circle');
   title.append(icon, document.createTextNode(` ${comment.title}`));
   card.append(info, content, title);
   return card;

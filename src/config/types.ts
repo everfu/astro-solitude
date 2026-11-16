@@ -1,9 +1,10 @@
 import type defaults from './defaults.json';
+import type { IconName } from '@/lib/icons';
 
 export interface Link {
   name: string;
   url?: string;
-  icon?: string;
+  icon?: IconName;
   action?: string;
   children?: Link[];
 }
@@ -24,7 +25,7 @@ export interface Recommendation {
   enable?: boolean;
 }
 interface EmptyArrays {
-  'nav.group': Record<string, ThemeLink[]>;
+  'nav.group': Record<string, (Omit<ThemeLink, 'icon'> & { icon?: string })[]>;
   'footer.group': Record<string, ThemeLink[]>;
   'nav.right.custom': ThemeLink[];
   'hometop.recommendList': Recommendation[];
@@ -36,7 +37,9 @@ interface EmptyArrays {
   'right_menu.custom_list': ThemeLink[];
   'footer.information.left': ThemeLink[];
   'footer.information.right': ThemeLink[];
-  'footer.links': ThemeLink[];
+  'footer.links': (Omit<ThemeLink, 'icon'> & {
+    icon?: IconName | IconName[];
+  })[];
   'footer.beian': { name: string; url?: string; icon?: string }[];
   'keyboard.list': {
     name?: string;

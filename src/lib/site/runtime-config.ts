@@ -1,6 +1,6 @@
 import { cfg, config, t, url } from '@/lib/site';
 import { contentPath, type Post, type Page } from '@/lib/content';
-import links from '@/data/links.json';
+import links from '@/data/links';
 export function runtimeConfig(
   posts: Post[],
   pages: Page[],

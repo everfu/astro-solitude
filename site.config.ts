@@ -12,9 +12,9 @@ export default defineSolitudeConfig({
     {
       name: 'Library',
       children: [
-        { name: 'All posts', url: '/archives/', icon: 'fas fa-folder-closed' },
-        { name: 'Categories', url: '/categories/', icon: 'fas fa-clone' },
-        { name: 'Tags', url: '/tags/', icon: 'fas fa-tags' },
+        { name: 'All posts', url: '/archives/', icon: 'lucide:folder' },
+        { name: 'Categories', url: '/categories/', icon: 'lucide:copy' },
+        { name: 'Tags', url: '/tags/', icon: 'lucide:tags' },
       ],
     },
     { name: 'Friends', url: '/links/' },
@@ -58,7 +58,7 @@ export default defineSolitudeConfig({
           {
             name: 'GitHub',
             url: 'https://github.com/everfu/astro-solitude',
-            icon: 'fab fa-github',
+            icon: 'simple-icons:github',
           },
         ],
       },
@@ -69,10 +69,10 @@ export default defineSolitudeConfig({
           {
             name: 'GitHub',
             url: 'https://github.com/everfu/astro-solitude',
-            icon: 'fab fa-github',
+            icon: 'simple-icons:github',
           },
         ],
-        right: [{ name: 'RSS', url: '/index.xml', icon: 'fas fa-rss' }],
+        right: [{ name: 'RSS', url: '/index.xml', icon: 'lucide:rss' }],
       },
       group: {
         Explore: [

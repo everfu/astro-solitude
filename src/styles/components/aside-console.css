@@ -34,7 +34,7 @@
   gap: 5px;
 }
 
-#aside-content .card-widget .item-headline i {
+#aside-content .card-widget .item-headline .solitude-icon {
   font-size: 18px;
 }
 
@@ -198,12 +198,12 @@
   transform: scale(1.1);
 }
 
-.card-info .bottom-group .social-icons .social-icon:hover i {
+.card-info .bottom-group .social-icons .social-icon:hover .solitude-icon {
   color: var(--efu-main);
   background: var(--efu-white);
 }
 
-.card-info .bottom-group .social-icons .social-icon i {
+.card-info .bottom-group .social-icons .social-icon .solitude-icon {
   background: var(--efu-white-op);
   color: var(--efu-white);
   flex: 0 0 40px;
@@ -218,7 +218,7 @@
   border-radius: 32px;
 }
 
-[data-theme='dark'] .card-info .bottom-group .social-icons .social-icon i {
+[data-theme='dark'] .card-info .bottom-group .social-icons .social-icon .solitude-icon {
   background: var(--efu-black);
   color: var(--efu-white);
 }
@@ -482,7 +482,7 @@
     box-shadow var(--efu-motion-fast);
 }
 
-.card-recent-comment .recent-comment-more i {
+.card-recent-comment .recent-comment-more .solitude-icon {
   font-size: 14px;
 }
 
@@ -637,7 +637,7 @@
   transition: color var(--efu-motion-fast);
 }
 
-.card-recent-comment .comment-source i {
+.card-recent-comment .comment-source .solitude-icon {
   width: 14px;
   flex: none;
   color: var(--efu-lighttext);
@@ -901,7 +901,7 @@
   transition: 0.3s;
 }
 
-#console .button-group .console-btn-item :is(span, button) i {
+#console .button-group .console-btn-item :is(span, button) .solitude-icon {
   font-size: 16px;
 }
 

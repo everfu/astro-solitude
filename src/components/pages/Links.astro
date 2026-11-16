@@ -1,12 +1,9 @@
 ---
-import links from '@/data/links.json';
+import Icon from '@/components/Icon.astro';
+import links from '@/data/links';
 import { cfg, t, url } from '@/lib/site';
 interface Props {
-  data?: {
-    links: (Omit<(typeof links.links)[number], 'link_list'> & {
-      link_list: import('@/types/page').FriendLink[];
-    })[];
-  };
+  data?: import('@/types/page-data').LinksData;
   title?: string;
   description?: string;
   comment?: boolean;
@@ -19,6 +16,8 @@ const {
 } = Astro.props;
 const groups: NonNullable<Props['data']>['links'] = data.links;
 const all = groups.flatMap((g) => g.link_list);
+const asyncLinks =
+  data === links && all.length > cfg.page.links.async_threshold;
 const cycle = all.length
   ? Array.from(
       { length: Math.max(24, all.length * 2) },
@@ -42,7 +41,7 @@ const cycle = all.length
         type="button"
         data-solitude-action="travelling"
       >
-        <i class="solitude fas fa-tower-broadcast" />
+        <Icon name="lucide:radio-tower" class="solitude" />
         <span class="banner-button-text">{t('randomLink')}</span>
       </button>
       <a
@@ -51,11 +50,15 @@ const cycle = all.length
           cfg.comment.use && comment ? '#post-comment' : '#friend-links-apply'
         }
       >
-        <i class="solitude fas fa-circle-chevron-right" />
+        <Icon name="lucide:circle-chevron-right" class="solitude" />
         <span class="banner-button-text">{t('applyFriendLink')}</span>
       </a>
     </div>
-    <div class="tags-group-all nowrapMove tw:flex" aria-label={title}>
+    <div
+      class="tags-group-all nowrapMove tw:flex"
+      aria-label={title}
+      data-friend-links-banner={asyncLinks ? '' : undefined}
+    >
       <div class="tags-group-wrapper">
         {cycle
           .filter((_, i) => i % 2 === 0)
@@ -84,84 +87,86 @@ const cycle = all.length
   </div>
 )}
 <div class="flink article-container" id="friend-links-list">
-  {groups.map((g) => (
-    <>
-      <h2>
-        {g.class_name} ({g.link_list.length})
-      </h2>
-      <div class="flink-desc">{g.class_desc}</div>
-      {g.type === 'card' ? (
-        <div class="site-card-group">
-          {g.link_list.map((item) => (
-            <div class="site-card">
-              {item.tag && <span class="site-card-tag">{item.tag}</span>}
-              <a
-                class="img"
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={item.name}
-              >
-                <img
-                  class="flink-avatar no-lightbox"
-                  src={url(item.topimg ?? item.avatar)}
-                  alt={item.name}
-                />
-              </a>
-              <a
-                class="info cf-friends-link"
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={item.name}
-              >
-                <div class="site-card-avatar">
+  <div data-friend-links-list={asyncLinks ? '' : undefined}>
+    {groups.map((g) => (
+      <>
+        <h2>
+          {g.class_name} ({g.link_list.length})
+        </h2>
+        <div class="flink-desc">{g.class_desc ?? g.descr}</div>
+        {g.type === 'card' ? (
+          <div class="site-card-group">
+            {g.link_list.map((item) => (
+              <div class="site-card">
+                {item.tag && <span class="site-card-tag">{item.tag}</span>}
+                <a
+                  class="img"
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={item.name}
+                >
+                  <img
+                    class="flink-avatar no-lightbox"
+                    src={url(item.topimg ?? item.avatar)}
+                    alt={item.name}
+                  />
+                </a>
+                <a
+                  class="info cf-friends-link"
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={item.name}
+                >
+                  <div class="site-card-avatar">
+                    <img
+                      class="flink-avatar cf-friends-avatar no-lightbox"
+                      src={url(item.avatar ?? '/img/default_avatar.avif')}
+                      alt=""
+                    />
+                    <div class="img-alt is-center">{item.name}</div>
+                  </div>
+                  <div class="site-card-text">
+                    <span class="title cf-friends-name">{item.name}</span>
+                    <span class="desc">{item.descr}</span>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="flink-list">
+            {g.link_list.map((item) => (
+              <div class="flink-list-item tw:[.article-container_&]:relative tw:[.article-container_&]:flex tw:[.article-container_&]:overflow-hidden">
+                <a
+                  class="cf-friends-link"
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={item.name}
+                >
                   <img
                     class="flink-avatar cf-friends-avatar no-lightbox"
                     src={url(item.avatar ?? '/img/default_avatar.avif')}
                     alt=""
                   />
-                  <div class="img-alt is-center">{item.name}</div>
-                </div>
-                <div class="site-card-text">
-                  <span class="title cf-friends-name">{item.name}</span>
-                  <span class="desc">{item.descr}</span>
-                </div>
-              </a>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div class="flink-list">
-          {g.link_list.map((item) => (
-            <div class="flink-list-item tw:[.article-container_&]:relative tw:[.article-container_&]:flex tw:[.article-container_&]:overflow-hidden">
-              <a
-                class="cf-friends-link"
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={item.name}
-              >
-                <img
-                  class="flink-avatar cf-friends-avatar no-lightbox"
-                  src={url(item.avatar ?? '/img/default_avatar.avif')}
-                  alt=""
-                />
-                <div class="flink-item-info">
-                  <span class="flink-item-name cf-friends-name">
-                    {item.name}
-                  </span>
-                  <span class="flink-item-desc" title={item.descr}>
-                    {item.descr}
-                  </span>
-                </div>
-              </a>
-            </div>
-          ))}
-        </div>
-      )}
-    </>
-  ))}
+                  <div class="flink-item-info">
+                    <span class="flink-item-name cf-friends-name">
+                      {item.name}
+                    </span>
+                    <span class="flink-item-desc" title={item.descr}>
+                      {item.descr}
+                    </span>
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        )}
+      </>
+    ))}
+  </div>
   <div id="friend-links-apply">
     <slot />
   </div>

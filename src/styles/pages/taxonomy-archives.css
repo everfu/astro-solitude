@@ -342,7 +342,7 @@ span.tagsPageCount {
   font-size: 14px;
 }
 
-.archive-page-item-arrow i.solitude {
+.archive-page-item-arrow .solitude-icon.solitude {
   font-size: 14px;
 }
 
@@ -590,7 +590,7 @@ span.tagsPageCount {
   .archive-page-section-pagination .archive-page-extend:disabled {
     display: none;
   }
-  .archive-page-section-pagination .archive-page-extend i {
+  .archive-page-section-pagination .archive-page-extend .solitude-icon {
     display: none;
   }
   .archive-page-section-pagination .archive-page-extend span {
@@ -725,7 +725,7 @@ span.tagsPageCount {
   outline-offset: 3px;
 }
 
-#body-wrap.error #error-wrap .error-content .error-info a i {
+#body-wrap.error #error-wrap .error-content .error-info a .solitude-icon {
   font-size: 16px;
   padding-right: 0.3rem;
 }
@@ -883,7 +883,7 @@ div.console_recentcomments {
   padding-top: 8px;
 }
 
-.comment-title i {
+.comment-title .solitude-icon {
   font-size: 12px;
   line-height: 12px;
 }

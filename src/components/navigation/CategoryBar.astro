@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/Icon.astro';
 import { t, url } from '@/lib/site';
 import { taxonomy, type Post } from '@/lib/content';
 interface Props {
@@ -21,7 +22,7 @@ const categories = taxonomy(posts, 'categories');
     >
       <a href={url('/')}>
         <span class="category-bar-link-icon tw:inline-flex tw:items-center tw:justify-center">
-          <i class="solitude fas fa-star" />
+          <Icon name="lucide:star" class="solitude" />
         </span>
         <span>{t('home')}</span>
       </a>
@@ -29,7 +30,7 @@ const categories = taxonomy(posts, 'categories');
     <div class="category-bar-item" id="archives" data-default-order="1">
       <a href={url('/archives/')}>
         <span class="category-bar-link-icon tw:inline-flex tw:items-center tw:justify-center">
-          <i class="solitude fas fa-book" />
+          <Icon name="lucide:book-open" class="solitude" />
         </span>
         <span>{t('allPosts')}</span>
       </a>
@@ -53,7 +54,7 @@ const categories = taxonomy(posts, 'categories');
         data-solitude-action="scrollCategoryBarToRight"
         aria-label={t('more')}
       >
-        <i class="solitude fas fa-angles-right" />
+        <Icon name="lucide:chevrons-right" class="solitude" />
       </button>
     )}
     <a

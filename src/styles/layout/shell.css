@@ -67,7 +67,7 @@
   pointer-events: all !important;
 }
 
-span.tags-punctuation i {
+span.tags-punctuation .solitude-icon {
   font-weight: bold;
   font-size: 12px;
   transition: none;
@@ -75,7 +75,7 @@ span.tags-punctuation i {
   opacity: 0.4;
 }
 
-#post-info span.tags-punctuation i {
+#post-info span.tags-punctuation .solitude-icon {
   font-size: 14px;
   line-height: 32px;
 }
@@ -166,11 +166,6 @@ span.tags-punctuation i {
   display: none;
 }
 
-.article-container a.headerlink::before {
-  content: "\f0c1";
-  font-family: 'FontAwesome';
-  cursor: pointer;
-}
 
 .article-container a.headerlink:hover {
   border-bottom: none;

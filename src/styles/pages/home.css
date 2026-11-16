@@ -120,7 +120,7 @@
   text-shadow: 0 2px 20px rgba(0,0,0,0.15);
 }
 
-.home-center-title-tag i {
+.home-center-title-tag .solitude-icon {
   font-size: 12px;
 }
 
@@ -371,7 +371,7 @@
   height: 14px;
 }
 
-.category-bar-link-icon i {
+.category-bar-link-icon .solitude-icon {
   font-size: 13px;
 }
 
@@ -399,7 +399,7 @@
   transition: 0.3s;
 }
 
-.category-bar-next i {
+.category-bar-next .solitude-icon {
   font-size: 14px;
 }
 
@@ -503,7 +503,7 @@
   gap: 1px;
 }
 
-.hot-tip i {
+.hot-tip .solitude-icon {
   font-size: 10px;
   margin-right: 2px;
 }

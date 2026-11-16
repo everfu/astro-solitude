@@ -1,12 +1,12 @@
 ---
-import about from '@/data/about.json';
+import Icon from '@/components/Icon.astro';
+import about from '@/data/about';
 import { url, json, t } from '@/lib/site';
 import { marked } from 'marked';
 interface Props {
   data?: import('@/types/about').AboutData;
 }
-const data: import('@/types/about').AboutData =
-  Astro.props.data ?? about;
+const data: import('@/types/about').AboutData = Astro.props.data ?? about;
 const careerStyle = (
   event: { from: number; to?: number; color?: string },
   timeline?: { start: number; end: number },
@@ -55,7 +55,7 @@ for (const section of data.sections)
               <article class="author-content-item about-pursuit-card">
                 <p class="author-content-item-tips">{s.pursuit?.label}</p>
                 <h2>
-                  {s.pursuit?.lines?.map((line: string) => (
+                  {s.pursuit?.lines?.map((line) => (
                     <span>{line}</span>
                   ))}
                   <span
@@ -102,7 +102,7 @@ for (const section of data.sections)
                                   {item.image ? (
                                     <img src={url(item.image)} alt="" />
                                   ) : (
-                                    <i class={item.icon ?? 'fas fa-code'} />
+                                    <Icon name={item.icon ?? 'lucide:code'} />
                                   )}
                                 </span>
                               ))}
@@ -124,7 +124,7 @@ for (const section of data.sections)
                             {item.image ? (
                               <img src={url(item.image)} alt="" />
                             ) : (
-                              <i class={item.icon ?? 'fas fa-code'} />
+                              <Icon name={item.icon ?? 'lucide:code'} />
                             )}
                           </span>
                           <span class="skill-name tw:[#about-page_&]:overflow-hidden tw:[#about-page_&]:whitespace-nowrap">
@@ -298,11 +298,9 @@ for (const section of data.sections)
                   <div class="interest-card-content tw:[#about-page_&]:flex tw:[#about-page_&]:flex-col">
                     <p class="author-content-item-tips">{item.label}</p>
                     <h2 class="author-content-item-title tw:[#console_&]:flex tw:[#console_&]:items-center tw:[#console_&]:justify-between tw:[#about-page_.interest-card_&]:flex tw:[#about-page_.interest-card_&]:items-start tw:[#about-page_.interest-card_&]:justify-between tw:[#about-page_.interest-card--media_&]:block">
-                      {(item.title_lines ?? [item.title]).map(
-                        (line: string) => (
-                          <span>{line}</span>
-                        ),
-                      )}
+                      {(item.title_lines ?? [item.title]).map((line) => (
+                        <span>{line}</span>
+                      ))}
                       {item.mode?.image && (
                         <img
                           class="interest-mode-image tw:[#about-page_&]:object-cover"
@@ -343,7 +341,7 @@ for (const section of data.sections)
                           target={item.button.external ? '_blank' : undefined}
                           rel="noopener noreferrer"
                         >
-                          {item.button.icon && <i class={item.button.icon} />}
+                          {item.button.icon && <Icon name={item.button.icon} />}
                           <span>{item.button.text}</span>
                         </a>
                       )}
@@ -430,7 +428,7 @@ for (const section of data.sections)
                 <dl class="about-profile-list tw:[#about-page_&]:grid">
                   {s.profile?.items?.map((item) => (
                     <div>
-                      {item.icon && <i class={item.icon} />}
+                      {item.icon && <Icon name={item.icon} />}
                       <dt>{item.label}</dt>
                       <dd>{item.value}</dd>
                     </div>

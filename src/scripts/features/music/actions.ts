@@ -1,4 +1,5 @@
 import { Solitude } from '@/scripts/core/api';
+import { createIcon } from '@/scripts/core/icons';
 import type { APlayer, PlayerElement } from '@/scripts/types/vendor';
 export const musicActions = {
   isMusicBind: false,
@@ -36,8 +37,8 @@ export const musicActions = {
       const $rmText = document.querySelector<HTMLElement>(
         '#menu-music-toggle span',
       );
-      const $rmIcon = document.querySelector<HTMLElement>(
-        '#menu-music-toggle i',
+      const $rmIcon = document.querySelector<SVGSVGElement>(
+        '#menu-music-toggle .solitude-icon',
       );
       if ($rmText) {
         const label = Solitude.musicPlaying
@@ -46,7 +47,9 @@ export const musicActions = {
         Solitude.rightMenu.setLabel($rmText, label);
       }
       if ($rmIcon) {
-        $rmIcon.className = `solitude fas ${Solitude.musicPlaying ? 'fa-pause' : 'fa-play'}`;
+        $rmIcon.replaceWith(
+          createIcon(Solitude.musicPlaying ? 'lucide:pause' : 'lucide:play'),
+        );
       }
     }
   },

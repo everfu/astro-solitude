@@ -1,4 +1,6 @@
 ---
+import Icon from '@/components/Icon.astro';
+import { brandIcon, type IconName } from '@/lib/icons';
 import { randomUUID } from 'node:crypto';
 import { getPosts, contentPath } from '@/lib/content';
 import { cfg, t, url } from '@/lib/site';
@@ -13,18 +15,18 @@ const external =
   typeof (p.url ?? p.link) === 'string' &&
   /^https?:/.test(p.url ?? p.link ?? '');
 const type = p.type ?? 'default';
-const icons: Record<string, string> = {
-  info: 'circle-info',
-  blue: 'circle-info',
-  danger: 'circle-exclamation',
-  red: 'circle-exclamation',
-  warning: 'triangle-exclamation',
-  success: 'circle-check',
-  green: 'circle-check',
-  primary: 'star',
-  purple: 'star',
-  orange: 'bell',
-  disabled: 'ban',
+const icons: Record<string, IconName> = {
+  info: 'lucide:info',
+  blue: 'lucide:info',
+  danger: 'lucide:circle-alert',
+  red: 'lucide:circle-alert',
+  warning: 'lucide:triangle-alert',
+  success: 'lucide:circle-check',
+  green: 'lucide:circle-check',
+  primary: 'lucide:star',
+  purple: 'lucide:star',
+  orange: 'lucide:bell',
+  disabled: 'lucide:ban',
 };
 const inline = kind === 'hideInline';
 const HideTag = inline ? 'span' : 'div';
@@ -56,7 +58,7 @@ const seriesPosts = allSeriesPosts
     class={`solitude-tag note ${kind === 'subnote' ? 'subnote' : ''} ${type} ${p.style ?? 'flat'} no-icon has-icon`}
   >
     <span class="note-icon" aria-hidden="true">
-      <i class={`fas fa-${icons[type] ?? 'note-sticky'}`} />
+      <Icon name={icons[type] ?? 'lucide:sticky-note'} />
     </span>
     <div class="note-content">
       <slot />
@@ -99,12 +101,12 @@ const seriesPosts = allSeriesPosts
   </div>
 )}
 {kind === 'tab' && (
-  <section
-    class="tab-item-content"
-    id={id}
-    data-tab-title={p.title}
-    data-tab-icon={p.icon}
-  >
+  <section class="tab-item-content" id={id} data-tab-title={p.title}>
+    {p.icon && (
+      <template data-tab-icon>
+        <Icon name={p.icon} />
+      </template>
+    )}
     <slot />
   </section>
 )}
@@ -164,10 +166,11 @@ const seriesPosts = allSeriesPosts
   <a
     class={`solitude-tag st-btn tag-button ${p.option ?? ''} ${p.icon ? 'has-icon' : ''} ${p.icon && !p.text ? 'is-icon-only' : ''}`}
     href={url(p.url ?? '#')}
+    aria-label={p.label ?? p.title}
     target={external ? '_blank' : undefined}
     rel={external ? 'noopener noreferrer' : undefined}
   >
-    {p.icon && <i class={`solitude ${p.icon}`} aria-hidden="true" />}
+    {p.icon && <Icon name={p.icon} class="solitude" aria-hidden="true" />}
     {p.text ? <span>{p.text}</span> : <slot />}
   </a>
 )}
@@ -180,20 +183,18 @@ const seriesPosts = allSeriesPosts
       rel={external ? 'noopener noreferrer' : undefined}
     >
       <div class="tag-link-tips">
-        <i
-          class={`fas fa-${external ? 'arrow-up-right-from-square' : 'house'}`}
-        />
+        <Icon name={external ? 'lucide:external-link' : 'lucide:house'} />
         {external ? t('externalLink') : t('internalLink')}
       </div>
       <div class="tag-link-bottom">
         <div class="tag-link-left">
-          <i class="solitude fas fa-link" />
+          <Icon name="lucide:link" class="solitude" />
         </div>
         <div class="tag-link-right">
           <div class="tag-link-title">{p.title}</div>
           <div class="tag-link-sitename">{p.desc ?? p.subtitle}</div>
         </div>
-        <i class="solitude fas fa-chevron-right" />
+        <Icon name="lucide:chevron-right" class="solitude" />
       </div>
     </a>
   </div>
@@ -212,7 +213,7 @@ const seriesPosts = allSeriesPosts
     )}
     <div class="card_body">
       <div class="card_top">
-        {p.icon && <i class={p.icon} />}{' '}
+        {p.icon && <Icon name={p.icon} />}{' '}
         {p.tag && <span class="card_tag">{p.tag}</span>}
       </div>
       <div class="card_mask card_info">
@@ -229,7 +230,7 @@ const seriesPosts = allSeriesPosts
               class="card_rating"
               aria-label={t('cardRating').replace('{rating}', String(p.star))}
             >
-              <i class="fa-solid fa-star" aria-hidden="true" />
+              <Icon name="lucide:star" aria-hidden="true" />
               <span aria-hidden="true">{p.star} / 5</span>
             </div>
           )}
@@ -244,7 +245,7 @@ const seriesPosts = allSeriesPosts
               target={external ? '_blank' : undefined}
               rel={external ? 'noopener noreferrer' : undefined}
             >
-              <i class="fa-solid fa-arrow-right" aria-hidden="true" />
+              <Icon name="lucide:arrow-right" aria-hidden="true" />
             </a>
           )}
         </div>
@@ -261,9 +262,7 @@ const seriesPosts = allSeriesPosts
   >
     <div class="repo-card-header">
       <span class="repo-provider">
-        <i
-          class={`fab fa-${['gitee', 'gitea'].includes(kind) ? 'git-alt' : kind}`}
-        />
+        <Icon name={brandIcon(kind)} />
         {kind}
       </span>
       <img class="repo-language no-lightbox" alt="" loading="lazy" hidden />
@@ -280,11 +279,11 @@ const seriesPosts = allSeriesPosts
     <div class="repo-card-footer">
       <div class="repo-gist" aria-label="Repository statistics">
         <span>
-          <i class="fas fa-star" />
+          <Icon name="lucide:star" />
           <span class="repo-stars">—</span>
         </span>
         <span>
-          <i class="fas fa-code-branch" />
+          <Icon name="lucide:git-fork" />
           <span class="repo-forks">—</span>
         </span>
       </div>
@@ -297,7 +296,7 @@ const seriesPosts = allSeriesPosts
 {kind === 'audio' && (
   <div class="solitude-tag audio tag-audio">
     <span class="tag-media-icon" aria-hidden="true">
-      <i class="fas fa-music" />
+      <Icon name="lucide:music" />
     </span>
     <audio controls preload="metadata" aria-label={p.name}>
       <source src={url(src)} />

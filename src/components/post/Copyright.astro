@@ -1,4 +1,6 @@
 ---
+import Icon from '@/components/Icon.astro';
+import { brandIcon } from '@/lib/icons';
 import { cfg, config, t, url, absolute } from '@/lib/site';
 import { contentPath, type Post } from '@/lib/content';
 interface Props {
@@ -63,7 +65,7 @@ const background = String(p.avatar_background ?? c.author_background ?? '');
                 data-solitude-value={absolute(contentPath(post))}
                 aria-label={t('copyLink')}
               >
-                <i class="solitude fas fa-link" />
+                <Icon name="lucide:link" class="solitude" />
               </button>
             ) : (
               <a
@@ -73,7 +75,7 @@ const background = String(p.avatar_background ?? c.author_background ?? '');
                 rel="noopener noreferrer"
                 aria-label={`${t('shareTo')} ${name}`}
               >
-                <i class={`solitude fab fa-${name}`} />
+                <Icon name={brandIcon(name)} class="solitude" />
               </a>
             ),
           )}

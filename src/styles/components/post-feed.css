@@ -130,7 +130,7 @@
   font-size: 0.5rem;
 }
 
-.recent-post-item > .recent-post-info .recent-post-info-top .recent-post-info-top-tips > .sticky-warp i {
+.recent-post-item > .recent-post-info .recent-post-info-top .recent-post-info-top-tips > .sticky-warp .solitude-icon {
   font-size: 0.5rem;
   margin-right: 3px;
 }
@@ -242,7 +242,7 @@
   text-align: right;
 }
 
-.article-meta-wrap > .post-meta-date i {
+.article-meta-wrap > .post-meta-date .solitude-icon {
   display: none;
 }
 
@@ -257,7 +257,7 @@
   border-radius: 4px;
 }
 
-.article-meta-wrap i {
+.article-meta-wrap .solitude-icon {
   margin: 0 0.4rem 0 0;
 }
 
@@ -583,7 +583,7 @@
   line-height: inherit;
 }
 
-#sidebar #sidebar-menus .sidebar-menu-item .menu-child i {
+#sidebar #sidebar-menus .sidebar-menu-item .menu-child .solitude-icon {
   width: 24px;
   height: 24px;
   display: flex;

@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/Icon.astro';
 import { cfg, config, t, url, dateLabel, isoDate } from '@/lib/site';
 import TocItems, { type Heading } from '@/components/navigation/TocItems.astro';
 import AsideGroup from '@/components/layout/AsideGroup.astro';
@@ -55,10 +56,10 @@ for (const heading of headings) {
               id="card-toc"
             >
               <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">
-                <i class="solitude fas fa-bars" />
+                <Icon name="lucide:menu" class="solitude" />
                 <span id="toc-title">{t('toc')}</span>
                 <button class="toc-close" type="button" aria-label={t('close')}>
-                  <i class="fas fa-xmark" aria-hidden="true" />
+                  <Icon name="lucide:x" aria-hidden="true" />
                 </button>
               </div>
               <div class="toc-content" id="toc-content">
@@ -121,8 +122,13 @@ for (const heading of headings) {
                         class="social-icon tw:[.card-info_.bottom-group_.social-icons_&]:cursor-pointer tw:[.card-info_.bottom-group_.social-icons_&]:flex"
                         href={url(l.url)}
                         title={l.name}
+                        aria-label={l.name}
                       >
-                        <i class={`solitude ${l.icon}`} />
+                        {l.icon ? (
+                          <Icon name={l.icon} class="solitude" />
+                        ) : (
+                          l.name
+                        )}
                       </a>
                     ))}
                   </div>
@@ -132,7 +138,7 @@ for (const heading of headings) {
           ) : name.trim() === 'newestPost' ? (
             <div class="card-widget card-recent-post tw:[#aside-content_&]:overflow-hidden">
               <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">
-                <i class="solitude fas fa-map" />
+                <Icon name="lucide:map" class="solitude" />
                 <span>{t('recentPosts')}</span>
               </div>
               <div class="aside-list tw:[#console_&]:flex tw:[#console_&]:flex-wrap tw:[#console_&]:flex-row tw:[#console_&]:justify-between tw:[#body-wrap.error_&]:flex tw:[#body-wrap.error_&]:flex-row">
@@ -218,7 +224,7 @@ for (const heading of headings) {
             cfg.comment.sidebar ? (
             <div class="card-widget card-recent-comment tw:[#aside-content_&]:overflow-hidden">
               <div class="item-headline tw:[#aside-content_.card-widget_&]:flex tw:[#aside-content_.card-widget_&]:items-center">
-                <i class="solitude fas fa-comment" />
+                <Icon name="lucide:message-circle" class="solitude" />
                 <span>{t('recentComments')}</span>
                 {cfg.recent_comments.enable && (
                   <a
@@ -227,8 +233,9 @@ for (const heading of headings) {
                     title={t('more')}
                     aria-label={t('more')}
                   >
-                    <i
-                      class="solitude fas fa-circle-chevron-right"
+                    <Icon
+                      name="lucide:circle-chevron-right"
+                      class="solitude"
                       aria-hidden="true"
                     />
                   </a>

@@ -1,3 +1,4 @@
+import { iconMarkup } from '@/scripts/core/icons';
 interface SearchStats {
   nbHits: number;
   processingTimeMS: number;
@@ -298,10 +299,10 @@ export class AlgoliaSearch {
       scrollTo: false,
       showFirstLast: false,
       templates: {
-        first: '<i class="solitude fas fa-angles-left"></i>',
-        last: '<i class="solitude fas fa-angles-right"></i>',
-        previous: '<i class="solitude fas fa-angle-left"></i>',
-        next: '<i class="solitude fas fa-angle-right"></i>',
+        first: iconMarkup('lucide:chevrons-left'),
+        last: iconMarkup('lucide:chevrons-right'),
+        previous: iconMarkup('lucide:chevron-left'),
+        next: iconMarkup('lucide:chevron-right'),
       },
       cssClasses: {
         root: 'pagination',

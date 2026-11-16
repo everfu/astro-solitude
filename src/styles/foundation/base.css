@@ -406,10 +406,9 @@ strong {
   position: relative;
 }
 
-i.solitude {
+.solitude-icon.solitude {
   font-size: 20px;
   line-height: 1;
-  font-synthesis: style;
 }
 
 #body-wrap {

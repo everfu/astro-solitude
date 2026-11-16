@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/Icon.astro';
 import { cfg, t, url, termPath, dateLabel } from '@/lib/site';
 import { contentPath } from '@/lib/content';
 import type { Post, RenderedContent } from '@/types/content';
@@ -51,7 +52,7 @@ const related = posts
               href={url(termPath('tags', tag))}
             >
               <span class="tags-punctuation tw:[span&]:flex tw:[span&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:flex tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:items-center">
-                <i class="solitude fas fa-hashtag" />
+                <Icon name="lucide:hash" class="solitude" />
                 {tag}
                 <span class="tagsPageCount tw:[span&]:text-center">
                   {posts.filter((p) => p.data.tags.includes(tag)).length}
@@ -93,7 +94,7 @@ const related = posts
     {cfg.related_post.enable && related.length > 0 && (
       <section class="relatedPosts" aria-labelledby="related-posts-title">
         <div class="headline tw:[.site-data_.data-item_.data-item-link_&]:whitespace-nowrap tw:[.relatedPosts_&]:flex tw:[.relatedPosts_&]:items-center">
-          <i class="solitude fas fa-star" />
+          <Icon name="lucide:star" class="solitude" />
           <span id="related-posts-title">{t('relatedPostsLead')}</span>
           <button
             class="relatedPosts-random tw:inline-flex tw:items-center tw:justify-center tw:whitespace-nowrap tw:cursor-pointer"

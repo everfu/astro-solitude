@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/Icon.astro';
 import { cfg, url, dateLabel } from '@/lib/site';
 import { taxonomy, contentPath } from '@/lib/content';
 import type { Route } from '@/lib/routing';
@@ -30,7 +31,7 @@ const { route, posts, p, headings, hideAside } = Astro.props;
             {taxonomy(posts, route.taxonomy!).map((group) => (
               <a href={url(group.path)} title={group.name}>
                 <span class="tags-punctuation tw:[span&]:flex tw:[span&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:flex tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:items-center">
-                  <i class="solitude fas fa-hashtag" />
+                  <Icon name="lucide:hash" class="solitude" />
                   {group.name}
                   <span class="tagsPageCount tw:[span&]:text-center">
                     {group.posts.length}

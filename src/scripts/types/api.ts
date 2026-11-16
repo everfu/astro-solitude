@@ -1,5 +1,9 @@
 import type { lifecycle } from '@/scripts/core/lifecycle';
-import type { loadScript, loadStyle, ScriptOptions } from '@/scripts/core/resources';
+import type {
+  loadScript,
+  loadStyle,
+  ScriptOptions,
+} from '@/scripts/core/resources';
 import type { saveToLocal } from '@/scripts/core/storage';
 import type { actions } from '@/scripts/app/actions';
 import type {
@@ -7,10 +11,12 @@ import type {
   SolitudeSiteConfiguration,
 } from '@/types/runtime';
 import type { utilsFn } from '@/scripts/core/utils';
+import type { createIcon } from '@/scripts/core/icons';
 
 /** The public facade is installed once; optional features register on demand. */
 export type SolitudeAPI = typeof actions &
   typeof utilsFn & {
+    createIcon: typeof createIcon;
     readonly config: SolitudeSiteConfiguration;
     readonly page: SolitudePageConfiguration;
     saveToLocal: typeof saveToLocal;

@@ -72,7 +72,7 @@ body[data-right-menu="false"] #rightmenu-mask {
   border-radius: var(--right-menu-item-radius);
 }
 
-#rightMenu .rightMenu-group.rightMenu-small .rightMenu-item i {
+#rightMenu .rightMenu-group.rightMenu-small .rightMenu-item .solitude-icon {
   flex-basis: auto;
   width: auto;
   margin: 0;
@@ -125,7 +125,7 @@ body[data-right-menu="false"] #rightmenu-mask {
   box-shadow: 0 8px 20px color-mix(in srgb, var(--right-menu-accent) 22%, transparent);
 }
 
-#rightMenu .rightMenu-item i {
+#rightMenu .rightMenu-item .solitude-icon {
   display: inline-block;
   flex: 0 0 var(--right-menu-icon-size);
   width: var(--right-menu-icon-size);

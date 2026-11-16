@@ -1,9 +1,10 @@
 ---
-import kit from '@/data/kit.json';
+import Icon from '@/components/Icon.astro';
+import kit from '@/data/kit';
 import { cfg, t, url } from '@/lib/site';
 interface Props {
   comment?: boolean;
-  data?: typeof kit;
+  data?: import('@/types/page-data').KitData;
 }
 const { comment = true, data = kit } = Astro.props;
 ---
@@ -60,7 +61,7 @@ const { comment = true, data = kit } = Astro.props;
                     data-solitude-value={item.description}
                     aria-label={t('quoteEquipment')}
                   >
-                    <i class="solitude fas fa-comment" />
+                    <Icon name="lucide:message-circle" class="solitude" />
                   </a>
                 )}
               </div>

@@ -1,5 +1,6 @@
 import { Solitude } from '@/scripts/core/api';
 import { lifecycle } from '@/scripts/core/lifecycle';
+import { createIcon } from '@/scripts/core/icons';
 export const postActions = {
   switchCommentBarrage() {
     const commentBarrageElement =
@@ -245,7 +246,10 @@ export class tabs {
     if (expire.time > ex) return;
     const ele = document.createElement('div');
     ele.className = 'expire';
-    ele.innerHTML = `<i class="solitude fas fa-circle-exclamation"></i>${expire.text_prev}${-(expire.time - ex)}${expire.text_next}`;
+    ele.append(
+      createIcon('lucide:circle-alert'),
+      `${expire.text_prev}${-(expire.time - ex)}${expire.text_next}`,
+    );
     const articleContainer =
       document.querySelector<HTMLElement>('.article-container');
     articleContainer?.insertAdjacentElement(

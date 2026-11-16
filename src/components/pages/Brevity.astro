@@ -1,16 +1,9 @@
 ---
-import brevity from '@/data/brevity.json';
+import Icon from '@/components/Icon.astro';
+import brevity from '@/data/brevity';
 import { cfg, config, dateLabel, t, url } from '@/lib/site';
 interface Props {
-  data?: {
-    title?: string;
-    items: import('@/types/page').BrevityItem[];
-    header?: {
-      description?: string;
-      cover?: string;
-      button?: { text: string; link: string };
-    };
-  };
+  data?: import('@/types/page-data').BrevityData;
 }
 const data: NonNullable<Props['data']> = Astro.props.data ?? brevity;
 const c = cfg.brevity;
@@ -43,8 +36,9 @@ const items = data.items.slice(0, c.strip);
             href={url(header?.button?.link || '/archives/')}
             aria-label={header?.button?.text || t('brevityReadMore')}
           >
-            <i
-              class="solitude fas fa-circle-chevron-right"
+            <Icon
+              name="lucide:circle-chevron-right"
+              class="solitude"
               aria-hidden="true"
             />
             <span class="banner-button-text">
@@ -137,7 +131,7 @@ const items = data.items.slice(0, c.strip);
                     <div class="bber-info tw:[#bber_&]:flex tw:[#bber_&]:flex-wrap tw:[#bber_&]:items-center">
                       {c.style === 1 && (
                         <div class="bber-info-time">
-                          <i class="solitude fas fa-calendar-day" />
+                          <Icon name="lucide:calendar-days" class="solitude" />
                           <time
                             datetime={item.date.replace(' ', 'T')}
                             title={item.date}
@@ -148,13 +142,13 @@ const items = data.items.slice(0, c.strip);
                       )}
                       {item.location && (
                         <div class="bber-info-location">
-                          <i class="solitude fas fa-location-dot" />
+                          <Icon name="lucide:map-pin" class="solitude" />
                           {item.location}
                         </div>
                       )}
                       {item.link && (
                         <a class="bber-content-link" href={url(item.link)}>
-                          <i class="solitude fas fa-link" />
+                          <Icon name="lucide:link" class="solitude" />
                           {t('brevityLink')}
                         </a>
                       )}

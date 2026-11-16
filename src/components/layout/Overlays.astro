@@ -1,4 +1,6 @@
 ---
+import Icon from '@/components/Icon.astro';
+import type { IconName } from '@/lib/icons';
 import { cfg, config, t, url, dateLabel, isoDate } from '@/lib/site';
 import { taxonomy, wordCount, type Post } from '@/lib/content';
 import Menu from '@/components/layout/Menu.astro';
@@ -22,26 +24,32 @@ const actionLabels: Record<string, string> = {
 const months = [
   ...new Set(posts.map((p) => p.data.date.toISOString().slice(0, 7))),
 ].slice(0, 5);
-const contextItems = [
-  ['copytext', 'clone', 'rightMenuCopy'],
-  ['pastetext', 'clipboard', 'rightMenuPaste'],
+const contextItems: (readonly [string, IconName, string])[] = [
+  ['copytext', 'lucide:copy', 'rightMenuCopy'],
+  ['pastetext', 'lucide:clipboard', 'rightMenuPaste'],
   ...(cfg.comment.use
-    ? [['commenttext', 'comment-medical', 'rightMenuComment']]
+    ? [
+        [
+          'commenttext',
+          'lucide:message-circle-plus',
+          'rightMenuComment',
+        ] as const,
+      ]
     : []),
-  ['newwindow', 'window-maximize', 'rightMenuNew'],
-  ['copylink', 'link', 'rightMenuLink'],
-  ['copyimg', 'clone', 'rightMenuImage'],
-  ['downloadimg', 'cloud-arrow-down', 'rightMenuDownloadImage'],
+  ['newwindow', 'lucide:square-arrow-out-up-right', 'rightMenuNew'],
+  ['copylink', 'lucide:link', 'rightMenuLink'],
+  ['copyimg', 'lucide:copy', 'rightMenuImage'],
+  ['downloadimg', 'lucide:cloud-download', 'rightMenuDownloadImage'],
   ...(cfg.search.enable
-    ? [['search', 'magnifying-glass', 'rightMenuSearch']]
+    ? [['search', 'lucide:search', 'rightMenuSearch'] as const]
     : []),
   ...(cfg.capsule.enable
-    ? [
-        ['music-toggle', 'play', 'rightMenuMusicStart'],
-        ['music-back', 'backward', 'rightMenuMusicBack'],
-        ['music-forward', 'forward', 'rightMenuMusicForward'],
-        ['music-copyMusicName', 'clone', 'rightMenuMusicCopy'],
-      ]
+    ? ([
+        ['music-toggle', 'lucide:play', 'rightMenuMusicStart'],
+        ['music-back', 'lucide:rewind', 'rightMenuMusicBack'],
+        ['music-forward', 'lucide:fast-forward', 'rightMenuMusicForward'],
+        ['music-copyMusicName', 'lucide:copy', 'rightMenuMusicCopy'],
+      ] as const)
     : []),
 ];
 ---
@@ -77,7 +85,10 @@ const contextItems = [
                       title={t('more')}
                       aria-label={t('more')}
                     >
-                      <i class="solitude fas fa-circle-chevron-right" />
+                      <Icon
+                        name="lucide:circle-chevron-right"
+                        class="solitude"
+                      />
                     </a>
                   )}
                 </div>
@@ -169,7 +180,7 @@ const contextItems = [
             data-solitude-action="toggleTheme"
             aria-label={t('toggleTheme')}
           >
-            <i class="solitude fas fa-circle-half-stroke" />
+            <Icon name="lucide:sun-moon" class="solitude" />
           </button>
         </div>
         <div
@@ -181,7 +192,7 @@ const contextItems = [
             data-solitude-action="switchHideAside"
             aria-label={t('toggleAside')}
           >
-            <i class="solitude fas fa-arrows-left-right-to-line" />
+            <Icon name="lucide:panel-left-close" class="solitude" />
           </button>
         </div>
         {cfg.keyboard.enable && (
@@ -196,7 +207,7 @@ const contextItems = [
               aria-label={t('keyboardToggle')}
               aria-pressed="false"
             >
-              <i class="solitude fas fa-keyboard" />
+              <Icon name="lucide:keyboard" class="solitude" />
             </button>
           </div>
         )}
@@ -210,7 +221,7 @@ const contextItems = [
               data-solitude-action="musicToggle"
               aria-label={t('keyboardMusic')}
             >
-              <i class="solitude fas fa-compact-disc" />
+              <Icon name="lucide:disc-3" class="solitude" />
             </button>
           </div>
         )}
@@ -221,7 +232,7 @@ const contextItems = [
             data-solitude-action="switchCommentBarrage"
           >
             <span class="commentBarrage">
-              <i class="solitude fas fa-comment" />
+              <Icon name="lucide:message-circle" class="solitude" />
             </span>
           </div>
         )}
@@ -303,7 +314,7 @@ const contextItems = [
                   {t('comments')}
                 </div>
                 <div class="length-num" id="valine_allcount">
-                  <i class="solitude fas fa-spinner fa-spin" />
+                  <Icon name="lucide:loader-circle" spin class="solitude" />
                 </div>
               </a>
             </div>
@@ -317,7 +328,7 @@ const contextItems = [
         class="darkmode_switchbutton menu-child tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:cursor-pointer tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:flex tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:items-center tw:[#sidebar_#sidebar-menus_.sidebar-menu-item_&]:text-left"
         data-solitude-action="toggleTheme"
       >
-        <i class="solitude fas fa-circle-half-stroke" />
+        <Icon name="lucide:sun-moon" class="solitude" />
         <span>{t('displayMode')}</span>
       </button>
     </div>
@@ -398,7 +409,7 @@ const contextItems = [
           data-solitude-action="toggleTheme"
           aria-label={t('toggleTheme')}
         >
-          <i class="solitude fas fa-circle-half-stroke" />
+          <Icon name="lucide:sun-moon" class="solitude" />
         </button>
       )}
       {cfg.rightside.hide.aside && cfg.console.enable && (
@@ -408,7 +419,7 @@ const contextItems = [
           data-solitude-action="switchHideAside"
           aria-label={t('toggleAside')}
         >
-          <i class="solitude fas fa-arrows-left-right-to-line" />
+          <Icon name="lucide:panel-left-close" class="solitude" />
         </button>
       )}
     </div>
@@ -422,7 +433,7 @@ const contextItems = [
           data-solitude-target="#rightside-config-hide"
           aria-label={t('settings')}
         >
-          <i class="solitude fas fa-gear" />
+          <Icon name="lucide:settings" class="solitude" />
         </button>
       )}
       {toc && (
@@ -434,7 +445,7 @@ const contextItems = [
           aria-expanded="false"
           aria-label={t('toc')}
         >
-          <i class="solitude fas fa-list" />
+          <Icon name="lucide:list" class="solitude" />
         </button>
       )}
       {comments && (
@@ -445,7 +456,7 @@ const contextItems = [
           data-solitude-target="post-comment"
           aria-label={t('comments')}
         >
-          <i class="solitude fas fa-comment" />
+          <Icon name="lucide:message-circle" class="solitude" />
         </button>
       )}
     </div>
@@ -455,12 +466,14 @@ const contextItems = [
   <>
     <nav id="rightMenu" aria-label={t('rightMenuLabel')}>
       <div class="rightMenu-group rightMenu-small">
-        {[
-          ['backward', 'arrow-left', 'rightMenuBack'],
-          ['forward', 'arrow-right', 'rightMenuForward'],
-          ['refresh', 'arrows-rotate', 'rightMenuRefresh'],
-          ['top', 'arrow-up', 'backTop'],
-        ].map(([id, icon, label]) => (
+        {(
+          [
+            ['backward', 'lucide:arrow-left', 'rightMenuBack'],
+            ['forward', 'lucide:arrow-right', 'rightMenuForward'],
+            ['refresh', 'lucide:refresh-cw', 'rightMenuRefresh'],
+            ['top', 'lucide:arrow-up', 'backTop'],
+          ] as const
+        ).map(([id, icon, label]) => (
           <button
             class="rightMenu-item"
             id={`menu-${id}`}
@@ -468,7 +481,7 @@ const contextItems = [
             aria-label={t(label)}
             title={t(label)}
           >
-            <i class={`solitude fas fa-${icon}`} />
+            <Icon name={icon} class="solitude" />
           </button>
         ))}
       </div>
@@ -480,7 +493,7 @@ const contextItems = [
             type="button"
             title={t(label)}
           >
-            <i class={`solitude fas fa-${icon}`} />
+            <Icon name={icon} class="solitude" />
             <span>{t(label)}</span>
           </button>
         ))}
@@ -494,7 +507,7 @@ const contextItems = [
             data-solitude-action="runConfiguredAction"
             data-solitude-value={item.click}
           >
-            <i class={`solitude ${item.icon}`} />
+            {item.icon && <Icon name={item.icon} class="solitude" />}
             <span>{item.name}</span>
           </button>
         ))}
@@ -506,7 +519,7 @@ const contextItems = [
               id="menu-commentBarrage"
               data-solitude-action="switchCommentBarrage"
             >
-              <i class="solitude fas fa-comment" />
+              <Icon name="lucide:message-circle" class="solitude" />
               <span class="menu-commentBarrage-text">
                 {t('rightMenuBarrageClose')}
               </span>
@@ -518,12 +531,12 @@ const contextItems = [
           type="button"
           data-solitude-action="switchDarkMode"
         >
-          <i class="solitude fas fa-circle-half-stroke" />
+          <Icon name="lucide:sun-moon" class="solitude" />
           <span class="menu-darkmode-text">{t('rightMenuDark')}</span>
         </button>
         {cfg.right_menu.translate && (
           <button class="rightMenu-item" id="menu-translate" type="button">
-            <i class="solitude fas fa-language" />
+            <Icon name="lucide:languages" class="solitude" />
             <span>{t('rightMenuToTraditional')}</span>
           </button>
         )}

@@ -853,7 +853,7 @@ body[data-type=links] div#banners .banner-button:focus-visible {
   outline-offset: 3px;
 }
 
-div#banners .banner-button i {
+div#banners .banner-button .solitude-icon {
   margin-right: 8px;
   font-size: 1rem;
 }
@@ -1046,7 +1046,7 @@ div#banners .bannerText {
   display: flex;
 }
 
-.author-content-item .content-bottom .icon-group i {
+.author-content-item .content-bottom .icon-group .solitude-icon {
   display: inline-block;
   width: 22px;
   height: 18px;
@@ -1095,7 +1095,7 @@ div#banners .bannerText {
   color: var(--efu-card-bg);
 }
 
-.author-content-item .card-content .banner-button-group .banner-button i {
+.author-content-item .card-content .banner-button-group .banner-button .solitude-icon {
   margin-right: 8px;
   font-size: 22px;
 }

@@ -1,5 +1,7 @@
 import { navigate } from 'astro:transitions/client';
 import { pageRange } from '@/lib/routing/pagination';
+import { createIcon } from '@/scripts/core/icons';
+import type { RuntimeIconName } from '@/lib/icons';
 /** Browser behavior preserved from Solitude Hugo; typed boundary: core/api.ts. */
 const SAFE_ARCHIVE_PROTOCOLS = new Set(['http:', 'https:']);
 const resolveArchivePostUrl = (value: unknown) => {
@@ -225,7 +227,7 @@ export const archivePageController = (() => {
       );
       main.append(title, meta);
       const arrow = createElement('div', 'archive-page-item-arrow');
-      const arrowIcon = createElement('i', 'solitude fas fa-chevron-right');
+      const arrowIcon = createIcon('lucide:chevron-right');
       arrow.setAttribute('aria-hidden', 'true');
       arrow.appendChild(arrowIcon);
       item.append(thumb, main, arrow);
@@ -243,7 +245,7 @@ export const archivePageController = (() => {
           this.labels.previous,
           'archive-page-extend prev',
           this.currentPage === 1,
-          'fa-chevron-left',
+          'lucide:chevron-left',
         ),
       );
       pageRange(this.currentPage, totalPages).forEach((page) => {
@@ -271,7 +273,7 @@ export const archivePageController = (() => {
           this.labels.next,
           'archive-page-extend next',
           this.currentPage === totalPages,
-          'fa-chevron-right',
+          'lucide:chevron-right',
         ),
       );
     },
@@ -280,18 +282,18 @@ export const archivePageController = (() => {
       label: string,
       className: string,
       disabled: boolean,
-      iconName?: string,
+      iconName?: RuntimeIconName,
     ) {
       const button = createElement('button', className);
       button.type = 'button';
       button.disabled = disabled;
       button.dataset.archivePage = String(page);
       button.setAttribute('aria-label', label);
-      if (iconName === 'fa-chevron-left')
-        button.appendChild(createElement('i', `solitude fas ${iconName}`));
+      if (iconName === 'lucide:chevron-left')
+        button.appendChild(createIcon(iconName));
       button.appendChild(createElement('span', '', label));
-      if (iconName === 'fa-chevron-right')
-        button.appendChild(createElement('i', `solitude fas ${iconName}`));
+      if (iconName === 'lucide:chevron-right')
+        button.appendChild(createIcon(iconName));
       return button;
     },
     renderState(shell: HTMLElement, message: string) {

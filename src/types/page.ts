@@ -1,3 +1,5 @@
+import type { IconName } from '@/lib/icons';
+
 /** Known presentation metadata; unknown front matter remains accepted by content. */
 export interface PageMetadata {
   title?: string;
@@ -44,7 +46,7 @@ export interface ShortcodeProps {
   desc?: string;
   description?: string;
   height?: number | string;
-  icon?: string;
+  icon?: IconName;
   img?: string;
   label?: string;
   layout?: string;
@@ -79,11 +81,13 @@ export interface ShortcodeProps {
 export interface FriendLink {
   name: string;
   link: string;
-  avatar: string;
+  avatar?: string;
   topimg?: string;
   descr?: string;
   description?: string;
   tag?: string;
+  color?: string;
+  siteshot?: string;
 }
 export interface BrevityItem {
   date: string;

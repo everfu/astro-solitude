@@ -10,16 +10,7 @@
   bottom: 20px;
   z-index: 1000;
   opacity: 0;
-  transition: opacity 0.3s, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#rightside.needEndHide {
-  display: block !important;
-}
-
-#rightside.hide.needEndHide {
-  bottom: 0 !important;
-  transform: none !important;
+  transition: opacity 0.25s, transform 0.35s cubic-bezier(0.4, 0, 1, 1), visibility 0s 0.35s;
 }
 
 #rightside .rs_show,
@@ -80,14 +71,14 @@
   outline-offset: -2px;
 }
 
-#rightside button i,
+#rightside button .solitude-icon,
 #rightside button span {
   position: relative;
   z-index: 1;
   pointer-events: none;
 }
 
-#rightside button i {
+#rightside button .solitude-icon {
   font-size: 16px;
   transition: transform 0.25s;
 }
@@ -122,8 +113,8 @@
   font-weight: 600;
 }
 
-#rightside button.config:hover i,
-#rightside button.config:focus-visible i {
+#rightside button.config:hover .solitude-icon,
+#rightside button.config:focus-visible .solitude-icon {
   transform: rotate(90deg);
 }
 

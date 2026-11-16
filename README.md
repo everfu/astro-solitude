@@ -71,6 +71,33 @@ pnpm preview
 
 Publish the generated `dist/` directory to your hosting platform. Set the build command to `pnpm build` and the output directory to `dist`. Use `pnpm install --frozen-lockfile` during dependency installation.
 
+## Icons and page data
+
+Icons use local Iconify sets and render as SVG through Astro Icon at build time. Icon parameters in navigation, profile links, and MDX components accept names such as `lucide:book-open` and `simple-icons:github`. Browse [Lucide](https://icon-sets.iconify.design/lucide/) and [Simple Icons](https://icon-sets.iconify.design/simple-icons/) for available names.
+
+```mdx
+<Button url="/archives/" text="Read the posts" icon="lucide:book-open" />
+```
+
+Use `label` to name the action of an icon-only button.
+
+For an icon-based site name, use `theme.site.name: { class: 'icon', custom: 'simple-icons:astro' }`.
+
+Edit `about.ts`, `links.ts`, `kit.ts`, and `brevity.ts` in `src/data/` to maintain the about, friends, equipment, and short-update pages. Each module uses `satisfies` for type checking and supports comments and multiline text.
+
+```ts
+import type { AboutData } from '@/types/about';
+
+export default {
+  title: 'About me',
+  sections: [
+    { type: 'story', title: 'My story', content: 'Introduce yourself here.' },
+  ],
+} satisfies AboutData;
+```
+
+Save custom data as `src/data/profile.ts`, then set `type: about` and `data: profile` in the page front matter. Run `pnpm check` to validate data types. Builds report missing data files.
+
 ## Commands
 
 Run commands from the project root.

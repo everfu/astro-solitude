@@ -112,7 +112,7 @@
   gap: 5px;
 }
 
-.article-container .solitude-tag.repo-card .repo-gist i {
+.article-container .solitude-tag.repo-card .repo-gist .solitude-icon {
   color: var(--efu-theme);
 }
 
@@ -259,12 +259,12 @@
   color: var(--efu-nav-hover-text);
 }
 
-.article-container .solitude-tag.card_box a.card_action i {
+.article-container .solitude-tag.card_box a.card_action .solitude-icon {
   margin: 0;
   transition: transform var(--efu-motion-fast);
 }
 
-.article-container .solitude-tag.card_box.has-action:hover a.card_action i {
+.article-container .solitude-tag.card_box.has-action:hover a.card_action .solitude-icon {
   transform: translateX(2px);
 }
 
@@ -309,7 +309,7 @@
   font-weight: 600;
 }
 
-.article-container .solitude-tag.card_box .card_rating i {
+.article-container .solitude-tag.card_box .card_rating .solitude-icon {
   color: var(--efu-yellow);
 }
 

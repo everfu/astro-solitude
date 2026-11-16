@@ -37,7 +37,7 @@
   transition: 0.3s;
 }
 
-.post #post-info #post-meta i {
+.post #post-info #post-meta .solitude-icon {
   margin-right: 4px;
   font-size: 16px;
   line-height: 1;
@@ -236,7 +236,7 @@
   line-height: 1.4;
 }
 
-.relatedPosts .headline > i {
+.relatedPosts .headline > .solitude-icon {
   flex: 0 0 auto;
   font-size: 20px;
 }
@@ -374,7 +374,7 @@
     font-size: 14px;
   }
 
-  .relatedPosts .headline > i {
+  .relatedPosts .headline > .solitude-icon {
     margin-top: 1px;
     font-size: 17px;
   }
@@ -473,7 +473,7 @@
   transition: all 0.4s ease 0s;
 }
 
-.post-reward .reward-button i {
+.post-reward .reward-button .solitude-icon {
   margin-right: 4px;
 }
 

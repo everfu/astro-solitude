@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/Icon.astro';
 import { cfg, t } from '@/lib/site';
 interface Props {
   enabled?: boolean;
@@ -10,7 +11,7 @@ const { enabled = true } = Astro.props;
   <section id="post-comment">
     <div class="comment-head">
       <div class="comment-headline">
-        <i class="solitude fas fa-comments" />
+        <Icon name="lucide:messages-square" class="solitude" />
         <span>{t('comments')}</span>
       </div>
     </div>

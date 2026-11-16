@@ -1,4 +1,6 @@
 ---
+import Icon from '@/components/Icon.astro';
+import type { IconName } from '@/lib/icons';
 import { cfg, config, t, url } from '@/lib/site';
 import type { Post } from '@/lib/content';
 import Menu from '@/components/layout/Menu.astro';
@@ -38,14 +40,7 @@ const cover =
             class="back-home-button tw:flex tw:items-center tw:justify-center"
             tabindex="-1"
           >
-            <svg
-              class="back-home-button-icon"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M6.75 2.5C9.1 2.5 11 4.4 11 6.75V11H6.75a4.25 4.25 0 1 1 0-8.5ZM6.75 13H11v4.25A4.25 4.25 0 1 1 6.75 13ZM17.25 2.5a4.25 4.25 0 0 1 0 8.5H13V6.75a4.25 4.25 0 0 1 4.25-4.25ZM13 13h4.25A4.25 4.25 0 1 1 13 17.25Z" />
-            </svg>
+            <Icon name="lucide:layout-grid" class="back-home-button-icon" />
             <div class="back-menu-list-groups tw:[.back-home-button_&]:absolute tw:[.back-home-button_&]:flex-col">
               {Object.entries(cfg.nav.group)
                 .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
@@ -83,12 +78,12 @@ const cover =
         >
           {cfg.site.name.class === 'img' ? (
             <img src={url(cfg.site.name.custom)} alt={config.title} />
-          ) : cfg.site.name.class === 'i_class' ? (
-            <i class={cfg.site.name.custom} />
+          ) : cfg.site.name.class === 'icon' ? (
+            <Icon name={cfg.site.name.custom as IconName} />
           ) : (
             <span class="title">{cfg.site.name.custom}</span>
           )}
-          <i class="solitude fas fa-home tw:[#nav_#site-name_i.fas&]:absolute tw:[#nav_#site-name_i.fas&]:flex tw:[#nav_#site-name_i.fas&]:items-center tw:[#nav_#site-name_i.fas&]:justify-center" />
+          <Icon name="lucide:house" class="solitude site-home-icon" />
         </a>
       </div>
       <div id="page-name-mask">
@@ -125,9 +120,14 @@ const cover =
               data-solitude-action={item.action}
               data-solitude-prevent={item.action ? 'true' : undefined}
               title={item.title ?? item.name}
+              aria-label={item.title ?? item.name}
               heotip={item.title ?? item.name}
             >
-              <i class={`solitude ${item.icon}`} />
+              {item.icon ? (
+                <Icon name={item.icon} class="solitude" />
+              ) : (
+                item.name
+              )}
             </a>
           </div>
         ))}
@@ -145,7 +145,7 @@ const cover =
               title={t('randomPost')}
               heotip={t('randomPost')}
             >
-              <i class="solitude fas fa-dice-d6" />
+              <Icon name="lucide:dice-6" class="solitude" />
             </a>
           </div>
         )}
@@ -161,7 +161,7 @@ const cover =
               title={t('search')}
               heotip={t('search')}
             >
-              <i class="solitude fas fa-magnifying-glass" />
+              <Icon name="lucide:search" class="solitude" />
             </a>
           </div>
         )}
@@ -195,7 +195,7 @@ const cover =
           heotip={t('backTop')}
         >
           <a class="totopbtn tw:[#page-header_#nav_#nav-right_.nav-button_a&]:absolute">
-            <i class="solitude fas fa-arrow-up" />
+            <Icon name="lucide:arrow-up" class="solitude" />
             <span
               id="percent"
               class="tw:[#nav-totop_&]:flex tw:[#nav-totop_&]:justify-center tw:[#nav-totop_&]:items-center tw:[#nav-totop_&]:whitespace-nowrap"
@@ -210,7 +210,7 @@ const cover =
             href="#"
             aria-label={t('menu')}
           >
-            <i class="solitude fas fa-bars" />
+            <Icon name="lucide:menu" class="solitude" />
           </a>
         </div>
       </div>

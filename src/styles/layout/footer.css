@@ -1,5 +1,5 @@
 /* Footer and footer-bar layout. */
-#footer #footer_deal i {
+#footer #footer_deal .solitude-icon {
   font-size: 0.8rem;
   line-height: 0.9rem;
   height: 0.9rem;
@@ -86,12 +86,12 @@
   margin-left: 8px;
 }
 
-#footer #st-footer .footer-title-group a:hover i {
+#footer #st-footer .footer-title-group a:hover .solitude-icon {
   color: var(--efu-main);
   opacity: 1;
 }
 
-#footer #st-footer .footer-title-group i {
+#footer #st-footer .footer-title-group .solitude-icon {
   line-height: 1;
   color: var(--efu-secondtext);
   transition: 0.3s;

@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/Icon.astro';
 import { cfg, config, t, url, dateLabel, isoDate, termPath } from '@/lib/site';
 import { contentPath, wordCount, type Post } from '@/lib/content';
 interface Props {
@@ -39,7 +40,7 @@ const count = wordCount(post.body ?? '');
               href={url(termPath('tags', tag))}
             >
               <span class="tags-name tags-punctuation tw:[span&]:flex tw:[span&]:items-center tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:flex tw:[#post_.post-tools-right_.tag\_share_.post-meta\_\_tag-list_.post-meta\_\_tags_span&]:items-center">
-                <i class="solitude fas fa-hashtag" />
+                <Icon name="lucide:hash" class="solitude" />
                 {tag}
               </span>
             </a>
@@ -55,19 +56,19 @@ const count = wordCount(post.body ?? '');
     <div class="meta-secondline tw:[.post_#post-info_#post-meta_&]:flex tw:[.post_#post-info_#post-meta_&]:flex-row tw:[.post_#post-info_#post-meta_&]:flex-wrap tw:[.post_#post-info_#post-meta_&]:items-center tw:[.post_#post-info_#post-meta_&]:justify-start">
       {cfg.post.meta.wordcount && (
         <span class="post-meta-wordcount">
-          <i class="post-meta-icon solitude fas fa-file-word" />
+          <Icon name="lucide:file-text" class="post-meta-icon solitude" />
           <span class="word-count">{count}</span>
         </span>
       )}
       {cfg.post.meta.date && (
         <span class="post-meta-date">
-          <i class="post-meta-icon solitude fas fa-calendar-days" />
+          <Icon name="lucide:calendar-days" class="post-meta-icon solitude" />
           <time datetime={isoDate(p.date)}>{dateLabel(p.date)}</time>
         </span>
       )}
       {cfg.post.meta.updated && (
         <span class="post-meta-date">
-          <i class="post-meta-icon solitude fas fa-arrows-rotate" />
+          <Icon name="lucide:refresh-cw" class="post-meta-icon solitude" />
           <time datetime={isoDate(p.lastmod ?? p.date)}>
             {dateLabel(p.lastmod ?? p.date)}
           </time>
@@ -75,7 +76,7 @@ const count = wordCount(post.body ?? '');
       )}
       {cfg.post.meta.readtime && (
         <span class="post-meta-readtime">
-          <i class="post-meta-icon solitude fas fa-clock" />
+          <Icon name="lucide:clock" class="post-meta-icon solitude" />
           <span>
             {Math.max(
               1,
@@ -87,7 +88,7 @@ const count = wordCount(post.body ?? '');
       )}
       {cfg.post.meta.locate && (
         <span class="post-meta-position">
-          <i class="solitude fas fa-location-dot" />
+          <Icon name="lucide:map-pin" class="solitude" />
           <span>{String(p.locate ?? cfg.post.default.locate)}</span>
         </span>
       )}
@@ -108,7 +109,7 @@ const count = wordCount(post.body ?? '');
         cfg.comment.count &&
         cfg.comment.use && (
           <a href="#post-comment">
-            <i class="solitude fas fa-comment" />
+            <Icon name="lucide:message-circle" class="solitude" />
             <span
               class="comment-count valine-comment-count"
               data-xid={url(contentPath(post))}

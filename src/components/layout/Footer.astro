@@ -1,8 +1,12 @@
 ---
+import Icon from '@/components/Icon.astro';
+import type { IconName } from '@/lib/icons';
 import { cfg, config, t, url } from '@/lib/site';
 const f = cfg.footer;
 const year = new Date().getFullYear();
 const start = new Date(cfg.aside.siteinfo.runtime).getFullYear();
+const linkIcons = (icon: IconName | IconName[]): IconName[] =>
+  Array.isArray(icon) ? icon : [icon];
 ---
 
 <footer id="footer" class="tw:relative tw:flex tw:flex-col">
@@ -17,7 +21,7 @@ const start = new Date(cfg.aside.siteinfo.runtime).getFullYear();
         title={l.name}
         aria-label={l.name}
       >
-        <i class={`solitude ${l.icon}`} />
+        {l.icon ? <Icon name={l.icon} class="solitude" /> : l.name}
       </a>
     ))}
     {f.information.author && (
@@ -38,7 +42,7 @@ const start = new Date(cfg.aside.siteinfo.runtime).getFullYear();
         title={l.name}
         aria-label={l.name}
       >
-        <i class={`solitude ${l.icon}`} />
+        {l.icon ? <Icon name={l.icon} class="solitude" /> : l.name}
       </a>
     ))}
   </div>
@@ -70,7 +74,7 @@ const start = new Date(cfg.aside.siteinfo.runtime).getFullYear();
             data-solitude-action="randomLinksList"
             aria-label={t('randomFriends')}
           >
-            <i class="solitude fas fa-arrows-rotate" />
+            <Icon name="lucide:refresh-cw" class="solitude" />
           </button>
         </div>
         <div
@@ -131,11 +135,12 @@ const start = new Date(cfg.aside.siteinfo.runtime).getFullYear();
             class="footer-bar-link tw:[#footer-bar_.footer-bar-left_.beian-group_&]:flex tw:[#footer-bar_.footer-bar-left_.beian-group_&]:items-center tw:[#footer-bar_&]:whitespace-nowrap tw:[#footer-bar_&]:flex tw:[#footer-bar_&]:items-center"
             href={url(l.url)}
             title={l.name}
+            aria-label={l.name}
           >
             {l.icon ? (
-              (Array.isArray(l.icon) ? l.icon : [l.icon]).map(
-                (icon: string) => <i class={`solitude ${icon}`} />,
-              )
+              linkIcons(l.icon).map((icon: IconName) => (
+                <Icon name={icon} class="solitude" />
+              ))
             ) : l.img ? (
               <img src={url(l.img)} alt={l.name} />
             ) : (

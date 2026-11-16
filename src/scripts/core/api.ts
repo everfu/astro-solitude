@@ -2,8 +2,13 @@ import { navigate } from 'astro:transitions/client';
 import type { SolitudeAPI } from '@/scripts/types/api';
 import { getConfig, getPageConfig } from '@/scripts/core/config';
 import { lifecycle } from '@/scripts/core/lifecycle';
-import { loadScript, loadStyle, type ScriptOptions } from '@/scripts/core/resources';
+import {
+  loadScript,
+  loadStyle,
+  type ScriptOptions,
+} from '@/scripts/core/resources';
 import { saveToLocal } from '@/scripts/core/storage';
+import { createIcon } from '@/scripts/core/icons';
 
 document.documentElement.dataset.solitudeRuntime = 'booting';
 
@@ -15,6 +20,7 @@ Object.defineProperties(api, {
 });
 
 Object.assign(api, {
+  createIcon,
   saveToLocal,
   loadScript(url: string, options?: ScriptOptions) {
     if (/barrage(?:\.min)?\.js(?:\?|$)/.test(url)) api.installLegacyAdapter?.();

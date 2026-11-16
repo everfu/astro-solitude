@@ -9,7 +9,7 @@ import Footer from '@/components/layout/Footer.astro';
 import Search from '@/components/integrations/Search.astro';
 import Overlays from '@/components/layout/Overlays.astro';
 import Capsule from '@/components/integrations/Capsule.astro';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import RuntimeIcons from '@/components/integrations/RuntimeIcons.astro';
 import 'katex/dist/katex.min.css';
 import '@/styles/main.css';
 import layerOrder from '@/styles/layers.css?inline';
@@ -177,6 +177,7 @@ const inlineVars = Object.entries(vars)
     <a class="skip-link" href="#content-inner">
       {t('startReading')}
     </a>
+    <RuntimeIcons />
     <Overlays
       posts={posts}
       toc={toc}

@@ -1,28 +1,6 @@
-interface FriendLink {
-  name: string;
-  link: string;
-  avatar?: string;
-  descr?: string;
-  tag?: string;
-  color?: string;
-  siteshot?: string;
-  topimg?: string;
-}
-interface FriendGroup {
-  class_name?: string;
-  title_link?: string;
-  title_link_text?: string;
-  descr?: string;
-  type: string;
-  sort?: string;
-  suffix?: string;
-  topimg_suffix?: string;
-  link_list: FriendLink[];
-}
-interface LinksData {
-  links: FriendGroup[];
-  banner_suffix?: string;
-}
+import { createIcon } from '@/scripts/core/icons';
+import type { FriendLink } from '@/types/page';
+import type { FriendGroup, LinksData } from '@/types/page-data';
 /** Browser behavior preserved from Solitude Hugo; typed boundary: core/api.ts. */
 import { Solitude } from '@/scripts/core/api';
 import { showToast } from '@/scripts/core/toast';
@@ -198,7 +176,7 @@ import { showToast } from '@/scripts/core/toast';
     const content = createElement('div', 'flink-normal-title-content');
     content.append(
       createElement('h2', '', `${group.class_name || ''} (${count})`),
-      createElement('div', 'flink-desc', group.descr || ''),
+      createElement('div', 'flink-desc', group.class_desc || group.descr || ''),
     );
     const controls = createElement('div', 'flink-normal-scroll-controls');
     controls.dataset.target = listId;
@@ -215,16 +193,18 @@ import { showToast } from '@/scripts/core/toast';
       ),
     );
     controls.append(sort);
-    [
-      ['left', config.scroll_left, 'solitude fas fa-chevron-left'],
-      ['right', config.scroll_right, 'solitude fas fa-chevron-right'],
-    ].forEach(([direction, label, iconClass]) => {
+    (
+      [
+        ['left', config.scroll_left, 'lucide:chevron-left'],
+        ['right', config.scroll_right, 'lucide:chevron-right'],
+      ] as const
+    ).forEach(([direction, label, iconName]) => {
       const button = createElement('button', 'flink-normal-scroll-btn');
       button.type = 'button';
       button.dataset.direction = direction;
       button.setAttribute('aria-label', label);
       button.title = label;
-      button.append(createElement('i', iconClass));
+      button.append(createIcon(iconName));
       controls.append(button);
     });
     row.append(content, controls);
@@ -359,7 +339,7 @@ import { showToast } from '@/scripts/core/toast';
     const button = createElement('button');
     button.type = 'button';
     button.append(
-      createElement('i', 'solitude fas fa-arrows-rotate'),
+      createIcon('lucide:refresh-cw'),
       createElement('span', '', config.retry),
     );
     button.addEventListener('click', retry, { once: true });
@@ -380,13 +360,18 @@ import { showToast } from '@/scripts/core/toast';
       data.links.forEach((group: FriendGroup) => {
         const links = Array.isArray(group.link_list) ? group.link_list : [];
         const normalizedGroup = { ...group, link_list: links };
-        if (group.type === 'card') {
+        const type = group.type ?? 'item';
+        if (type === 'card') {
           fragment.append(
             createGroupHeading(group, links.length),
-            createElement('div', 'flink-desc', group.descr || ''),
+            createElement(
+              'div',
+              'flink-desc',
+              group.class_desc || group.descr || '',
+            ),
             createCardGroup(normalizedGroup),
           );
-        } else if (group.type === 'item') {
+        } else if (type === 'item') {
           const listId = `normal-flink-list-${normalIndex}`;
           const initialSort =
             group.sort === 'default' || normalIndex === 0
@@ -401,10 +386,14 @@ import { showToast } from '@/scripts/core/toast';
             }),
           );
           normalIndex += 1;
-        } else if (group.type === 'discn') {
+        } else if (type === 'discn') {
           fragment.append(
             createGroupHeading(group, links.length),
-            createElement('div', 'flink-desc', group.descr || ''),
+            createElement(
+              'div',
+              'flink-desc',
+              group.class_desc || group.descr || '',
+            ),
             createItemGroup(normalizedGroup, { disconnected: true }),
           );
         }

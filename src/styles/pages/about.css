@@ -226,7 +226,7 @@
 
 #about-page .skills-marquee-icon { width: 120px; height: 120px; place-items: center; flex: 0 0 auto; color: #fff; font-size: 60px; background: color-mix(in srgb, var(--skill-color) 72%, #fff); border-radius: 30px; }
 
-#about-page .skills-marquee-icon i { display: grid; width: 72px; height: 72px; place-items: center; border-radius: 8px; }
+#about-page .skills-marquee-icon .solitude-icon { display: grid; width: 72px; height: 72px; place-items: center; border-radius: 8px; }
 
 #about-page .skills-marquee-icon img { width: 66px; height: 66px; object-fit: contain; }
 
@@ -503,7 +503,7 @@
 
 #about-page .about-profile-list div { display: grid; grid-template-columns: 26px auto minmax(0, 1fr); align-items: center; gap: .5rem; padding: .7rem .8rem; background: var(--efu-background); border-radius: 12px; }
 
-#about-page .about-profile-list i { color: var(--efu-theme); text-align: center; }
+#about-page .about-profile-list .solitude-icon { color: var(--efu-theme); text-align: center; }
 
 #about-page .about-profile-list dt { color: var(--efu-secondtext); font-size: .78rem; }
 

@@ -366,6 +366,10 @@ interface RepositoryData {
           if (!panel.id) panel.id = `${container.id || 'tabs'}-panel-${index}`;
           button.type = 'button';
           button.textContent = panel.dataset.tabTitle || `Tab ${index + 1}`;
+          const icon = panel.querySelector<HTMLTemplateElement>(
+            ':scope > template[data-tab-icon]',
+          );
+          if (icon) button.prepend(icon.content.cloneNode(true));
           button.id = `${container.id || 'tabs'}-tab-${index}`;
           button.setAttribute('role', 'tab');
           button.setAttribute('aria-controls', panel.id);

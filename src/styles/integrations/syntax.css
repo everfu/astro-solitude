@@ -288,7 +288,7 @@ figure.highlight .code-expand-btn {
   height: 32px;
 }
 
-figure.highlight .code-expand-btn i {
+figure.highlight .code-expand-btn .solitude-icon {
   color: var(--efu-fontcolor);
   line-height: 1;
   animation: 1.2s ease 0s infinite normal none running code-expand-key;
@@ -298,7 +298,7 @@ figure.highlight .code-expand-btn:hover {
   background: var(--efu-main);
 }
 
-figure.highlight .code-expand-btn:hover i {
+figure.highlight .code-expand-btn:hover .solitude-icon {
   color: var(--efu-white);
 }
 

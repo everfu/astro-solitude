@@ -6,7 +6,7 @@
   min-width: 20px;
 }
 
-#footer-bar .footer-bar-link i {
+#footer-bar .footer-bar-link .solitude-icon {
   font-size: 14px;
 }
 
@@ -170,7 +170,7 @@
   border-radius: 40px;
 }
 
-#page-header #nav #nav-right .nav-button a i {
+#page-header #nav #nav-right .nav-button a .solitude-icon {
   font-size: 22px;
   line-height: 1;
 }
@@ -487,7 +487,7 @@
 }
 
 @media (hover: hover) {
-  #nav #site-name:hover i,
+  #nav #site-name:hover .solitude-icon,
   #nav #site-name:hover span,
   #nav #site-name:hover img {
     color: var(--efu-nav-hover-text);
@@ -496,7 +496,7 @@
 }
 
 @media screen and (min-width: 900px) {
-  #nav #site-name:hover i,
+  #nav #site-name:hover .solitude-icon,
   #nav #site-name:hover span,
   #nav #site-name:hover img {
     opacity: 0;
@@ -504,12 +504,13 @@
 }
 
 @media screen and (min-width: 900px) {
-  #nav #site-name:hover i.fas.fa-home {
+  #nav #site-name:hover .site-home-icon {
     opacity: 1;
   }
 }
 
-#nav #site-name i.fas.fa-home {
+#nav #site-name .site-home-icon {
+  position: absolute;
   opacity: 0;
   z-index: 1;
   font-size: 22px;
@@ -648,7 +649,7 @@
   padding: 0.3rem 1rem;
 }
 
-#page-header #nav .menus_items .menus_item .menus_item_child li a i:not(.fa-brands) {
+#page-header #nav .menus_items .menus_item .menus_item_child li a .solitude-icon {
   font-size: 22px;
   margin-right: 8px;
   line-height: 1;
@@ -702,11 +703,11 @@
   backdrop-filter: blur(20px);
 }
 
-#nav .menus_items .menus_item:hover i.expand {
+#nav .menus_items .menus_item:hover .solitude-icon.expand {
   transform: rotate(180deg);
 }
 
-#nav .menus_items .menus_item i.expand {
+#nav .menus_items .menus_item .solitude-icon.expand {
   padding: 4px;
   transition: transform 0.3s ease 0s;
 }
@@ -782,7 +783,7 @@
   padding: 0;
 }
 
-#nav-totop .totopbtn i {
+#nav-totop .totopbtn .solitude-icon {
   position: absolute;
   top: 0;
   left: 0;
@@ -801,13 +802,13 @@
   background: var(--efu-lighttext);
 }
 
-#nav-totop:hover .totopbtn i {
+#nav-totop:hover .totopbtn .solitude-icon {
   opacity: 1;
   color: var(--efu-card-bg);
   transition: 0.3s;
 }
 
-[data-theme='dark'] #nav-totop:hover .totopbtn i {
+[data-theme='dark'] #nav-totop:hover .totopbtn .solitude-icon {
   color: var(--efu-fontcolor);
 }
 
@@ -1034,11 +1035,11 @@
   }
 }
 
-.post #nav #site-name i.fas.fa-home {
+.post #nav #site-name .site-home-icon {
   color: var(--efu-white);
 }
 
-.post .nav-fixed #nav #site-name i.fas.fa-home {
+.post .nav-fixed #nav #site-name .site-home-icon {
   color: var(--efu-card-bg);
 }
 
@@ -1109,7 +1110,7 @@
   box-shadow: var(--efu-shadow-main);
 }
 
-.page #nav #site-name:hover i {
+.page #nav #site-name:hover .solitude-icon {
   color: var(--efu-nav-hover-text);
 }
 
@@ -1126,7 +1127,7 @@
 }
 
 @media screen and (max-width: 768px) {
-  .error #nav #site-name i {
+  .error #nav #site-name .solitude-icon {
     color: var(--efu-fontcolor);
   }
 }
@@ -1356,8 +1357,8 @@
     overflow: hidden;
     transition: 0.3s;
   }
-  #pagination:not(.pagination-post) a.extend.next i,
-  #pagination:not(.pagination-post) a.extend.prev i {
+  #pagination:not(.pagination-post) a.extend.next .solitude-icon,
+  #pagination:not(.pagination-post) a.extend.prev .solitude-icon {
     transition: 0.3s;
   }
   #pagination:not(.pagination-post) a.extend:is(:hover, :focus-visible) {
@@ -1496,7 +1497,7 @@
     background: var(--efu-theme);
     border-color: var(--efu-theme);
   }
-  #pagination:not(.pagination-post) .pagination .extend i {
+  #pagination:not(.pagination-post) .pagination .extend .solitude-icon {
     display: none;
   }
   #pagination:not(.pagination-post) .page-number,

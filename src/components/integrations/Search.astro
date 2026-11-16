@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/Icon.astro';
 import { cfg, t, url, termPath } from '@/lib/site';
 ---
 
@@ -27,7 +28,7 @@ import { cfg, t, url, termPath } from '@/lib/site';
               type="button"
               aria-label={t('close')}
             >
-              <i class="solitude fas fa-xmark" />
+              <Icon name="lucide:x" class="solitude" />
             </button>
           </nav>
           {cfg.search.type === 'algolia' ? (

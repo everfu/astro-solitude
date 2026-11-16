@@ -5,7 +5,17 @@ import type {
   MdastVisitorContext,
 } from 'satteri';
 import katex from 'katex';
+import { iconToHTML, iconToSVG } from '@iconify/utils';
+import lucide from '@iconify-json/lucide/icons.json';
 export function solitudeMarkdown(config: SiteConfig): HastPluginDefinition {
+  const link = iconToSVG(lucide.icons.link);
+  const linkIcon = iconToHTML(link.body, {
+    ...link.attributes,
+    class: 'solitude-icon',
+    'data-icon': 'lucide:link',
+    'aria-hidden': 'true',
+    focusable: 'false',
+  });
   return {
     name: 'solitude-content',
     element: {
@@ -13,6 +23,14 @@ export function solitudeMarkdown(config: SiteConfig): HastPluginDefinition {
       visit(node, ctx) {
         const properties = node.properties ?? {};
         if (node.tagName === 'a' || node.tagName === 'img') {
+          const classes = properties.className;
+          if (
+            node.tagName === 'a' &&
+            Array.isArray(classes) &&
+            classes.includes('headerlink')
+          ) {
+            ctx.appendChild(node, { type: 'raw', value: linkIcon });
+          }
           const field = node.tagName === 'a' ? 'href' : 'src';
           const value = properties[field];
           if (
