@@ -10,7 +10,7 @@ tags:
 - Solitude
 series:
 - Theme essentials
-cover: /img/demo/cover-pagination-v2.webp
+cover: /img/covers/search-and-rss.webp
 ---
 
 # Search and feeds

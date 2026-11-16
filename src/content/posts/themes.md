@@ -9,7 +9,7 @@ tags:
 - Solitude
 series:
 - Theme essentials
-cover: /img/demo/cover-shortcodes-v2.webp
+cover: /img/covers/themes.webp
 ---
 
 # Light, dark, and custom styles

@@ -9,7 +9,7 @@ tags:
 - Solitude
 series:
 - Theme essentials
-cover: /img/demo/cover-pagination-v2.webp
+cover: /img/covers/configuration.webp
 ---
 
 # Configure your theme

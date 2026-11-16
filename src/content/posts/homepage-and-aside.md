@@ -9,7 +9,7 @@ tags:
 - Solitude
 series:
 - Theme essentials
-cover: /img/demo/cover-getting-started-v2.webp
+cover: /img/covers/homepage-and-aside.webp
 ---
 
 # Homepage recommendations and sidebar

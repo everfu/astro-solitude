@@ -10,7 +10,7 @@ tags:
 - Solitude
 series:
 - Theme essentials
-cover: /img/demo/cover-getting-started-v2.webp
+cover: /img/covers/getting-started.webp
 ---
 
 # Getting started with Astro Solitude

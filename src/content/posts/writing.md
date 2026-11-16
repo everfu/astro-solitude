@@ -10,7 +10,7 @@ tags:
 - Solitude
 series:
 - Theme essentials
-cover: /img/demo/cover-shortcodes-v2.webp
+cover: /img/covers/writing.webp
 ---
 
 # Write with Markdown and MDX

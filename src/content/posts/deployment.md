@@ -10,7 +10,7 @@ tags:
 - Solitude
 series:
 - Theme essentials
-cover: /img/demo/cover-shortcodes-v2.webp
+cover: /img/covers/deployment.webp
 ---
 
 # Deploy your static blog
