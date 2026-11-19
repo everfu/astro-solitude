@@ -1,7 +1,6 @@
 import { Solitude } from '@/scripts/core/api';
 import { initActionDelegation } from '@/scripts/core/actions';
 import { lifecycle } from '@/scripts/core/lifecycle';
-import { initPreloader } from '@/scripts/core/preloader';
 import { percent } from '@/scripts/features/scroll';
 import { registerActions } from './actions';
 import { initializeGlobalEvents } from './events';
@@ -15,7 +14,6 @@ export const initializeApp = async (isCurrent = () => true) => {
   registerActions();
   Solitude.refresh = refreshPage;
   initActionDelegation(Solitude);
-  initPreloader(Solitude);
   initializeGlobalEvents();
   await Solitude.refresh();
   if (!isCurrent()) return;

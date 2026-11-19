@@ -266,7 +266,8 @@
   },
   "loading": {
     "fullpage": false,
-    "pace": true
+    "pace": true,
+    "image": ""
   },
   "highlight": {
     "enable": true,

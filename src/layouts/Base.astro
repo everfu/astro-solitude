@@ -168,12 +168,39 @@ const inlineVars = Object.entries(vars)
     data-aside-position={cfg.aside.position}
     data-index-layout={cfg.index_post_list.direction}
   >
-    {cfg.loading.fullpage && (
-      <div id="loading-box" aria-hidden="true">
-        <img src={url(cfg.site.icon)} alt="" />
-      </div>
+    {(cfg.loading.fullpage || cfg.loading.pace) && (
+      <>
+        <div
+          id="page-loader"
+          aria-hidden="true"
+          transition:persist="page-loader"
+        >
+          {cfg.loading.fullpage && (
+            <div class="page-loader-screen">
+              <img
+                src={url(cfg.loading.image || cfg.site.icon)}
+                alt=""
+                width="100"
+                height="100"
+              />
+            </div>
+          )}
+          {cfg.loading.pace && <div class="page-loader-capsule" />}
+        </div>
+        <script is:inline>
+          if (document.readyState === 'loading') {
+            const loader = document.getElementById('page-loader');
+            loader.dataset.state = 'initial';
+            // Reveal the page even if the site's JavaScript bundle fails to load.
+            setTimeout(() => {
+              if (loader.dataset.state === 'initial') {
+                loader.dataset.state = 'complete';
+              }
+            }, 5000);
+          }
+        </script>
+      </>
     )}
-    {cfg.loading.pace && <div id="navigation-progress" aria-hidden="true" />}
     <a class="skip-link" href="#content-inner">
       {t('startReading')}
     </a>

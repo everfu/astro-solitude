@@ -34,6 +34,7 @@ export default defineSolitudeConfig({
     },
   ],
   theme: {
+    loading: { fullpage: true, image: '/img/brand/profile-avatar.webp' },
     lightbox: 'fancybox',
     nav: {
       group: {

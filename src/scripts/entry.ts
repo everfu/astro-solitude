@@ -2,9 +2,11 @@ import { prepareAssets } from '@/scripts/app/assets';
 import '@/scripts/features/comments';
 import { Solitude } from '@/scripts/core/api';
 import { lifecycle } from '@/scripts/core/lifecycle';
+import { initPreloader } from '@/scripts/core/preloader';
 import { installUtilities } from '@/scripts/core/utils';
 
 installUtilities();
+initPreloader(Solitude);
 // Astro 7.3.2 does not observe ViewTransition.ready. A superseding navigation
 // legitimately rejects it when skipTransition() cancels the visual transition.
 // Observe that promise without changing DOM updates or suppressing page errors.
@@ -52,7 +54,6 @@ async function mount() {
   window.__solitudeShortcodeRuntime?.init();
   if (version === navigation) {
     document.documentElement.dataset.solitudeRuntime = 'ready';
-    Solitude.endLoading?.();
   }
 }
 document.addEventListener('astro:page-load', () => {
