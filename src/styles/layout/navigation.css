@@ -601,21 +601,29 @@
   margin: auto;
 }
 
-#nav .menus_items .menus_item .menus_item_child {
+#nav .menus_item > .nav-submenu {
   --nav-submenu-gap: 8px;
+  --nav-submenu-motion: 300ms ease;
+  position: absolute;
+  top: calc(100% + var(--nav-submenu-gap));
+  visibility: hidden;
+  transition: visibility var(--nav-submenu-motion);
+}
+
+#nav .nav-submenu > .menus_item_child {
   padding: 6px 3.5px;
   border-radius: 100px;
   background-color: var(--efu-card-bg);
   box-shadow: var(--efu-shadow-black);
   border: var(--style-border);
-  top: calc(100% + var(--nav-submenu-gap));
-  visibility: hidden;
   opacity: 0;
-  transition: opacity var(--efu-motion-fast), visibility var(--efu-motion-fast);
+  transform: translateY(calc(-1 * var(--nav-submenu-gap))) scale(0.8);
+  transform-origin: top center;
+  transition: transform var(--nav-submenu-motion), opacity var(--nav-submenu-motion);
 }
 
 @media screen and (min-width: 769px) and (max-width: 900px) {
-  #nav .menus_items .menus_item:last-child .menus_item_child {
+  #nav .menus_item:last-child > .nav-submenu {
     right: 0;
   }
 }
@@ -649,12 +657,12 @@
   line-height: 1;
 }
 
-#nav .menus_items .menus_item .menus_item_child::before {
-  /* Keep the pointer path to the submenu open without covering the top row. */
+#nav .nav-submenu::before {
+  /* Bridge the gap from the trigger while the menu animates inside this wrapper. */
   position: absolute;
   bottom: 100%;
   inset-inline: 0;
-  height: calc(var(--nav-submenu-gap) + 1px);
+  height: var(--nav-submenu-gap);
   content: "";
 }
 
@@ -666,12 +674,16 @@
     inset 0 0 0 1px color-mix(in srgb, var(--efu-nav-hover-text) 24%, transparent);
 }
 
-#nav #menus .menus_item:is(:hover, :has(:focus-visible)) > .menus_item_child {
+#nav .menus_item:is(:hover, :has(:focus-visible)) > .nav-submenu {
   z-index: 1;
+  visibility: visible;
+}
+
+#nav .menus_item:is(:hover, :has(:focus-visible)) > .nav-submenu > .menus_item_child {
   border: var(--style-border-hover);
   box-shadow: var(--efu-shadow-main);
-  visibility: visible;
   opacity: 1;
+  transform: none;
 }
 
 #nav .menus_items .menus_item:hover .solitude-icon.expand {
@@ -1140,7 +1152,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   #page-header #nav #menus .menus_item > .site-page,
-  #nav #menus .menus_item > .menus_item_child {
+  #nav .menus_item > .nav-submenu,
+  #nav .nav-submenu > .menus_item_child {
     transition: none;
   }
 }
