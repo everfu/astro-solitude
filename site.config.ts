@@ -11,19 +11,25 @@ export default defineSolitudeConfig({
   menus: [
     {
       name: 'Library',
+      icon: 'lucide:library',
       children: [
         { name: 'All posts', url: '/archives/', icon: 'lucide:folder' },
         { name: 'Categories', url: '/categories/', icon: 'lucide:copy' },
         { name: 'Tags', url: '/tags/', icon: 'lucide:tags' },
       ],
     },
-    { name: 'Friends', url: '/links/' },
+    { name: 'Friends', url: '/links/', icon: 'lucide:users-round' },
     {
       name: 'Explore',
+      icon: 'lucide:compass',
       children: [
-        { name: 'About the theme', url: '/about/' },
-        { name: 'My equipment', url: '/equipment/' },
-        { name: 'Short updates', url: '/brevity/' },
+        { name: 'About the theme', url: '/about/', icon: 'lucide:info' },
+        { name: 'My equipment', url: '/equipment/', icon: 'lucide:monitor' },
+        {
+          name: 'Short updates',
+          url: '/brevity/',
+          icon: 'lucide:message-circle',
+        },
       ],
     },
   ],

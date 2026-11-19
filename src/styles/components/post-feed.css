@@ -392,6 +392,8 @@
 }
 
 #sidebar #sidebar-menus .menus_items .menus_item > .site-page {
+  align-items: center;
+  gap: 8px;
   font-size: 12px;
   color: var(--efu-secondtext);
 }
